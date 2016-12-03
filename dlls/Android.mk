@@ -11,8 +11,8 @@ include $(XASH3D_CONFIG)
 
 LOCAL_CFLAGS += -D_LINUX -DCLIENT_WEAPONS \
 	-Dstricmp=strcasecmp -Dstrnicmp=strncasecmp -D_snprintf=snprintf \
-	-fno-exceptions -fsigned-char -Wno-write-strings -Wno-invalid-offsetof -Wno-conversion-null
-	
+	-Wno-write-strings -Wno-invalid-offsetof -Wno-conversion-null
+
 LOCAL_C_INCLUDES := $(LOCAL_PATH)/. \
 		    $(LOCAL_PATH)/../common \
 		    $(LOCAL_PATH)/../engine/common \
@@ -46,6 +46,6 @@ ifeq ($(TARGET_ARCH_ABI),armeabi-v7a-hard)
 LOCAL_MODULE_FILENAME = libserver_hardfp
 endif
 
-LOCAL_CPPFLAGS := $(LOCAL_CFLAGS) -frtti -fpermissive
+LOCAL_CPPFLAGS := $(LOCAL_CFLAGS) -frtti
 
 include $(BUILD_SHARED_LIBRARY)

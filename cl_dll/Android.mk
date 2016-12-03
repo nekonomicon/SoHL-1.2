@@ -21,10 +21,11 @@ ifeq ($(TARGET_ARCH_ABI),armeabi-v7a-hard)
 LOCAL_MODULE_FILENAME = libclient_hardfp
 endif
 
-LOCAL_CFLAGS += -fsigned-char -DCLIENT_DLL=1
+LOCAL_CFLAGS += -DCLIENT_DLL=1
 
 SRCS=
 SRCS_C=
+SRCS+=./MOTD.cpp
 SRCS+=../dlls/crossbow.cpp
 SRCS+=../dlls/crowbar.cpp
 SRCS+=../dlls/egon.cpp
@@ -76,6 +77,7 @@ SRCS+=./particlemgr.cpp
 SRCS+=./particlemsg.cpp
 SRCS+=./particlesys.cpp
 SRCS+=./saytext.cpp
+SRCS+=./scoreboard.cpp
 SRCS+=./status_icons.cpp
 SRCS+=./statusbar.cpp
 SRCS+=./studio_util.cpp

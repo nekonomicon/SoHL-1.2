@@ -30,6 +30,8 @@
 #include "demo.h"
 #include "demo_api.h"
 
+cvar_t *hud_textmode;
+float g_hud_text_color[3];
 extern client_sprite_t *GetSpriteList(client_sprite_t *pList, const char *psz, int iRes, int iCount);
 
 extern cvar_t *sensitivity;
@@ -163,12 +165,12 @@ int __MsgFunc_VGUIMenu(const char *pszName, int iSize, void *pbuf)
 {
 	return 0;
 }
-
+/*
 int __MsgFunc_MOTD(const char *pszName, int iSize, void *pbuf)
 {
 	return 0;
 }
-
+*/
 int __MsgFunc_BuildSt(const char *pszName, int iSize, void *pbuf)
 {
 	return 0;
@@ -183,7 +185,7 @@ int __MsgFunc_ServerName(const char *pszName, int iSize, void *pbuf)
 {
 	return 0;
 }
-
+/*
 int __MsgFunc_ScoreInfo(const char *pszName, int iSize, void *pbuf)
 {
 	return 0;
@@ -198,7 +200,7 @@ int __MsgFunc_TeamInfo(const char *pszName, int iSize, void *pbuf)
 {
 	return 0;
 }
-
+*/
 int __MsgFunc_Spectator(const char *pszName, int iSize, void *pbuf)
 {
 	return 0;
@@ -239,13 +241,13 @@ void CHud :: Init( void )
 	HOOK_MESSAGE( TeamNames );
 	HOOK_MESSAGE( Feign );
 	HOOK_MESSAGE( Detpack );
-	HOOK_MESSAGE( MOTD );
+	//HOOK_MESSAGE( MOTD );
 	HOOK_MESSAGE( BuildSt );
 	HOOK_MESSAGE( RandomPC );
 	HOOK_MESSAGE( ServerName );
-	HOOK_MESSAGE( ScoreInfo );
-	HOOK_MESSAGE( TeamScore );
-	HOOK_MESSAGE( TeamInfo );
+	//HOOK_MESSAGE( ScoreInfo );
+	//HOOK_MESSAGE( TeamScore );
+	//HOOK_MESSAGE( TeamInfo );
 
 	HOOK_MESSAGE( Spectator );
 	HOOK_MESSAGE( AllowSpec );
@@ -255,7 +257,7 @@ void CHud :: Init( void )
 
 	CVAR_CREATE( "hud_classautokill", "1", FCVAR_ARCHIVE | FCVAR_USERINFO );		// controls whether or not to suicide immediately on TF class switch
 	CVAR_CREATE( "hud_takesshots", "0", FCVAR_ARCHIVE );		// controls whether or not to automatically take screenshots at the end of a round
-
+	hud_textmode = CVAR_CREATE( "hud_textmode", "0", FCVAR_ARCHIVE );
 
 	m_iLogo = 0;
 	m_iFOV = 0;
@@ -285,6 +287,7 @@ void CHud :: Init( void )
 
 	// In case we get messages before the first update -- time will be valid
 	m_flTime = 1.0;
+	m_iNoConsolePrint = 0;
 
 	m_Ammo.Init();
 	m_Health.Init();
@@ -300,7 +303,8 @@ void CHud :: Init( void )
 	m_AmmoSecondary.Init();
 	m_TextMessage.Init();
 	m_StatusIcons.Init();
-
+	m_MOTD.Init();
+	m_Scoreboard.Init();
 	m_Particle.Init(); // (LRC) -- 30/08/02 November235: Particles to Order
 
 	m_Menu.Init();
@@ -456,6 +460,8 @@ void CHud :: VidInit( void )
 	m_AmmoSecondary.VidInit();
 	m_TextMessage.VidInit();
 	m_StatusIcons.VidInit();
+	m_Scoreboard.VidInit();
+	m_MOTD.VidInit();
 	m_Particle.VidInit(); // (LRC) -- 30/08/02 November235: Particles to Order
 }
 

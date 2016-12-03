@@ -18,7 +18,7 @@
 #include <math.h>
 #include "hud.h"
 #include "cl_util.h"
-
+#include "triangleapi.h"
 
 #define MAX_LOGO_FRAMES 56
 
@@ -229,20 +229,60 @@ void ScaleColors( int &r, int &g, int &b, int a )
 	b = (int)(b * x);
 }
 
-int CHud :: DrawHudString(int xpos, int ypos, int iMaxX, char *szIt, int r, int g, int b )
+const unsigned char colors[8][3] =
 {
-	// draw the string until we hit the null character or a newline character
-	for ( ; *szIt != 0 && *szIt != '\n'; szIt++ )
-	{
-		int next = xpos + gHUD.m_scrinfo.charWidths[ *szIt ]; // variable-width fonts look cool
-		if ( next > iMaxX )
-			return xpos;
+{127, 127, 127}, // additive cannot be black
+{255,   0,   0},
+{  0, 255,   0},
+{255, 255,   0},
+{  0,   0, 255},
+{  0, 255, 255},
+{255,   0, 255},
+{240, 180,  24}
+};
 
-		TextMessageDrawChar( xpos, ypos, *szIt, r, g, b );
-		xpos = next;		
+int CHud::DrawHudString( int xpos, int ypos, int iMaxX, char *szIt, int r, int g, int b )
+{
+	if( hud_textmode->value == 2 )
+	{
+		gEngfuncs.pfnDrawSetTextColor( r / 255.0, g / 255.0, b / 255.0 );
+		return gEngfuncs.pfnDrawConsoleString( xpos, ypos, szIt );
+	}
+
+	// xash3d: reset unicode state
+	TextMessageDrawChar( 0, 0, 0, 0, 0, 0 );
+
+	// draw the string until we hit the null character or a newline character
+	for( ; *szIt != 0 && *szIt != '\n'; szIt++ )
+	{
+		int w = gHUD.m_scrinfo.charWidths['M'];
+		if( xpos + w  > iMaxX )
+			return xpos;
+		if( ( *szIt == '^' ) && ( *( szIt + 1 ) >= '0') && ( *( szIt + 1 ) <= '7') )
+		{
+			szIt++;
+			r = colors[*szIt - '0'][0];
+			g = colors[*szIt - '0'][1];
+			b = colors[*szIt - '0'][2];
+			if( !*(++szIt) )
+			return xpos;
+		}
+		int c = (unsigned int)(unsigned char)*szIt;
+
+		xpos += TextMessageDrawChar( xpos, ypos, c, r, g, b );
 	}
 
 	return xpos;
+}
+
+int CHud::DrawHudStringLen( char *szIt )
+{
+	int l = 0;
+	for( ; *szIt != 0 && *szIt != '\n'; szIt++ )
+	{
+		l += gHUD.m_scrinfo.charWidths[(unsigned char)*szIt];
+	}
+	return l;
 }
 
 int CHud :: DrawHudNumberString( int xpos, int ypos, int iMinX, int iNumber, int r, int g, int b )
@@ -370,4 +410,12 @@ int CHud::GetNumWidth( int iNumber, int iFlags )
 
 }	
 
-
+void CHud::DrawDarkRectangle( int x, int y, int wide, int tall )
+{
+	//gEngfuncs.pTriAPI->RenderMode( kRenderTransTexture );
+	gEngfuncs.pfnFillRGBABlend( x, y, wide, tall, 0, 0, 0, 255 * 0.6 );
+	FillRGBA( x + 1, y, wide - 1, 1, 255, 140, 0, 255 );
+	FillRGBA( x, y, 1, tall - 1, 255, 140, 0, 255 );
+	FillRGBA( x + wide - 1, y + 1, 1, tall - 1, 255, 140, 0, 255 );
+	FillRGBA( x, y + tall - 1, wide - 1, 1, 255, 140, 0, 255 );
+}
