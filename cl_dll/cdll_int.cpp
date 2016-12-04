@@ -159,6 +159,7 @@ int DLLEXPORT Initialize( cl_enginefunc_t *pEnginefuncs, int iVersion )
 	return 1;
 }
 
+/*
 =================
 HUD_GetRect
 

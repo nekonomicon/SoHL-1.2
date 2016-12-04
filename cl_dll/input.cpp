@@ -949,10 +949,10 @@ void InitInput (void)
 	gEngfuncs.pfnAddCommand ("-reload", IN_ReloadUp);
 	gEngfuncs.pfnAddCommand ("+alt1", IN_Alt1Down);
 	gEngfuncs.pfnAddCommand ("-alt1", IN_Alt1Up);
-	gEngfuncs.pfnAddCommand ("+score", IN_ScoreDown);
-	gEngfuncs.pfnAddCommand ("-score", IN_ScoreUp);
-	gEngfuncs.pfnAddCommand ("+showscores", IN_ScoreDown);
-	gEngfuncs.pfnAddCommand ("-showscores", IN_ScoreUp);
+	//gEngfuncs.pfnAddCommand ("+score", IN_ScoreDown);
+	//gEngfuncs.pfnAddCommand ("-score", IN_ScoreUp);
+	//gEngfuncs.pfnAddCommand ("+showscores", IN_ScoreDown);
+	//gEngfuncs.pfnAddCommand ("-showscores", IN_ScoreUp);
 	gEngfuncs.pfnAddCommand ("+graph", IN_GraphDown);
 	gEngfuncs.pfnAddCommand ("-graph", IN_GraphUp);
 	gEngfuncs.pfnAddCommand ("+break",IN_BreakDown);
