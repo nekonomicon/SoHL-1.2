@@ -79,6 +79,7 @@ extern cvar_t	*cl_forwardspeed;
 extern cvar_t	*chase_active;
 extern cvar_t	*scr_ofsx, *scr_ofsy, *scr_ofsz;
 extern cvar_t	*cl_vsmoothing;
+extern Vector   dead_viewangles;
 
 #define	CAM_MODE_RELAX		1
 #define CAM_MODE_FOCUS		2
@@ -453,7 +454,14 @@ void V_CalcNormalRefdef ( struct ref_params_s *pparams )
 	pparams->vieworg[2] += ( bob );
 	VectorAdd( pparams->vieworg, pparams->viewheight, pparams->vieworg );
 
-	VectorCopy ( pparams->cl_viewangles, pparams->viewangles );
+	if( pparams->health <= 0 )
+	{
+		VectorCopy( dead_viewangles, pparams->viewangles );
+	}
+	else
+	{
+		VectorCopy( pparams->cl_viewangles, pparams->viewangles );
+	}
 
 	gEngfuncs.V_CalcShake();
 	gEngfuncs.V_ApplyShake( pparams->vieworg, pparams->viewangles, 1.0 );
@@ -532,7 +540,14 @@ void V_CalcNormalRefdef ( struct ref_params_s *pparams )
 	V_AddIdle ( pparams );
 
 	// offsets
-	VectorCopy( pparams->cl_viewangles, angles );
+	if( pparams->health <= 0 )
+	{
+		VectorCopy( dead_viewangles, angles );
+	}
+	else
+	{
+		VectorCopy( pparams->cl_viewangles, angles );
+	}
 
 	AngleVectors ( angles, pparams->forward, pparams->right, pparams->up );
 
@@ -566,7 +581,14 @@ void V_CalcNormalRefdef ( struct ref_params_s *pparams )
 	}
 	
 	// Give gun our viewangles
-	VectorCopy ( pparams->cl_viewangles, view->angles );
+	if( pparams->health <= 0 )
+	{
+		VectorCopy( dead_viewangles, view->angles );
+	}
+	else
+	{
+		VectorCopy( pparams->cl_viewangles, view->angles );
+	}
 	
 	// set up gun position
 	V_CalcGunAngle ( pparams );
