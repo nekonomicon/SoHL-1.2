@@ -359,8 +359,8 @@ void CTriggerRelay::Use( CBaseEntity *pActivator, CBaseEntity *pCaller, USE_TYPE
 	}
 	if ( pev->spawnflags & SF_RELAY_FIREONCE )
 	{
-		if (pev->spawnflags & SF_RELAY_DEBUG)
-			ALERT(at_debug, "trigger_relay \"%s\" removes itself.\n");
+		//if (pev->spawnflags & SF_RELAY_DEBUG)
+		//	ALERT(at_debug, "trigger_relay \"%s\" removes itself.\n");
 		UTIL_Remove( this );
 	}
 }
