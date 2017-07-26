@@ -53,11 +53,17 @@ vec3_t previousorigin;
 
 // HLDM Weapon placeholder entities.
 CGlock g_Glock;
+CEagel g_Eagel;
 CCrowbar g_Crowbar;
+CSwort g_Swort;
 CPython g_Python;
 CMP5 g_Mp5;
+CUZI g_uzi;
+CMinigun g_Minigun;
+CMP41a g_Mp41a;
 CCrossbow g_Crossbow;
 CShotgun g_Shotgun;
+CShotgunA g_ShotgunA;
 CRpg g_Rpg;
 CGauss g_Gauss;
 CEgon g_Egon;
@@ -66,6 +72,8 @@ CHandGrenade g_HandGren;
 CSatchel g_Satchel;
 CTripmine g_Tripmine;
 CSqueak g_Snark;
+CShockRifle g_Shockrifle;
+Cak47 g_Ak47;
 
 
 /*
@@ -630,9 +638,14 @@ void HUD_InitClientWeapons( void )
 	// Allocate slot(s) for each weapon that we are going to be predicting
 	HUD_PrepEntity( &g_Glock	, &player );
 	HUD_PrepEntity( &g_Crowbar	, &player );
+	HUD_PrepEntity( &g_Swort	, &player );
 	HUD_PrepEntity( &g_Python	, &player );
+	HUD_PrepEntity( &g_uzi		, &player );
 	HUD_PrepEntity( &g_Mp5	, &player );
+	HUD_PrepEntity( &g_Minigun	, &player );
+	HUD_PrepEntity( &g_Mp41a	, &player );
 	HUD_PrepEntity( &g_Crossbow	, &player );
+	HUD_PrepEntity( &g_ShotgunA	, &player );
 	HUD_PrepEntity( &g_Shotgun	, &player );
 	HUD_PrepEntity( &g_Rpg	, &player );
 	HUD_PrepEntity( &g_Gauss	, &player );
@@ -642,6 +655,9 @@ void HUD_InitClientWeapons( void )
 	HUD_PrepEntity( &g_Satchel	, &player );
 	HUD_PrepEntity( &g_Tripmine	, &player );
 	HUD_PrepEntity( &g_Snark	, &player );
+	HUD_PrepEntity( &g_Eagel	, &player );
+	HUD_PrepEntity( &g_Shockrifle	, &player );
+	HUD_PrepEntity( &g_Ak47		, &player );
 }
 
 /*
@@ -711,8 +727,16 @@ void HUD_WeaponsPostThink( local_state_s *from, local_state_s *to, usercmd_t *cm
 			pWeapon = &g_Crowbar;
 			break;
 		
+		case WEAPON_SWORT:
+			pWeapon = &g_Swort;
+			break;
+		
 		case WEAPON_GLOCK:
 			pWeapon = &g_Glock;
+			break;
+		
+		case WEAPON_EAGEL:
+			pWeapon = &g_Eagel;
 			break;
 		
 		case WEAPON_PYTHON:
@@ -723,12 +747,36 @@ void HUD_WeaponsPostThink( local_state_s *from, local_state_s *to, usercmd_t *cm
 			pWeapon = &g_Mp5;
 			break;
 
+		case WEAPON_AK47:
+			pWeapon = &g_Ak47;
+			break;
+
+		case WEAPON_UZI:
+			pWeapon = &g_uzi;
+			break;
+
+		case WEAPON_SHOCKRIFLE:
+			pWeapon = &g_Shockrifle;
+			break;
+
+		case WEAPON_MINIGUN:
+			pWeapon = &g_Minigun;
+			break;
+
+		case WEAPON_MP41A:
+			pWeapon = &g_Mp41a;
+			break;
+
 		case WEAPON_CROSSBOW:
 			pWeapon = &g_Crossbow;
 			break;
 
 		case WEAPON_SHOTGUN:
 			pWeapon = &g_Shotgun;
+			break;
+
+		case WEAPON_SHOTGUNA:
+			pWeapon = &g_ShotgunA;
 			break;
 
 		case WEAPON_RPG:
@@ -799,7 +847,7 @@ void HUD_WeaponsPostThink( local_state_s *from, local_state_s *to, usercmd_t *cm
 		}
 
 		pfrom = &from->weapondata[ i ];
-		
+		;
 		pCurrent->m_fInReload			= pfrom->m_fInReload;
 		pCurrent->m_fInSpecialReload	= pfrom->m_fInSpecialReload;
 //		pCurrent->m_flPumpTime			= pfrom->m_flPumpTime;
@@ -855,6 +903,7 @@ void HUD_WeaponsPostThink( local_state_s *from, local_state_s *to, usercmd_t *cm
 	player.ammo_9mm			= (int)from->client.vuser1[0];
 	player.ammo_357			= (int)from->client.vuser1[1];
 	player.ammo_argrens		= (int)from->client.vuser1[2];
+	player.ammo_12mm		= (int)from->client.vuser1[3];
 	player.ammo_bolts		= (int)from->client.ammo_nails; //is an int anyways...
 	player.ammo_buckshot	= (int)from->client.ammo_shells; 
 	player.ammo_uranium		= (int)from->client.ammo_cells;
@@ -929,6 +978,7 @@ void HUD_WeaponsPostThink( local_state_s *from, local_state_s *to, usercmd_t *cm
 	to->client.vuser1[0]				= player.ammo_9mm;
 	to->client.vuser1[1]				= player.ammo_357;
 	to->client.vuser1[2]				= player.ammo_argrens;
+	to->client.vuser1[3]				= player.ammo_12mm;
 
 	to->client.ammo_nails				= player.ammo_bolts;
 	to->client.ammo_shells				= player.ammo_buckshot;

@@ -1,144 +1,267 @@
 <html>
 <body>
 <pre>
-<h1>Build Log</h1>
+<h1>Erstellungsprotokoll</h1>
 <h3>
---------------------Configuration: hl - Win32 Release--------------------
+--------------------Konfiguration: hl - Win32 Profile--------------------
 </h3>
-<h3>Command Lines</h3>
-Creating temporary file "C:\DOCUME~1\LAURIE~1\LOCALS~1\Temp\RSPDC.tmp" with contents
+<h3>Befehlszeilen</h3>
+Erstellen der temporären Datei  "C:\Users\MASTER~1\AppData\Local\Temp\RSPA6C2.tmp" mit Inhalten
 [
-/nologo /G5 /MT /W3 /Zi /O2 /I "..\dlls" /I "..\engine" /I "..\common" /I "..\pm_shared" /I "..\game_shared" /D "NDEBUG" /D "WIN32" /D "_WINDOWS" /D "QUIVER" /D "VOXEL" /D "QUAKE2" /D "VALVE_DLL" /D "CLIENT_WEAPONS" /Fr".\Releasehl/" /Fp".\Releasehl/hl.pch" /YX /Fo".\Releasehl/" /Fd".\Releasehl/" /FD /c 
-"C:\Documents and Settings\Laurie Cheers\My Documents\HL Editing\SpiritSource11-23\dlls\effects.cpp"
+/nologo /G5 /MT /W3 /Zi /O2 /I "..\dlls" /I "..\engine" /I "..\common" /I "..\pm_shared" /I "..\game_shared" /D "NDEBUG" /D "WIN32" /D "_WINDOWS" /D "QUIVER" /D "VOXEL" /D "QUAKE2" /D "VALVE_DLL" /D "CLIENT_WEAPONS" /Fr".\Profilehl/" /Fp".\Profilehl/hl.pch" /YX /Fo".\Profilehl/" /Fd".\Profilehl/" /FD /c 
+"C:\Zombie-XSource_code\dlls\airtank.cpp"
+"C:\Zombie-XSource_code\dlls\ak47.cpp"
+"C:\Zombie-XSource_code\dlls\auto_shotgun.cpp"
+"C:\Zombie-XSource_code\dlls\bot.cpp"
+"C:\Zombie-XSource_code\dlls\bot_combat.cpp"
+"C:\Zombie-XSource_code\dlls\botcam.cpp"
+"C:\Zombie-XSource_code\dlls\client.cpp"
+"C:\Zombie-XSource_code\dlls\combat.cpp"
+"C:\Zombie-XSource_code\dlls\crossbow.cpp"
+"C:\Zombie-XSource_code\dlls\crowbar.cpp"
+"C:\Zombie-XSource_code\dlls\debugger.cpp"
+"C:\Zombie-XSource_code\dlls\eagel.cpp"
+"C:\Zombie-XSource_code\dlls\effects.cpp"
+"C:\Zombie-XSource_code\dlls\egon.cpp"
+"C:\Zombie-XSource_code\dlls\func_tank.cpp"
+"C:\Zombie-XSource_code\dlls\gamerules.cpp"
+"C:\Zombie-XSource_code\dlls\gauss.cpp"
+"C:\Zombie-XSource_code\dlls\h_cycler.cpp"
+"C:\Zombie-XSource_code\dlls\handgrenade.cpp"
+"C:\Zombie-XSource_code\dlls\healthkit.cpp"
+"C:\Zombie-XSource_code\dlls\wpn_shared\hl_wpn_glock.cpp"
+"C:\Zombie-XSource_code\dlls\hornetgun.cpp"
+"C:\Zombie-XSource_code\dlls\items.cpp"
+"C:\Zombie-XSource_code\dlls\maprules.cpp"
+"C:\Zombie-XSource_code\dlls\minigun.cpp"
+"C:\Zombie-XSource_code\dlls\movewith.cpp"
+"C:\Zombie-XSource_code\dlls\mp41a.cpp"
+"C:\Zombie-XSource_code\dlls\mp5.cpp"
+"C:\Zombie-XSource_code\dlls\multiplay_gamerules.cpp"
+"C:\Zombie-XSource_code\dlls\player.cpp"
+"C:\Zombie-XSource_code\dlls\python.cpp"
+"C:\Zombie-XSource_code\dlls\rpg.cpp"
+"C:\Zombie-XSource_code\dlls\satchel.cpp"
+"C:\Zombie-XSource_code\dlls\scripted.cpp"
+"C:\Zombie-XSource_code\dlls\shockgun.cpp"
+"C:\Zombie-XSource_code\dlls\shotgun.cpp"
+"C:\Zombie-XSource_code\dlls\singleplay_gamerules.cpp"
+"C:\Zombie-XSource_code\dlls\sound.cpp"
+"C:\Zombie-XSource_code\dlls\squeakgrenade.cpp"
+"C:\Zombie-XSource_code\dlls\subs.cpp"
+"C:\Zombie-XSource_code\dlls\swort.cpp"
+"C:\Zombie-XSource_code\dlls\teamplay_gamerules.cpp"
+"C:\Zombie-XSource_code\dlls\triggers.cpp"
+"C:\Zombie-XSource_code\dlls\tripmine.cpp"
+"C:\Zombie-XSource_code\dlls\util.cpp"
+"C:\Zombie-XSource_code\dlls\uzi.cpp"
+"C:\Zombie-XSource_code\game_shared\voice_gamemgr.cpp"
+"C:\Zombie-XSource_code\dlls\weapons.cpp"
+"C:\Zombie-XSource_code\dlls\world.cpp"
 ]
-Creating command line "cl.exe @C:\DOCUME~1\LAURIE~1\LOCALS~1\Temp\RSPDC.tmp" 
-Creating temporary file "C:\DOCUME~1\LAURIE~1\LOCALS~1\Temp\RSPDD.tmp" with contents
+Creating command line "cl.exe @C:\Users\MASTER~1\AppData\Local\Temp\RSPA6C2.tmp" 
+Erstellen der temporären Datei  "C:\Users\MASTER~1\AppData\Local\Temp\RSPA6C3.tmp" mit Inhalten
 [
-kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib /nologo /subsystem:windows /dll /incremental:no /pdb:".\Releasehl/spirit.pdb" /map:".\Releasehl/spirit.map" /debug /machine:I386 /def:".\hl.def" /out:".\Releasehl/spirit.dll" /implib:".\Releasehl/spirit.lib" 
-".\Releasehl\aflock.obj"
-".\Releasehl\agrunt.obj"
-".\Releasehl\AI_BaseNPC_Schedule.obj"
-".\Releasehl\airtank.obj"
-".\Releasehl\alias.obj"
-".\Releasehl\animating.obj"
-".\Releasehl\animation.obj"
-".\Releasehl\apache.obj"
-".\Releasehl\barnacle.obj"
-".\Releasehl\barney.obj"
-".\Releasehl\bigmomma.obj"
-".\Releasehl\bloater.obj"
-".\Releasehl\bmodels.obj"
-".\Releasehl\bullsquid.obj"
-".\Releasehl\buttons.obj"
-".\Releasehl\cbase.obj"
-".\Releasehl\client.obj"
-".\Releasehl\combat.obj"
-".\Releasehl\controller.obj"
-".\Releasehl\crossbow.obj"
-".\Releasehl\crowbar.obj"
-".\Releasehl\defaultai.obj"
-".\Releasehl\doors.obj"
-".\Releasehl\effects.obj"
-".\Releasehl\egon.obj"
-".\Releasehl\explode.obj"
-".\Releasehl\flyingmonster.obj"
-".\Releasehl\func_break.obj"
-".\Releasehl\func_tank.obj"
-".\Releasehl\game.obj"
-".\Releasehl\gamerules.obj"
-".\Releasehl\gargantua.obj"
-".\Releasehl\gauss.obj"
-".\Releasehl\genericmonster.obj"
-".\Releasehl\ggrenade.obj"
-".\Releasehl\globals.obj"
-".\Releasehl\gman.obj"
-".\Releasehl\h_ai.obj"
-".\Releasehl\h_battery.obj"
-".\Releasehl\h_cine.obj"
-".\Releasehl\h_cycler.obj"
-".\Releasehl\h_export.obj"
-".\Releasehl\handgrenade.obj"
-".\Releasehl\hassassin.obj"
-".\Releasehl\headcrab.obj"
-".\Releasehl\healthkit.obj"
-".\Releasehl\hgrunt.obj"
-".\Releasehl\hl_wpn_glock.obj"
-".\Releasehl\hornet.obj"
-".\Releasehl\hornetgun.obj"
-".\Releasehl\houndeye.obj"
-".\Releasehl\ichthyosaur.obj"
-".\Releasehl\islave.obj"
-".\Releasehl\items.obj"
-".\Releasehl\leech.obj"
-".\Releasehl\lights.obj"
-".\Releasehl\locus.obj"
-".\Releasehl\maprules.obj"
-".\Releasehl\monstermaker.obj"
-".\Releasehl\monsters.obj"
-".\Releasehl\monsterstate.obj"
-".\Releasehl\mortar.obj"
-".\Releasehl\movewith.obj"
-".\Releasehl\mp5.obj"
-".\Releasehl\multiplay_gamerules.obj"
-".\Releasehl\nihilanth.obj"
-".\Releasehl\nodes.obj"
-".\Releasehl\osprey.obj"
-".\Releasehl\pathcorner.obj"
-".\Releasehl\plane.obj"
-".\Releasehl\plats.obj"
-".\Releasehl\player.obj"
-".\Releasehl\pm_debug.obj"
-".\Releasehl\pm_math.obj"
-".\Releasehl\pm_shared.obj"
-".\Releasehl\python.obj"
-".\Releasehl\rat.obj"
-".\Releasehl\roach.obj"
-".\Releasehl\rpg.obj"
-".\Releasehl\satchel.obj"
-".\Releasehl\scientist.obj"
-".\Releasehl\scripted.obj"
-".\Releasehl\shotgun.obj"
-".\Releasehl\singleplay_gamerules.obj"
-".\Releasehl\skill.obj"
-".\Releasehl\sound.obj"
-".\Releasehl\soundent.obj"
-".\Releasehl\spectator.obj"
-".\Releasehl\squadmonster.obj"
-".\Releasehl\squeakgrenade.obj"
-".\Releasehl\subs.obj"
-".\Releasehl\talkmonster.obj"
-".\Releasehl\teamplay_gamerules.obj"
-".\Releasehl\tempmonster.obj"
-".\Releasehl\tentacle.obj"
-".\Releasehl\triggers.obj"
-".\Releasehl\tripmine.obj"
-".\Releasehl\turret.obj"
-".\Releasehl\util.obj"
-".\Releasehl\voice_gamemgr.obj"
-".\Releasehl\weapons.obj"
-".\Releasehl\world.obj"
-".\Releasehl\xen.obj"
-".\Releasehl\zombie.obj"
+kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib cg.lib cgGL.lib opengl32.lib glu32.lib glaux.lib /nologo /subsystem:windows /dll /profile /debug /machine:I386 /def:".\hl.def" /out:".\Profilehl/zx.dll" /implib:".\Profilehl/zx.lib" 
+".\Profilehl\aflock.obj"
+".\Profilehl\agrunt.obj"
+".\Profilehl\AI_BaseNPC_Schedule.obj"
+".\Profilehl\airtank.obj"
+".\Profilehl\ak47.obj"
+".\Profilehl\alias.obj"
+".\Profilehl\animating.obj"
+".\Profilehl\animation.obj"
+".\Profilehl\apache.obj"
+".\Profilehl\apache_blackop.obj"
+".\Profilehl\auto_shotgun.obj"
+".\Profilehl\barnacle.obj"
+".\Profilehl\barney.obj"
+".\Profilehl\barney_suit.obj"
+".\Profilehl\barniel.obj"
+".\Profilehl\bigmomma.obj"
+".\Profilehl\bloater.obj"
+".\Profilehl\bmodels.obj"
+".\Profilehl\bot.obj"
+".\Profilehl\bot_combat.obj"
+".\Profilehl\botcam.obj"
+".\Profilehl\bullsquid.obj"
+".\Profilehl\bumplight.obj"
+".\Profilehl\buttons.obj"
+".\Profilehl\cbase.obj"
+".\Profilehl\client.obj"
+".\Profilehl\combat.obj"
+".\Profilehl\controller.obj"
+".\Profilehl\crossbow.obj"
+".\Profilehl\crowbar.obj"
+".\Profilehl\debugger.obj"
+".\Profilehl\defaultai.obj"
+".\Profilehl\doors.obj"
+".\Profilehl\eagel.obj"
+".\Profilehl\effects.obj"
+".\Profilehl\egon.obj"
+".\Profilehl\explode.obj"
+".\Profilehl\flyingmonster.obj"
+".\Profilehl\func_break.obj"
+".\Profilehl\func_tank.obj"
+".\Profilehl\game.obj"
+".\Profilehl\game_config.obj"
+".\Profilehl\gamerules.obj"
+".\Profilehl\gargantua.obj"
+".\Profilehl\gauss.obj"
+".\Profilehl\genericmonster.obj"
+".\Profilehl\ggrenade.obj"
+".\Profilehl\globals.obj"
+".\Profilehl\gman.obj"
+".\Profilehl\h_ai.obj"
+".\Profilehl\h_battery.obj"
+".\Profilehl\h_cine.obj"
+".\Profilehl\h_cycler.obj"
+".\Profilehl\h_export.obj"
+".\Profilehl\handgrenade.obj"
+".\Profilehl\hassassin.obj"
+".\Profilehl\headcrab.obj"
+".\Profilehl\healthkit.obj"
+".\Profilehl\hgrunt.obj"
+".\Profilehl\hgrunt_blackop.obj"
+".\Profilehl\hl_wpn_glock.obj"
+".\Profilehl\hornet.obj"
+".\Profilehl\hornetgun.obj"
+".\Profilehl\houndeye.obj"
+".\Profilehl\ichthyosaur.obj"
+".\Profilehl\islave.obj"
+".\Profilehl\items.obj"
+".\Profilehl\kate.obj"
+".\Profilehl\leech.obj"
+".\Profilehl\lights.obj"
+".\Profilehl\locus.obj"
+".\Profilehl\maprules.obj"
+".\Profilehl\minigun.obj"
+".\Profilehl\monstermaker.obj"
+".\Profilehl\monsters.obj"
+".\Profilehl\monsterstate.obj"
+".\Profilehl\mortar.obj"
+".\Profilehl\movewith.obj"
+".\Profilehl\mp41a.obj"
+".\Profilehl\mp5.obj"
+".\Profilehl\multiplay_gamerules.obj"
+".\Profilehl\nihilanth.obj"
+".\Profilehl\nodes.obj"
+".\Profilehl\osprey.obj"
+".\Profilehl\pathcorner.obj"
+".\Profilehl\plane.obj"
+".\Profilehl\plats.obj"
+".\Profilehl\player.obj"
+".\Profilehl\pm_debug.obj"
+".\Profilehl\pm_math.obj"
+".\Profilehl\pm_shared.obj"
+".\Profilehl\python.obj"
+".\Profilehl\rat.obj"
+".\Profilehl\roach.obj"
+".\Profilehl\rpg.obj"
+".\Profilehl\satchel.obj"
+".\Profilehl\scientist.obj"
+".\Profilehl\scientist_suit.obj"
+".\Profilehl\scripted.obj"
+".\Profilehl\shock.obj"
+".\Profilehl\shockball.obj"
+".\Profilehl\shockgun.obj"
+".\Profilehl\shotgun.obj"
+".\Profilehl\singleplay_gamerules.obj"
+".\Profilehl\skill.obj"
+".\Profilehl\sound.obj"
+".\Profilehl\soundent.obj"
+".\Profilehl\spectator.obj"
+".\Profilehl\squadmonster.obj"
+".\Profilehl\squeakgrenade.obj"
+".\Profilehl\subs.obj"
+".\Profilehl\swort.obj"
+".\Profilehl\talkmonster.obj"
+".\Profilehl\teamplay_gamerules.obj"
+".\Profilehl\tempmonster.obj"
+".\Profilehl\tentacle.obj"
+".\Profilehl\torch.obj"
+".\Profilehl\triggers.obj"
+".\Profilehl\tripmine.obj"
+".\Profilehl\turret.obj"
+".\Profilehl\util.obj"
+".\Profilehl\uzi.obj"
+".\Profilehl\voice_gamemgr.obj"
+".\Profilehl\weapons.obj"
+".\Profilehl\world.obj"
+".\Profilehl\xen.obj"
+".\Profilehl\zombie.obj"
+".\Profilehl\zombie_barney.obj"
+".\Profilehl\zombie_gus.obj"
+".\Profilehl\zombie_soldier.obj"
 ]
-Creating command line "link.exe @C:\DOCUME~1\LAURIE~1\LOCALS~1\Temp\RSPDD.tmp"
-Creating temporary file "C:\DOCUME~1\LAURIE~1\LOCALS~1\Temp\RSPDE.bat" with contents
+Erstellen der Befehlzeile "link.exe @C:\Users\MASTER~1\AppData\Local\Temp\RSPA6C3.tmp"
+Erstellen der temporären Datei  "C:\Users\MASTER~1\AppData\Local\Temp\RSPA6C4.bat" mit Inhalten
 [
 @echo off
-copy .\Releasehl\spirit.dll "C:\games\half-life\spiritdev\dlls\spirit.dll"
+copy .\Profilehl\zx.dll "C:\sierra\half-life\ZombieXdev\dlls\zx.dll"
 ]
-Creating command line "C:\DOCUME~1\LAURIE~1\LOCALS~1\Temp\RSPDE.bat"
-Compiling...
+Erstellen der Befehlzeile "C:\Users\MASTER~1\AppData\Local\Temp\RSPA6C4.bat"
+Kompilierung läuft...
+airtank.cpp
+ak47.cpp
+auto_shotgun.cpp
+bot.cpp
+bot_combat.cpp
+botcam.cpp
+client.cpp
+combat.cpp
+crossbow.cpp
+crowbar.cpp
+debugger.cpp
+eagel.cpp
 effects.cpp
-Linking...
-   Creating library .\Releasehl/spirit.lib and object .\Releasehl/spirit.exp
-<h3>Output Window</h3>
-Performing Custom Build Step on .\Releasehl\spirit.dll
-        1 file(s) copied.
+egon.cpp
+func_tank.cpp
+gamerules.cpp
+gauss.cpp
+h_cycler.cpp
+handgrenade.cpp
+healthkit.cpp
+hl_wpn_glock.cpp
+hornetgun.cpp
+items.cpp
+maprules.cpp
+minigun.cpp
+movewith.cpp
+mp41a.cpp
+mp5.cpp
+multiplay_gamerules.cpp
+player.cpp
+python.cpp
+rpg.cpp
+satchel.cpp
+scripted.cpp
+shockgun.cpp
+shotgun.cpp
+singleplay_gamerules.cpp
+sound.cpp
+squeakgrenade.cpp
+subs.cpp
+swort.cpp
+teamplay_gamerules.cpp
+triggers.cpp
+tripmine.cpp
+util.cpp
+uzi.cpp
+voice_gamemgr.cpp
+weapons.cpp
+world.cpp
+Linker-Vorgang läuft...
+   Bibliothek .\Profilehl/zx.lib und Objekt .\Profilehl/zx.exp wird erstellt
+zx.exp : warning LNK4070: Die Direktive /OUT:spirit.dll in .EXP weicht vom Ausgabedateinamen ".\Profilehl/zx.dll" ab; Direktive wird ignoriert
+<h3>Ausgabefenster</h3>
+Benutzerdefinierte Build-Stufe wird für .\Profilehl\zx.dll ausgeführt
+        1 Datei(en) kopiert.
 
 
 
-<h3>Results</h3>
-spirit.dll - 0 error(s), 0 warning(s)
+<h3>Ergebnisse</h3>
+zx.dll - 0 Fehler, 1 Warnung(en)
 </pre>
 </body>
 </html>

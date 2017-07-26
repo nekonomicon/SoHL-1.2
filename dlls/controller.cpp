@@ -1418,6 +1418,21 @@ void CControllerZapBall :: Precache( void )
 
 void CControllerZapBall :: AnimateThink( void  )
 {
+     // Teh_Freak: World Lighting!
+     MESSAGE_BEGIN( MSG_BROADCAST, SVC_TEMPENTITY );
+          WRITE_BYTE( TE_DLIGHT );
+          WRITE_COORD( pev->origin.x );     // origin
+          WRITE_COORD( pev->origin.y );
+          WRITE_COORD( pev->origin.z );
+          WRITE_BYTE( 8 );     // radius
+          WRITE_BYTE( 255 );     // R
+          WRITE_BYTE( 192 );     // G
+          WRITE_BYTE( 64 );     // B
+          WRITE_BYTE( 2 );     // life * 10
+          WRITE_BYTE( 0 ); // decay
+     MESSAGE_END();
+     // Teh_Freak: World Lighting!
+
 	SetNextThink( 0.1 );
 	
 	pev->frame = ((int)pev->frame + 1) % 11;

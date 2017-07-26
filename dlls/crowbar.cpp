@@ -30,7 +30,8 @@ LINK_ENTITY_TO_CLASS( weapon_crowbar, CCrowbar );
 
 
 
-enum gauss_e {
+enum crowbar_e 
+{
 	CROWBAR_IDLE = 0,
 	CROWBAR_DRAW,
 	CROWBAR_HOLSTER,
@@ -78,9 +79,10 @@ int CCrowbar::GetItemInfo(ItemInfo *p)
 	p->iMaxAmmo2 = -1;
 	p->iMaxClip = WEAPON_NOCLIP;
 	p->iSlot = 0;
-	p->iPosition = 0;
+	p->iPosition = 1;
 	p->iId = WEAPON_CROWBAR;
 	p->iWeight = CROWBAR_WEIGHT;
+	p->weaponName = "Crowbar"; 
 	return 1;
 }
 

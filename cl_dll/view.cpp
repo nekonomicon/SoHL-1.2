@@ -68,6 +68,8 @@ void VectorAngles( const float *forward, float *angles );
 
 extern engine_studio_api_t IEngineStudio;
 
+#include "bumpmap.h"
+
 /*
 The view is allowed to move slightly from it's true position for bobbing,
 but if it exceeds 8 pixels linear distance (spherical, not box), the list of
@@ -309,9 +311,14 @@ void V_CalcViewRoll ( struct ref_params_s *pparams )
 	float		side;
 	cl_entity_t *viewentity;
 	
+	extern cvar_t *cl_rollangle;
+	extern cvar_t *cl_rollspeed;
+	
 	viewentity = gEngfuncs.GetEntityByIndex( pparams->viewentity );
 	if ( !viewentity )
 		return;
+
+	pparams->viewangles[ROLL] = V_CalcRoll (pparams->viewangles, pparams->simvel, cl_rollangle->value, cl_rollspeed->value ) * 4;
 
 	side = V_CalcRoll ( viewentity->angles, pparams->simvel, pparams->movevars->rollangle, pparams->movevars->rollspeed );
 
@@ -394,6 +401,9 @@ extern void RenderFog( void ); //LRC
 
 void V_CalcNormalRefdef ( struct ref_params_s *pparams )
 {
+	// FGW
+	if (pparams->nextView == 0)
+	{
 	cl_entity_t		*ent, *view;
 	int				i;
 	vec3_t			angles;
@@ -779,6 +789,16 @@ void V_CalcNormalRefdef ( struct ref_params_s *pparams )
 	lasttime = pparams->time;
 
 	v_origin = pparams->vieworg;
+
+	// FGW
+	if (CVAR_GET_FLOAT("bm_enable") != 0 && !g_BumpmapMgr.m_bFailedInit)
+		pparams->nextView = 1;
+	}
+	else
+		pparams->nextView = 0;
+
+	// FGW
+	g_BumpmapMgr.Render(1 - pparams->nextView);
 
 	//LRC
 	RenderFog();
@@ -1351,14 +1371,17 @@ int V_FindViewModelByWeaponModel(int weaponindex)
 	static char * modelmap[][2] =	{
 		{ "models/p_crossbow.mdl",		"models/v_crossbow.mdl"		},
 		{ "models/p_crowbar.mdl",		"models/v_crowbar.mdl"		},
+		{ "models/p_swort.mdl",			"models/v_swort.mdl"		},
 		{ "models/p_egon.mdl",			"models/v_egon.mdl"			},
 		{ "models/p_gauss.mdl",			"models/v_gauss.mdl"		},
 		{ "models/p_9mmhandgun.mdl",	"models/v_9mmhandgun.mdl"	},
 		{ "models/p_grenade.mdl",		"models/v_grenade.mdl"		},
 		{ "models/p_hgun.mdl",			"models/v_hgun.mdl"			},
 		{ "models/p_9mmAR.mdl",			"models/v_9mmAR.mdl"		},
+		{ "models/p_minigun.mdl",		"models/v_minigun.mdl"		},
 		{ "models/p_357.mdl",			"models/v_357.mdl"			},
 		{ "models/p_rpg.mdl",			"models/v_rpg.mdl"			},
+		{ "models/p_autoshotgun.mdl",	"models/v_autoshotgun.mdl"		},
 		{ "models/p_shotgun.mdl",		"models/v_shotgun.mdl"		},
 		{ "models/p_squeak.mdl",		"models/v_squeak.mdl"		},
 		{ "models/p_tripmine.mdl",		"models/v_tripmine.mdl"		},

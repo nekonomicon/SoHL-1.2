@@ -35,7 +35,8 @@
 #define EGON_SWITCH_NARROW_TIME			0.75			// Time it takes to switch fire modes
 #define EGON_SWITCH_WIDE_TIME			1.5
 
-enum egon_e {
+enum egon_e 
+{
 	EGON_IDLE1 = 0,
 	EGON_FIDGET1,
 	EGON_ALTFIREON,
@@ -78,6 +79,10 @@ void CEgon::Precache( void )
 
 	PRECACHE_MODEL( EGON_BEAM_SPRITE );
 	PRECACHE_MODEL( EGON_FLARE_SPRITE );
+
+	PRECACHE_SOUND ("buttons/button10.wav");
+	PRECACHE_SOUND ("debris/beamstart2.wav");
+	PRECACHE_MODEL("sprites/XFlare1.spr");
 
 	PRECACHE_SOUND ("weapons/357_cock1.wav");
 
@@ -123,11 +128,12 @@ int CEgon::GetItemInfo(ItemInfo *p)
 	p->pszAmmo2 = NULL;
 	p->iMaxAmmo2 = -1;
 	p->iMaxClip = WEAPON_NOCLIP;
-	p->iSlot = 3;
+	p->iSlot = 5;
 	p->iPosition = 2;
 	p->iId = m_iId = WEAPON_EGON;
 	p->iFlags = 0;
 	p->iWeight = EGON_WEIGHT;
+	p->weaponName = "Energie Puls Weapon"; 
 
 	return 1;
 }
@@ -241,6 +247,9 @@ void CEgon::PrimaryAttack( void )
 {
 	m_fireMode = FIRE_WIDE;
 	Attack();
+	#ifndef CLIENT_DLL
+	UTIL_ScreenShake( pev->origin, 5.0, 150.0, 0.75, 150.0 );
+	#endif
 
 }
 
@@ -323,6 +332,9 @@ void CEgon::Fire( const Vector &vecOrigSrc, const Vector &vecDir )
 		break;
 	
 	case FIRE_WIDE:
+
+	 m_pPlayer->m_iWeaponFlash = BRIGHT_GUN_FLASH;
+
 #ifndef CLIENT_DLL
 		if ( pev->dmgtime < gpGlobals->time )
 		{

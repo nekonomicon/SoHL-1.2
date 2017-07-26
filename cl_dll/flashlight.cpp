@@ -122,7 +122,7 @@ int CHudFlashlight::Draw(float flTime)
 	if (m_flBat < 0.20)
 		UnpackRGB(r,g,b, RGB_REDISH);
 	else
-		UnpackRGB(r,g,b, gHUD.m_iHUDColor);
+		UnpackRGB(r,g,b, RGB_REDISH);
 
 	ScaleColors(r, g, b, a);
 

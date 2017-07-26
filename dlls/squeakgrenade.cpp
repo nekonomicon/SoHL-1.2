@@ -24,7 +24,8 @@
 #include "soundent.h"
 #include "gamerules.h"
 
-enum w_squeak_e {
+enum w_squeak_e 
+{
 	WSQUEAK_IDLE1 = 0,
 	WSQUEAK_FIDGET,
 	WSQUEAK_JUMP,
@@ -452,11 +453,12 @@ int CSqueak::GetItemInfo(ItemInfo *p)
 	p->pszAmmo2 = NULL;
 	p->iMaxAmmo2 = -1;
 	p->iMaxClip = WEAPON_NOCLIP;
-	p->iSlot = 4;
+	p->iSlot = 3;
 	p->iPosition = 3;
 	p->iId = m_iId = WEAPON_SNARK;
 	p->iWeight = SNARK_WEIGHT;
 	p->iFlags = ITEM_FLAG_LIMITINWORLD | ITEM_FLAG_EXHAUSTIBLE;
+	p->weaponName = "Unknown Alien Weapon"; 
 
 	return 1;
 }

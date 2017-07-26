@@ -106,6 +106,9 @@ int UTIL_SharedRandomLong( unsigned int seed, int low, int high )
 	}
 }
 
+vec_t VectorLengthSquared( const vec3_t v ) {
+    return (v[0]*v[0] + v[1]*v[1] + v[2]*v[2]);
+}
 /*
 =====================
 UTIL_SharedRandomFloat
@@ -2997,3 +3000,5 @@ int	CRestore::BufferCheckZString( const char *string )
 	}
 	return 0;
 }
+
+

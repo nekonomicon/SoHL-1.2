@@ -32,7 +32,7 @@
 #include "gamerules.h"
 
 extern CGraph	WorldGraph;
-extern int gEvilImpulse101;
+extern int gEvilImpulse111;
 
 
 #define NOT_USED 255
@@ -177,6 +177,7 @@ void DecalGunshot( TraceResult *pTrace, int iBulletType )
 		case BULLET_MONSTER_MP5:
 		case BULLET_PLAYER_BUCKSHOT:
 		case BULLET_PLAYER_357:
+		case BULLET_PLAYER_50CAL:
 		default:
 			// smoke and decal
 			UTIL_GunshotDecalTrace( pTrace, DamageDecal( pEntity, DMG_BULLET ) );
@@ -318,27 +319,61 @@ void W_Precache(void)
 	UTIL_PrecacheOther( "item_security" );
 	UTIL_PrecacheOther( "item_longjump" );
 
+// advanced NVG
+    UTIL_PrecacheOther( "item_nvg" );
+// advanced NVG
+
+	// Debugger
+	UTIL_PrecacheOtherWeapon( "weapon_debug" );
+
 	// shotgun
 	UTIL_PrecacheOtherWeapon( "weapon_shotgun" );
 	UTIL_PrecacheOther( "ammo_buckshot" );
 
+	// Auto shotgun
+	UTIL_PrecacheOtherWeapon( "weapon_autoshotgun" );
+
 	// crowbar
 	UTIL_PrecacheOtherWeapon( "weapon_crowbar" );
+
+	// swort
+	UTIL_PrecacheOtherWeapon( "weapon_swort" );
 
 	// glock
 	UTIL_PrecacheOtherWeapon( "weapon_9mmhandgun" );
 	UTIL_PrecacheOther( "ammo_9mmclip" );
 	UTIL_PrecacheOther( "ammo_9mmbox" ); //LRC
 
+	// eagel
+	UTIL_PrecacheOtherWeapon( "weapon_eagel" );
+	UTIL_PrecacheOther( "ammo_eagelclip" );
+
 	// mp5
 	UTIL_PrecacheOtherWeapon( "weapon_9mmAR" );
 	UTIL_PrecacheOther( "ammo_9mmAR" );
 	UTIL_PrecacheOther( "ammo_ARgrenades" );
 
+	// AK47
+	UTIL_PrecacheOtherWeapon( "weapon_ak47" );
+
+	// UZI
+	UTIL_PrecacheOtherWeapon( "weapon_uzi" );
+
+	// shockrifle
+	UTIL_PrecacheOtherWeapon( "weapon_shockrifle" );
+
+	// minigun
+	UTIL_PrecacheOtherWeapon( "weapon_minigun" );
+	UTIL_PrecacheOther( "ammo_minigun" );
+
+	// mp41a
+	UTIL_PrecacheOtherWeapon( "weapon_9mm41a" );
+
 #if !defined( OEM_BUILD ) && !defined( HLDEMO_BUILD )
 	// python
 	UTIL_PrecacheOtherWeapon( "weapon_357" );
 	UTIL_PrecacheOther( "ammo_357" );
+	UTIL_PrecacheOther( "ammo_357speed" );
 #endif
 	
 #if !defined( OEM_BUILD ) && !defined( HLDEMO_BUILD )
@@ -609,7 +644,7 @@ void CBasePlayerItem::DefaultTouch( CBaseEntity *pOther )
 	// can I have this?
 	if ( !g_pGameRules->CanHavePlayerItem( pPlayer, this ) )
 	{
-		if ( gEvilImpulse101 )
+		if ( gEvilImpulse111 )
 		{
 			UTIL_Remove( this );
 		}
@@ -1123,7 +1158,7 @@ void CBasePlayerAmmo :: DefaultTouch( CBaseEntity *pOther )
 			SetNextThink( 0.1 );
 		}
 	}
-	else if (gEvilImpulse101)
+	else if (gEvilImpulse111)
 	{
 		// evil impulse 101 hack, kill always
 		SetTouch( NULL );
@@ -1177,6 +1212,45 @@ int CBasePlayerWeapon::ExtractClipAmmo( CBasePlayerWeapon *pWeapon )
 	}
 	
 	return pWeapon->m_pPlayer->GiveAmmo( iAmmo, (char *)pszAmmo1(), iMaxAmmo1() ); // , &m_iPrimaryAmmoType
+}
+	
+void CBasePlayerWeapon::UpdateItemInfo( void )
+{
+    ItemInfo    iInfo;
+
+    memset(&iInfo, 0, sizeof(iInfo));
+    if (GetItemInfo(&iInfo))
+    {
+        if (iInfo.weaponName)
+        {
+            char szText[201];
+            hudtextparms_t     hText;
+
+            sprintf(szText, "%s selected...", iInfo.weaponName);
+           
+            memset(&hText, 0, sizeof(hText));
+            hText.channel = 1;
+            // These X and Y coordinates are just above
+    //  the health meter.
+            hText.x = 0.01;
+            hText.y = 0.9;
+   
+            hText.effect = 0;    // Fade in/out
+           
+            hText.r1 = hText.g1 = hText.b1 = 255;
+            hText.a1 = 255;
+
+            hText.r2 = hText.g2 = hText.b2 = 255;
+            hText.a2 = 255;
+
+            hText.fadeinTime = 0.2;
+            hText.fadeoutTime = 1;
+            hText.holdTime = 1.5;
+            hText.fxTime = 0.5;
+
+            UTIL_HudMessage(m_pPlayer, hText, szText);
+        }
+    }
 }
 	
 //=========================================================
@@ -1593,6 +1667,16 @@ TYPEDESCRIPTION	CShotgun::m_SaveData[] =
 	DEFINE_FIELD( CShotgun, m_flPumpTime, FIELD_TIME ),
 };
 IMPLEMENT_SAVERESTORE( CShotgun, CBasePlayerWeapon );
+
+TYPEDESCRIPTION	CShotgunA::m_SaveData[] = 
+{
+	DEFINE_FIELD( CShotgunA, m_flNextReload, FIELD_TIME ),
+	DEFINE_FIELD( CShotgunA, m_fInSpecialReload, FIELD_INTEGER ),
+	DEFINE_FIELD( CShotgunA, m_flNextReload, FIELD_TIME ),
+	// DEFINE_FIELD( CShotgunA, m_iShell, FIELD_INTEGER ),
+	DEFINE_FIELD( CShotgunA, m_flPumpTime, FIELD_TIME ),
+};
+IMPLEMENT_SAVERESTORE( CShotgunA, CBasePlayerWeapon );
 
 TYPEDESCRIPTION	CGauss::m_SaveData[] = 
 {

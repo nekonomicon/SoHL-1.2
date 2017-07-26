@@ -66,6 +66,7 @@ CBaseEntity
 extern "C" EXPORT int GetEntityAPI( DLL_FUNCTIONS *pFunctionTable, int interfaceVersion );
 extern "C" EXPORT int GetEntityAPI2( DLL_FUNCTIONS *pFunctionTable, int *interfaceVersion );
 
+extern int g_darklevel;
 extern int DispatchSpawn( edict_t *pent );
 extern void DispatchKeyValue( edict_t *pentKeyvalue, KeyValueData *pkvd );
 extern void DispatchTouch( edict_t *pentTouched, edict_t *pentOther );
@@ -181,10 +182,11 @@ public:
 	int					m_iLFlags; // LRC- a new set of flags. (pev->spawnflags and pev->flags are full...)
 	virtual void		DesiredAction( void ) {}; // LRC - for postponing stuff until PostThink time, not as a think.
 	int					m_iStyle; // LRC - almost anything can have a lightstyle these days...
+	char				m_szTeamName;
 
 	Vector				m_vecSpawnOffset; // LRC- To fix things which (for example) MoveWith a door which Starts Open.
 	BOOL				m_activated;	// LRC- moved here from func_train. Signifies that an entity has already been
-										// activated. (and hence doesn't need reactivating.)
+										// activated. (and hence doesn't need reactivating.
 
 	//LRC - decent mechanisms for setting think times!
 	// this should have been done a long time ago, but MoveWith finally forced me.
@@ -453,6 +455,7 @@ public:
 
 	//We use this variables to store each ammo count.
 	int ammo_9mm;
+	int ammo_12mm;
 	int ammo_357;
 	int ammo_bolts;
 	int ammo_buckshot;
@@ -914,6 +917,7 @@ typedef struct _SelAmmo
 
 //LRC- much as I hate to add new globals, I can't see how to read data from the World entity.
 extern BOOL g_startSuit;
+extern BOOL g_allowGJump;
 
 //LRC- moved here from alias.cpp so that util functions can use these defs.
 class CBaseAlias : public CPointEntity

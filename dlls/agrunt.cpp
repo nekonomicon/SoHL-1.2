@@ -472,6 +472,21 @@ void CAGrunt :: HandleAnimEvent( MonsterEvent_t *pEvent )
 				WRITE_BYTE( 128 );			// brightness
 			MESSAGE_END();
 
+	// Teh_Freak: World Lighting!
+     MESSAGE_BEGIN( MSG_BROADCAST, SVC_TEMPENTITY );
+          WRITE_BYTE( TE_DLIGHT );
+          WRITE_COORD( vecArmPos.x );     // origin
+          WRITE_COORD( vecArmPos.y );
+          WRITE_COORD( vecArmPos.z );
+          WRITE_BYTE( 16 );     // radius
+          WRITE_BYTE( 128 );     // R
+          WRITE_BYTE( 0 );     // G
+          WRITE_BYTE( 128 );     // B
+          WRITE_BYTE( 10 );     // life * 10
+          WRITE_BYTE( 32 ); // decay
+     MESSAGE_END();
+     // Teh_Freak: World Lighting!
+
 			CBaseEntity *pHornet = CBaseEntity::Create( "hornet", vecArmPos, UTIL_VecToAngles( vecDirToEnemy ), edict() );
 			UTIL_MakeVectors ( pHornet->pev->angles );
 			pHornet->pev->velocity = gpGlobals->v_forward * 300;

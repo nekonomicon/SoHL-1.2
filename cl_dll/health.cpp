@@ -35,6 +35,8 @@ DECLARE_MESSAGE(m_Health, Damage )
 #define PAIN_NAME "sprites/%d_pain.spr"
 #define DAMAGE_NAME "sprites/%d_dmg.spr"
 
+extern int isdead;
+
 int giDmgHeight, giDmgWidth;
 
 int giDmgFlags[NUM_DMG_TYPES] = 
@@ -57,7 +59,7 @@ int CHudHealth::Init(void)
 {
 	HOOK_MESSAGE(Health);
 	HOOK_MESSAGE(Damage);
-	m_iHealth = 100;
+	m_iHealth = 200;
 	m_fFade = 0;
 	m_iFlags = 0;
 	m_bitsDamage = 0;
@@ -155,8 +157,8 @@ void CHudHealth::GetPainColor( int &r, int &g, int &b )
 {
 	int iHealth = m_iHealth;
 
-	if (iHealth > 25)
-		iHealth -= 25;
+	if (iHealth > 50)
+		iHealth -= 50;
 	else if ( iHealth < 0 )
 		iHealth = 0;
 #if 0
@@ -166,7 +168,7 @@ void CHudHealth::GetPainColor( int &r, int &g, int &b )
 #else
 	if (m_iHealth > 25)
 	{
-		UnpackRGB(r,g,b, gHUD.m_iHUDColor);
+		UnpackRGB(r,g,b, RGB_REDISH);
 	}
 	else
 	{
@@ -182,6 +184,8 @@ int CHudHealth::Draw(float flTime)
 	int r, g, b;
 	int a = 0, x, y;
 	int HealthWidth;
+
+	isdead = m_iHealth; //we initialize the var isdead that is the same as the m_iHealth number
 
 	if ( (gHUD.m_iHideHUDDisplay & HIDEHUD_HEALTH) || gEngfuncs.IsSpectateOnly() )
 		return 1;
@@ -235,7 +239,7 @@ int CHudHealth::Draw(float flTime)
 		int iHeight = gHUD.m_iFontHeight;
 		int iWidth = HealthWidth/10;
 
-		UnpackRGB(r,g,b, gHUD.m_iHUDColor); //LRC
+		UnpackRGB(r,g,b, RGB_REDISH); //LRC
 		//LRC FillRGBA(x, y, iWidth, iHeight, 255, 160, 0, a);
 		FillRGBA(x, y, iWidth, iHeight, r, g, b, a); //LRC
 	}
@@ -387,7 +391,7 @@ int CHudHealth::DrawDamage(float flTime)
 	if (!m_bitsDamage)
 		return 1;
 
-	UnpackRGB(r,g,b, gHUD.m_iHUDColor);
+	UnpackRGB(r,g,b, RGB_REDISH);
 	
 	a = (int)( fabs(sin(flTime*2)) * 256.0);
 

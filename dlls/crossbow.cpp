@@ -45,6 +45,7 @@ class CCrossbowBolt : public CBaseEntity
 
 public:
 	static CCrossbowBolt *BoltCreate( void );
+
 };
 LINK_ENTITY_TO_CLASS( crossbow_bolt, CCrossbowBolt );
 
@@ -68,12 +69,13 @@ void CCrossbowBolt::Spawn( )
 
 	SET_MODEL(ENT(pev), "models/crossbow_bolt.mdl");
 
-	UTIL_SetOrigin( this, pev->origin );
 	UTIL_SetSize(pev, Vector(0, 0, 0), Vector(0, 0, 0));
 
-	SetTouch(&CCrossbowBolt:: BoltTouch );
-	SetThink(&CCrossbowBolt:: BubbleThink );
-	SetNextThink( 0.2 );
+	SetTouch( BoltTouch );
+	SetThink( BubbleThink );
+	pev->nextthink = gpGlobals->time + 0.2;
+
+
 }
 
 
@@ -139,21 +141,20 @@ void CCrossbowBolt::BoltTouch( CBaseEntity *pOther )
 	{
 		EMIT_SOUND_DYN(ENT(pev), CHAN_BODY, "weapons/xbow_hit1.wav", RANDOM_FLOAT(0.95, 1.0), ATTN_NORM, 0, 98 + RANDOM_LONG(0,7));
 
-		SetThink(&CCrossbowBolt:: SUB_Remove );
-		SetNextThink( 0 );// this will get changed below if the bolt is allowed to stick in what it hit.
+		SetThink( SUB_Remove );
+		pev->nextthink = gpGlobals->time;// this will get changed below if the bolt is allowed to stick in what it hit.
 
 		if ( FClassnameIs( pOther->pev, "worldspawn" ) )
 		{
 			// if what we hit is static architecture, can stay around for a while.
 			Vector vecDir = pev->velocity.Normalize( );
-			UTIL_SetOrigin( this, pev->origin - vecDir * 12 );
 			pev->angles = UTIL_VecToAngles( vecDir );
 			pev->solid = SOLID_NOT;
 			pev->movetype = MOVETYPE_FLY;
 			pev->velocity = Vector( 0, 0, 0 );
 			pev->avelocity.z = 0;
 			pev->angles.z = RANDOM_LONG(0,360);
-			SetNextThink( 10.0 );
+			pev->nextthink = gpGlobals->time + 10.0;
 		}
 
 		if (UTIL_PointContents(pev->origin) != CONTENTS_WATER)
@@ -164,16 +165,16 @@ void CCrossbowBolt::BoltTouch( CBaseEntity *pOther )
 
 	if ( g_pGameRules->IsMultiplayer() )
 	{
-		SetThink(&CCrossbowBolt:: ExplodeThink );
-		SetNextThink( 0.1 );
+		SetThink( ExplodeThink );
+		pev->nextthink = gpGlobals->time + 0.1;
 	}
 }
 
 void CCrossbowBolt::BubbleThink( void )
 {
-	SetNextThink( 0.1 );
+	pev->nextthink = gpGlobals->time + 0.1;
 
-	if (pev->waterlevel == 0 || pev->watertype <= CONTENT_FLYFIELD)
+	if (pev->waterlevel == 0)
 		return;
 
 	UTIL_BubbleTrail( pev->origin - pev->velocity * 0.1, pev->origin, 1 );
@@ -184,8 +185,8 @@ void CCrossbowBolt::ExplodeThink( void )
 	int iContents = UTIL_PointContents ( pev->origin );
 	int iScale;
 	
-	pev->dmg = 40;
-	iScale = 10;
+	pev->dmg = 200;
+	iScale = 50;
 
 	MESSAGE_BEGIN( MSG_PVS, SVC_TEMPENTITY, pev->origin );
 		WRITE_BYTE( TE_EXPLOSION);		
@@ -220,19 +221,16 @@ void CCrossbowBolt::ExplodeThink( void )
 }
 #endif
 
-enum crossbow_e {
-	CROSSBOW_IDLE1 = 0,	// full
-	CROSSBOW_IDLE2,		// empty
-	CROSSBOW_FIDGET1,	// full
-	CROSSBOW_FIDGET2,	// empty
-	CROSSBOW_FIRE1,		// full
-	CROSSBOW_FIRE2,		// reload
-	CROSSBOW_FIRE3,		// empty
-	CROSSBOW_RELOAD,	// from empty
-	CROSSBOW_DRAW1,		// full
-	CROSSBOW_DRAW2,		// empty
-	CROSSBOW_HOLSTER1,	// full
-	CROSSBOW_HOLSTER2,	// empty
+enum crossbow_e 
+{
+	CROSSBOW_IDLE,
+	CROSSBOW_FIDGET,
+	CROSSBOW_FIRE,
+	CROSSBOW_FIRE2,
+	CROSSBOW_FIRE3,
+	CROSSBOW_RELOAD,
+	CROSSBOW_DRAW,
+	CROSSBOW_HOLSTER,
 };
 
 LINK_ENTITY_TO_CLASS( weapon_crossbow, CCrossbow );
@@ -243,9 +241,13 @@ void CCrossbow::Spawn( )
 	m_iId = WEAPON_CROSSBOW;
 	SET_MODEL(ENT(pev), "models/w_crossbow.mdl");
 
+    NowZooming = FALSE;
+    ZoomStopped = TRUE;
+
 	m_iDefaultAmmo = CROSSBOW_DEFAULT_GIVE;
 
 	FallInit();// get ready to fall down.
+
 }
 
 int CCrossbow::AddToPlayer( CBasePlayer *pPlayer )
@@ -266,9 +268,10 @@ void CCrossbow::Precache( void )
 	PRECACHE_MODEL("models/v_crossbow.mdl");
 	PRECACHE_MODEL("models/p_crossbow.mdl");
 
-	PRECACHE_SOUND("weapons/xbow_fire1.wav");
+	PRECACHE_SOUND("weapons/arrow6_fire.wav");
+	PRECACHE_SOUND("weapons/arrow6_reload.wav");
+	PRECACHE_SOUND("weapons/arrow6_drawback.wav");
 	PRECACHE_SOUND("weapons/xbow_reload1.wav");
-
 	UTIL_PrecacheOther( "crossbow_bolt" );
 
 	m_usCrossbow = PRECACHE_EVENT( 1, "events/crossbow1.sc" );
@@ -284,11 +287,12 @@ int CCrossbow::GetItemInfo(ItemInfo *p)
 	p->pszAmmo2 = NULL;
 	p->iMaxAmmo2 = -1;
 	p->iMaxClip = CROSSBOW_MAX_CLIP;
-	p->iSlot = 2;
-	p->iPosition = 2;
+	p->iSlot = 3;
+	p->iPosition = 1;
 	p->iId = WEAPON_CROSSBOW;
 	p->iFlags = 0;
 	p->iWeight = CROSSBOW_WEIGHT;
+	p->weaponName = "Crossbow"; 
 	return 1;
 }
 
@@ -296,8 +300,10 @@ int CCrossbow::GetItemInfo(ItemInfo *p)
 BOOL CCrossbow::Deploy( )
 {
 	if (m_iClip)
-		return DefaultDeploy( "models/v_crossbow.mdl", "models/p_crossbow.mdl", CROSSBOW_DRAW1, "bow" );
-	return DefaultDeploy( "models/v_crossbow.mdl", "models/p_crossbow.mdl", CROSSBOW_DRAW2, "bow" );
+		return DefaultDeploy( "models/v_crossbow.mdl", "models/p_crossbow.mdl", CROSSBOW_DRAW, "bow" );
+	return DefaultDeploy( "models/v_crossbow.mdl", "models/p_crossbow.mdl", CROSSBOW_DRAW, "bow" );
+    SetThink(ZoomThink);
+    pev->nextthink = gpGlobals->time + 0.1;
 }
 
 void CCrossbow::Holster( int skiplocal /* = 0 */ )
@@ -311,9 +317,7 @@ void CCrossbow::Holster( int skiplocal /* = 0 */ )
 
 	m_pPlayer->m_flNextAttack = UTIL_WeaponTimeBase() + 0.5;
 	if (m_iClip)
-		SendWeaponAnim( CROSSBOW_HOLSTER1 );
-	else
-		SendWeaponAnim( CROSSBOW_HOLSTER2 );
+		SendWeaponAnim( CROSSBOW_HOLSTER );
 }
 
 void CCrossbow::PrimaryAttack( void )
@@ -416,7 +420,7 @@ void CCrossbow::FireBolt()
 	pBolt->pev->angles = anglesAim;
 	pBolt->pev->owner = m_pPlayer->edict();
 
-	if (m_pPlayer->pev->waterlevel == 3 && m_pPlayer->pev->watertype > CONTENT_FLYFIELD)
+	if (m_pPlayer->pev->waterlevel == 3)
 	{
 		pBolt->pev->velocity = vecDir * BOLT_WATER_VELOCITY;
 		pBolt->pev->speed = BOLT_WATER_VELOCITY;
@@ -433,9 +437,9 @@ void CCrossbow::FireBolt()
 		// HEV suit - indicate out of ammo condition
 		m_pPlayer->SetSuitUpdate("!HEV_AMO0", FALSE, 0);
 
-	m_flNextPrimaryAttack = UTIL_WeaponTimeBase() + 0.75;
+	m_flNextPrimaryAttack = UTIL_WeaponTimeBase() + 2.0;
 
-	m_flNextSecondaryAttack = UTIL_WeaponTimeBase() + 0.75;
+	m_flNextSecondaryAttack = UTIL_WeaponTimeBase() + 2.0;
 
 	if (m_iClip != 0)
 		m_flTimeWeaponIdle = UTIL_WeaponTimeBase() + 5.0;
@@ -457,7 +461,7 @@ void CCrossbow::SecondaryAttack()
 		m_fInZoom = 1;
 	}
 	
-	SetNextThink( 0.1 );
+	pev->nextthink = UTIL_WeaponTimeBase() + 0.1;
 	m_flNextSecondaryAttack = UTIL_WeaponTimeBase() + 1.0;
 }
 
@@ -478,6 +482,84 @@ void CCrossbow::Reload( void )
 	}
 }
 
+void CCrossbow::ZoomThink()
+    {
+
+        // Drückt der Spieler den zweiten Feuerknopf?
+        if (m_pPlayer->m_afButtonPressed & IN_ATTACK2)
+        {
+
+            // Drückt er auch den ersten Feuerknopf?
+            if (m_pPlayer->m_afButtonPressed & IN_ATTACK)
+            {
+                // Wenn ja, FEUER!
+                PrimaryAttack();
+            }
+
+            // Wenn wir gerade nicht zoomen, und das zoomen nicht
+            // von einem früheren zoomen gestoppt wurde, dann zoom
+            if ((NowZooming == false) && (ZoomStopped == false))
+            {
+                NowZooming = true;
+            }
+
+            // Ändere das FOV, wenn wir gerade zoomen
+            if ((NowZooming == true) && (ZoomStopped == false))
+            {
+
+                // Wenn das FOV größer als 10 ist, dann dezimiere es
+                if (m_pPlayer->m_iFOV > 10)
+                {
+
+                    // Das hier kannst du verändern, um die Zoomgeschwindigkeit
+                    // deinem Geschmack anzupassen
+                    m_pPlayer->m_iFOV--;
+                    m_pPlayer->m_iFOV--;
+                }
+                else
+                {
+
+                // Wenn das FOV schon 10 ist, dann hör auf mit zoomen
+                    ZoomStopped = true;
+                }
+            }
+
+            // Wenn wir nicht im Zoom sind, aber ZoomStopped ist wahr, dann setz das FOV zurück
+            if ((NowZooming == false) && (ZoomStopped == true))
+            {
+                m_pPlayer->m_iFOV = 90;
+                NowZooming = false;
+                ZoomStopped = false;
+                pev->nextthink = gpGlobals->time + 0.25;
+                return;
+            }
+        }
+
+        // Falls der 2. Feuerknopf nicht gedrückt ist
+        else
+        {
+
+            // Der Spieler hat den Knopf losgelassen
+            // Stopp zoomen und setzt ZoomStopped
+            if ((NowZooming==true) && (ZoomStopped == false))
+            {
+                NowZooming = false;
+                ZoomStopped = true;
+            }
+
+            // Falls der Zoom das Ende erreicht hat
+            // und automatisch gestoppt wird
+            if ((NowZooming==true) && (ZoomStopped == true))
+            {
+                NowZooming = false;
+                ZoomStopped = true;
+            }
+        }
+
+        // Stell den nächsten Durchlauf ein
+        pev->nextthink = gpGlobals->time + 0.05;
+
+    }
 
 void CCrossbow::WeaponIdle( void )
 {
@@ -492,11 +574,7 @@ void CCrossbow::WeaponIdle( void )
 		{
 			if (m_iClip)
 			{
-				SendWeaponAnim( CROSSBOW_IDLE1 );
-			}
-			else
-			{
-				SendWeaponAnim( CROSSBOW_IDLE2 );
+				SendWeaponAnim( CROSSBOW_IDLE );
 			}
 			m_flTimeWeaponIdle = UTIL_WeaponTimeBase() + UTIL_SharedRandomFloat( m_pPlayer->random_seed, 10, 15 );
 		}
@@ -504,13 +582,8 @@ void CCrossbow::WeaponIdle( void )
 		{
 			if (m_iClip)
 			{
-				SendWeaponAnim( CROSSBOW_FIDGET1 );
+				SendWeaponAnim( CROSSBOW_FIDGET );
 				m_flTimeWeaponIdle = UTIL_WeaponTimeBase() + 90.0 / 30.0;
-			}
-			else
-			{
-				SendWeaponAnim( CROSSBOW_FIDGET2 );
-				m_flTimeWeaponIdle = UTIL_WeaponTimeBase() + 80.0 / 30.0;
 			}
 		}
 	}

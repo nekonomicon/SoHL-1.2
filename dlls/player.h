@@ -15,6 +15,9 @@
 #ifndef PLAYER_H
 #define PLAYER_H
 
+//START BOT
+class CBotCam;
+//END BOT
 
 #include "pm_materials.h"
 
@@ -104,6 +107,20 @@ enum sbar_data
 class CBasePlayer : public CBaseMonster
 {
 public:
+// advanced NVG
+    BOOL        m_fNVG;                // do they have it?
+    BOOL        m_fNVGActivated;    // is it activated?
+
+    float        m_flNVGBattery;
+    float        m_flNVGUpdate;
+
+    float        m_flInfraredUpdate[32];
+    BOOL        m_fInfrared[32];
+
+    void NVGCreateInfrared(edict_t *pEdict, int pIndex, BOOL fOn);
+    void NVGToggle(BOOL activate);
+    void NVGUpdate();
+// advanced NVG
 	int					random_seed;    // See that is shared between client & server for shared weapons code
 
 	int					m_iPlayerSound;// the index of the sound list slot reserved for this player
@@ -115,6 +132,7 @@ public:
 	
 	float				m_flFlashLightTime;	// Time until next battery draw/Recharge
 	int					m_iFlashBattery;		// Flashlight Battery Draw
+	int					m_iPlayerClass;	//Teamchange
 
 	int					m_afButtonLast;
 	int					m_afButtonPressed;
@@ -135,6 +153,7 @@ public:
 
 
 // these are time-sensitive things that we keep track of
+	float				m_flNextNameDisplay; 
 	float				m_flTimeStepSound;	// when the last stepping sound was made
 	float				m_flTimeWeaponIdle; // when to play another weapon idle animation.
 	float				m_flSwimTime;		// how long player has been underwater
@@ -202,6 +221,10 @@ public:
 
 	char m_szTeamName[TEAM_NAME_LENGTH];
 
+//START BOT
+   CBotCam *pBotCam;
+//END BOT
+
 	virtual void Spawn( void );
 	void Pain( void );
 
@@ -262,7 +285,13 @@ public:
 	void CheatImpulseCommands( int iImpulse );
 
 	void StartDeathCam( void );
-	void StartObserver( Vector vecPosition, Vector vecViewAngle );
+    void    StopObserver( void );
+    void        Observer_FindNextPlayer( bool bReverse );
+    void        Observer_HandleButtons();
+    void        Observer_SetMode( int iMode );
+    EHANDLE        m_hObserverTarget;
+    float        m_flNextObserverInput;
+    int     IsObserver() { return pev->iuser1; };
 
 	void AddPoints( int score, BOOL bAllowNegativeScore );
 	void AddPointsToTeam( int score, BOOL bAllowNegativeScore );
@@ -329,6 +358,8 @@ public:
 	
 	float m_flNextChatTime;
 	
+	int m_iNextTeam;
+	
 };
 
 #define AUTOAIM_2DEGREES  0.0348994967025
@@ -340,5 +371,9 @@ public:
 extern int	gmsgHudText;
 extern int	gmsgParticle; // LRC
 extern BOOL gInitHUD;
+// Observer-Bewegungscodes
+#define OBS_CHASE_LOCKED                1
+#define OBS_CHASE_FREE                        2
+#define OBS_ROAMING                        3
 
 #endif // PLAYER_H

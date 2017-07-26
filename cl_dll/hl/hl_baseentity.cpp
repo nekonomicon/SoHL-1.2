@@ -255,7 +255,6 @@ void CBasePlayer::WaterMove() { }
 BOOL CBasePlayer::IsOnLadder( void ) { return FALSE; }
 void CBasePlayer::PlayerDeathThink(void) { }
 void CBasePlayer::StartDeathCam( void ) { }
-void CBasePlayer::StartObserver( Vector vecPosition, Vector vecViewAngle ) { }
 void CBasePlayer::PlayerUse ( void ) { }
 void CBasePlayer::Jump() { }
 void CBasePlayer::Duck( ) { }
@@ -348,6 +347,7 @@ void CBasePlayerAmmo::Materialize( void ) { }
 void CBasePlayerAmmo :: DefaultTouch( CBaseEntity *pOther ) { }
 int CBasePlayerWeapon::ExtractAmmo( CBasePlayerWeapon *pWeapon ) { return 0; }
 int CBasePlayerWeapon::ExtractClipAmmo( CBasePlayerWeapon *pWeapon ) { return 0; }	
+void CBasePlayerWeapon::UpdateItemInfo( void ) {}
 void CBasePlayerWeapon::RetireWeapon( void ) { }
 void CSoundEnt::InsertSound ( int iType, const Vector &vecOrigin, int iVolume, float flDuration ) {}
 void RadiusDamage( Vector vecSrc, entvars_t *pevInflictor, entvars_t *pevAttacker, float flDamage, float flRadius, int iClassIgnore, int bitsDamageType ){}

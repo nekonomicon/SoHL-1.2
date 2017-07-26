@@ -1,25 +1,25 @@
 # Microsoft Developer Studio Project File - Name="hl" - Package Owner=<4>
 # Microsoft Developer Studio Generated Build File, Format Version 6.00
-# ** DO NOT EDIT **
+# ** NICHT BEARBEITEN **
 
 # TARGTYPE "Win32 (x86) Dynamic-Link Library" 0x0102
 
 CFG=hl - Win32 Release
-!MESSAGE This is not a valid makefile. To build this project using NMAKE,
-!MESSAGE use the Export Makefile command and run
+!MESSAGE Dies ist kein gültiges Makefile. Zum Erstellen dieses Projekts mit NMAKE
+!MESSAGE verwenden Sie den Befehl "Makefile exportieren" und führen Sie den Befehl
 !MESSAGE 
 !MESSAGE NMAKE /f "hl.mak".
 !MESSAGE 
-!MESSAGE You can specify a configuration when running NMAKE
-!MESSAGE by defining the macro CFG on the command line. For example:
+!MESSAGE Sie können beim Ausführen von NMAKE eine Konfiguration angeben
+!MESSAGE durch Definieren des Makros CFG in der Befehlszeile. Zum Beispiel:
 !MESSAGE 
 !MESSAGE NMAKE /f "hl.mak" CFG="hl - Win32 Release"
 !MESSAGE 
-!MESSAGE Possible choices for configuration are:
+!MESSAGE Für die Konfiguration stehen zur Auswahl:
 !MESSAGE 
-!MESSAGE "hl - Win32 Release" (based on "Win32 (x86) Dynamic-Link Library")
-!MESSAGE "hl - Win32 Debug" (based on "Win32 (x86) Dynamic-Link Library")
-!MESSAGE "hl - Win32 Profile" (based on "Win32 (x86) Dynamic-Link Library")
+!MESSAGE "hl - Win32 Release" (basierend auf  "Win32 (x86) Dynamic-Link Library")
+!MESSAGE "hl - Win32 Debug" (basierend auf  "Win32 (x86) Dynamic-Link Library")
+!MESSAGE "hl - Win32 Profile" (basierend auf  "Win32 (x86) Dynamic-Link Library")
 !MESSAGE 
 
 # Begin Project
@@ -61,8 +61,8 @@ TargetDir=.\Releasehl
 InputPath=.\Releasehl\spirit.dll
 SOURCE="$(InputPath)"
 
-"C:\games\half-life\spiritdev\dlls\spirit.dll" : $(SOURCE) "$(INTDIR)" "$(OUTDIR)"
-	copy $(TargetDir)\spirit.dll "C:\games\half-life\spiritdev\dlls\spirit.dll"
+"C:\sierra\half-life\ZombieXdev\dlls\zx.dll" : $(SOURCE) "$(INTDIR)" "$(OUTDIR)"
+	copy $(TargetDir)\zx.dll "C:\sierra\half-life\ZombieXdev\dlls\zx.dll"
 
 # End Custom Build
 
@@ -97,8 +97,8 @@ TargetDir=.\debughl
 InputPath=.\debughl\spirit.dll
 SOURCE="$(InputPath)"
 
-"C:\sierra\half-life\spiritdev\dlls\spirit.dll" : $(SOURCE) "$(INTDIR)" "$(OUTDIR)"
-	copy $(TargetDir)\spirit.dll "C:\sierra\half-life\spiritdev\dlls\spirit.dll"
+"C:\sierra\half-life\ZombieXdev\dlls\zx.dll" : $(SOURCE) "$(INTDIR)" "$(OUTDIR)"
+	copy $(TargetDir)\zx.dll "C:\sierra\half-life\ZombieXdev\dlls\zx.dll"
 
 # End Custom Build
 
@@ -121,21 +121,21 @@ SOURCE="$(InputPath)"
 # ADD BASE MTL /nologo /D "NDEBUG" /win32
 # ADD MTL /nologo /D "NDEBUG" /mktyplib203 /win32
 # ADD BASE RSC /l 0x409 /d "NDEBUG"
-# ADD RSC /l 0x409 /d "NDEBUG"
+# ADD RSC /l 0x407 /d "NDEBUG"
 BSC32=bscmake.exe
 # ADD BASE BSC32 /nologo
 # ADD BSC32 /nologo
 LINK32=link.exe
 # ADD BASE LINK32 kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib /nologo /subsystem:windows /dll /debug /machine:I386 /def:".\hl.def"
 # SUBTRACT BASE LINK32 /profile
-# ADD LINK32 kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib /nologo /subsystem:windows /dll /profile /debug /machine:I386 /def:".\hl.def" /out:".\Profilehl/spirit.dll"
+# ADD LINK32 kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib cg.lib cgGL.lib opengl32.lib glu32.lib glaux.lib /nologo /subsystem:windows /dll /profile /debug /machine:I386 /def:".\hl.def" /out:".\Profilehl/zx.dll"
 # Begin Custom Build
 TargetDir=.\Profilehl
-InputPath=.\Profilehl\spirit.dll
+InputPath=.\Profilehl\zx.dll
 SOURCE="$(InputPath)"
 
-"C:\sierra\half-life\spiritdev\dlls\spirit.dll" : $(SOURCE) "$(INTDIR)" "$(OUTDIR)"
-	copy $(TargetDir)\spirit.dll "C:\sierra\half-life\spiritdev\dlls\spirit.dll"
+"C:\sierra\half-life\ZombieXdev\dlls\zx.dll" : $(SOURCE) "$(INTDIR)" "$(OUTDIR)"
+	copy $(TargetDir)\zx.dll "C:\sierra\half-life\ZombieXdev\dlls\zx.dll"
 
 # End Custom Build
 
@@ -167,6 +167,10 @@ SOURCE=.\airtank.cpp
 # End Source File
 # Begin Source File
 
+SOURCE=.\ak47.cpp
+# End Source File
+# Begin Source File
+
 SOURCE=.\alias.cpp
 # End Source File
 # Begin Source File
@@ -183,11 +187,27 @@ SOURCE=.\apache.cpp
 # End Source File
 # Begin Source File
 
+SOURCE=.\apache_blackop.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=.\auto_shotgun.cpp
+# End Source File
+# Begin Source File
+
 SOURCE=.\barnacle.cpp
 # End Source File
 # Begin Source File
 
 SOURCE=.\barney.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=.\barney_suit.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=.\barniel.cpp
 # End Source File
 # Begin Source File
 
@@ -203,7 +223,23 @@ SOURCE=.\bmodels.cpp
 # End Source File
 # Begin Source File
 
+SOURCE=.\bot.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=.\bot_combat.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=.\botcam.cpp
+# End Source File
+# Begin Source File
+
 SOURCE=.\bullsquid.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=.\bumplight.cpp
 # End Source File
 # Begin Source File
 
@@ -235,11 +271,19 @@ SOURCE=.\crowbar.cpp
 # End Source File
 # Begin Source File
 
+SOURCE=.\debugger.cpp
+# End Source File
+# Begin Source File
+
 SOURCE=.\defaultai.cpp
 # End Source File
 # Begin Source File
 
 SOURCE=.\doors.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=.\eagel.cpp
 # End Source File
 # Begin Source File
 
@@ -268,6 +312,10 @@ SOURCE=.\func_tank.cpp
 # Begin Source File
 
 SOURCE=.\game.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=.\game_config.cpp
 # End Source File
 # Begin Source File
 
@@ -339,6 +387,10 @@ SOURCE=.\hgrunt.cpp
 # End Source File
 # Begin Source File
 
+SOURCE=.\hgrunt_blackop.cpp
+# End Source File
+# Begin Source File
+
 SOURCE=.\wpn_shared\hl_wpn_glock.cpp
 # End Source File
 # Begin Source File
@@ -367,6 +419,10 @@ SOURCE=.\items.cpp
 # End Source File
 # Begin Source File
 
+SOURCE=.\kate.cpp
+# End Source File
+# Begin Source File
+
 SOURCE=.\leech.cpp
 # End Source File
 # Begin Source File
@@ -380,6 +436,10 @@ SOURCE=.\locus.cpp
 # Begin Source File
 
 SOURCE=.\maprules.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=.\minigun.cpp
 # End Source File
 # Begin Source File
 
@@ -400,6 +460,10 @@ SOURCE=.\mortar.cpp
 # Begin Source File
 
 SOURCE=.\movewith.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=.\mp41a.cpp
 # End Source File
 # Begin Source File
 
@@ -475,7 +539,23 @@ SOURCE=.\scientist.cpp
 # End Source File
 # Begin Source File
 
+SOURCE=.\scientist_suit.cpp
+# End Source File
+# Begin Source File
+
 SOURCE=.\scripted.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=.\shock.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=.\shockball.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=.\shockgun.cpp
 # End Source File
 # Begin Source File
 
@@ -515,6 +595,10 @@ SOURCE=.\subs.cpp
 # End Source File
 # Begin Source File
 
+SOURCE=.\swort.cpp
+# End Source File
+# Begin Source File
+
 SOURCE=.\talkmonster.cpp
 # End Source File
 # Begin Source File
@@ -531,6 +615,10 @@ SOURCE=.\tentacle.cpp
 # End Source File
 # Begin Source File
 
+SOURCE=.\torch.cpp
+# End Source File
+# Begin Source File
+
 SOURCE=.\triggers.cpp
 # End Source File
 # Begin Source File
@@ -544,6 +632,10 @@ SOURCE=.\turret.cpp
 # Begin Source File
 
 SOURCE=.\util.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=.\uzi.cpp
 # End Source File
 # Begin Source File
 
@@ -565,6 +657,18 @@ SOURCE=.\xen.cpp
 
 SOURCE=.\zombie.cpp
 # End Source File
+# Begin Source File
+
+SOURCE=.\zombie_barney.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=.\zombie_gus.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=.\zombie_soldier.cpp
+# End Source File
 # End Group
 # Begin Group "Header Files"
 
@@ -584,6 +688,10 @@ SOURCE=.\animation.h
 # Begin Source File
 
 SOURCE=.\basemonster.h
+# End Source File
+# Begin Source File
+
+SOURCE=.\bumplight.h
 # End Source File
 # Begin Source File
 
@@ -762,5 +870,13 @@ SOURCE=.\weapons.h
 
 # PROP Default_Filter "ico;cur;bmp;dlg;rc2;rct;bin;cnt;rtf;gif;jpg;jpeg;jpe"
 # End Group
+# Begin Source File
+
+SOURCE=.\ak47.asp
+# End Source File
+# Begin Source File
+
+SOURCE=.\torch.asp
+# End Source File
 # End Target
 # End Project

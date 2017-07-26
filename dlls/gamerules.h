@@ -17,7 +17,7 @@
 //=========================================================
 
 //LRC
-#define GAME_NAME "Spirit of Half-Life"
+#define GAME_NAME "Zombie-X Dynamic Lighting Editon Beta 4"
 
 //#include "weapons.h"
 //#include "items.h"
@@ -150,7 +150,7 @@ public:
 	virtual int GetTeamIndex( const char *pTeamName ) { return -1; }
 	virtual const char *GetIndexedTeamName( int teamIndex ) { return ""; }
 	virtual BOOL IsValidTeam( const char *pTeamName ) { return TRUE; }
-	virtual void ChangePlayerTeam( CBasePlayer *pPlayer, const char *pTeamName, BOOL bKill, BOOL bGib ) {}
+	virtual void ChangeTeam( CBasePlayer *pPlayer, const char *pTeamName, BOOL bKill, BOOL bGib ) {}
 	virtual const char *SetDefaultPlayerTeam( CBasePlayer *pPlayer ) { return ""; }
 
 // Sounds
@@ -275,6 +275,7 @@ public:
 	virtual BOOL IsMultiplayer( void );
 	virtual BOOL IsDeathmatch( void );
 	virtual BOOL IsCoOp( void );
+	virtual void ChangeLevel( void );
 
 // Client connection/disconnection
 	// If ClientConnected returns FALSE, the connection is rejected and the user is provided the reason specified in
@@ -355,7 +356,6 @@ public:
 	virtual void EndMultiplayerGame( void ) { GoToIntermission(); }
 
 protected:
-	virtual void ChangeLevel( void );
 	virtual void GoToIntermission( void );
 	float m_flIntermissionEndTime;
 	BOOL m_iEndIntermissionButtonHit;

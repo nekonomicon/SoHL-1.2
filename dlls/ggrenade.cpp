@@ -26,6 +26,7 @@
 #include "nodes.h"
 #include "soundent.h"
 #include "decals.h"
+#include "shake.h"
 
 
 //===================grenade
@@ -43,6 +44,7 @@ void CGrenade::Explode( Vector vecSrc, Vector vecAim )
 {
 	TraceResult tr;
 	UTIL_TraceLine ( pev->origin, pev->origin + Vector ( 0, 0, -32 ),  ignore_monsters, ENT(pev), & tr);
+	UTIL_ScreenShake( pev->origin, 12.0, 100.0, 2.0, 1000 );
 
 	Explode( &tr, DMG_BLAST );
 }
@@ -50,6 +52,7 @@ void CGrenade::Explode( Vector vecSrc, Vector vecAim )
 // UNDONE: temporary scorching for PreAlpha - find a less sleazy permenant solution.
 void CGrenade::Explode( TraceResult *pTrace, int bitsDamageType )
 {
+	UTIL_ScreenShake( pev->origin, 12.0, 100.0, 2.0, 1000 );
 	float		flRndSound;// sound randomizer
 
 	pev->model = iStringNull;//invisible
@@ -315,6 +318,8 @@ void CGrenade :: BounceSound( void )
 
 void CGrenade :: TumbleThink( void )
 {
+	pev->effects = EF_LIGHT;
+
 	if (!IsInWorld())
 	{
 		UTIL_Remove( this );

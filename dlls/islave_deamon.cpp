@@ -85,6 +85,7 @@ public:
 	float m_flNextAttack;
 
 	int	m_voicePitch;
+	int m_iBodyGibs;
 
 	EHANDLE m_hDead;
 
@@ -567,6 +568,8 @@ void CISlave :: Precache()
 	PRECACHE_SOUND("zombie/zo_pain2.wav");
 	PRECACHE_SOUND("headcrab/hc_headbite.wav");
 	PRECACHE_SOUND("weapons/cbar_miss1.wav");
+
+	m_iBodyGibs = PRECACHE_MODEL( "models/islave_gibs.mdl" );
 
 	for ( i = 0; i < ARRAYSIZE( pAttackHitSounds ); i++ )
 		PRECACHE_SOUND((char *)pAttackHitSounds[i]);

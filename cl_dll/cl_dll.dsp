@@ -1,24 +1,24 @@
 # Microsoft Developer Studio Project File - Name="cl_dll" - Package Owner=<4>
 # Microsoft Developer Studio Generated Build File, Format Version 6.00
-# ** DO NOT EDIT **
+# ** NICHT BEARBEITEN **
 
 # TARGTYPE "Win32 (x86) Dynamic-Link Library" 0x0102
 
 CFG=cl_dll - Win32 Release
-!MESSAGE This is not a valid makefile. To build this project using NMAKE,
-!MESSAGE use the Export Makefile command and run
+!MESSAGE Dies ist kein gültiges Makefile. Zum Erstellen dieses Projekts mit NMAKE
+!MESSAGE verwenden Sie den Befehl "Makefile exportieren" und führen Sie den Befehl
 !MESSAGE 
 !MESSAGE NMAKE /f "cl_dll.mak".
 !MESSAGE 
-!MESSAGE You can specify a configuration when running NMAKE
-!MESSAGE by defining the macro CFG on the command line. For example:
+!MESSAGE Sie können beim Ausführen von NMAKE eine Konfiguration angeben
+!MESSAGE durch Definieren des Makros CFG in der Befehlszeile. Zum Beispiel:
 !MESSAGE 
 !MESSAGE NMAKE /f "cl_dll.mak" CFG="cl_dll - Win32 Release"
 !MESSAGE 
-!MESSAGE Possible choices for configuration are:
+!MESSAGE Für die Konfiguration stehen zur Auswahl:
 !MESSAGE 
-!MESSAGE "cl_dll - Win32 Release" (based on "Win32 (x86) Dynamic-Link Library")
-!MESSAGE "cl_dll - Win32 Debug" (based on "Win32 (x86) Dynamic-Link Library")
+!MESSAGE "cl_dll - Win32 Release" (basierend auf  "Win32 (x86) Dynamic-Link Library")
+!MESSAGE "cl_dll - Win32 Debug" (basierend auf  "Win32 (x86) Dynamic-Link Library")
 !MESSAGE 
 
 # Begin Project
@@ -88,7 +88,7 @@ BSC32=bscmake.exe
 # ADD BSC32 /nologo
 LINK32=link.exe
 # ADD BASE LINK32 kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib /nologo /subsystem:windows /dll /debug /machine:I386
-# ADD LINK32 oleaut32.lib uuid.lib odbc32.lib odbccp32.lib kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib winmm.lib ../utils/vgui/lib/win32_vc6/vgui.lib wsock32.lib /nologo /subsystem:windows /dll /debug /machine:I386 /out:".\Debug\client.dll"
+# ADD LINK32 oleaut32.lib uuid.lib odbc32.lib odbccp32.lib kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib winmm.lib ../utils/vgui/lib/win32_vc6/vgui.lib wsock32.lib cg.lib cgGL.lib opengl32.lib glu32.lib glaux.lib /nologo /subsystem:windows /dll /debug /machine:I386 /out:".\Debug\client.dll"
 # Begin Custom Build
 TargetDir=.\Debug
 InputPath=.\Debug\client.dll
@@ -113,6 +113,18 @@ SOURCE="$(InputPath)"
 # PROP Default_Filter "*.CPP"
 # Begin Source File
 
+SOURCE=..\dlls\ak47.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=..\dlls\auto_shotgun.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=.\bumpmap.cpp
+# End Source File
+# Begin Source File
+
 SOURCE=..\dlls\crossbow.cpp
 # End Source File
 # Begin Source File
@@ -121,11 +133,19 @@ SOURCE=..\dlls\crowbar.cpp
 # End Source File
 # Begin Source File
 
+SOURCE=..\dlls\eagel.cpp
+# End Source File
+# Begin Source File
+
 SOURCE=..\dlls\egon.cpp
 # End Source File
 # Begin Source File
 
 SOURCE=.\ev_hldm.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=..\dlls\game_config.cpp
 # End Source File
 # Begin Source File
 
@@ -165,7 +185,23 @@ SOURCE=..\common\interface.cpp
 # End Source File
 # Begin Source File
 
+SOURCE=..\dlls\minigun.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=.\mp3.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=..\dlls\mp41a.cpp
+# End Source File
+# Begin Source File
+
 SOURCE=..\dlls\mp5.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=.\nvg.cpp
 # End Source File
 # Begin Source File
 
@@ -181,6 +217,10 @@ SOURCE=..\dlls\satchel.cpp
 # End Source File
 # Begin Source File
 
+SOURCE=..\dlls\shockgun.cpp
+# End Source File
+# Begin Source File
+
 SOURCE=..\dlls\shotgun.cpp
 # End Source File
 # Begin Source File
@@ -189,7 +229,15 @@ SOURCE=..\dlls\squeakgrenade.cpp
 # End Source File
 # Begin Source File
 
+SOURCE=..\dlls\swort.cpp
+# End Source File
+# Begin Source File
+
 SOURCE=..\dlls\tripmine.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=..\dlls\uzi.cpp
 # End Source File
 # Begin Source File
 

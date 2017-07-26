@@ -1,10 +1,4 @@
-//=========================================
-// NEW file for Spirit of Half-Life 0.7
-// Created 14/01/02
-//=========================================
 
-// Spirit of Half-Life's particle system uses "locus triggers" to tell
-// entities where to perform their actions.
 
 #include "extdll.h"
 #include "util.h"

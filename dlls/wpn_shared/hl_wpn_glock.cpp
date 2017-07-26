@@ -57,7 +57,7 @@ void CGlock::Precache( void )
 	PRECACHE_MODEL("models/w_9mmhandgun.mdl");
 	PRECACHE_MODEL("models/p_9mmhandgun.mdl");
 
-	m_iShell = PRECACHE_MODEL ("models/shell.mdl");// brass shell
+	m_iShell = PRECACHE_MODEL ("models/9mm_shell.mdl");// brass shell
 
 	PRECACHE_SOUND("items/9mmclip1.wav");
 	PRECACHE_SOUND("items/9mmclip2.wav");
@@ -83,6 +83,7 @@ int CGlock::GetItemInfo(ItemInfo *p)
 	p->iFlags = 0;
 	p->iId = m_iId = WEAPON_GLOCK;
 	p->iWeight = GLOCK_WEIGHT;
+	p->weaponName = "9mm Handgun";
 
 	return 1;
 }
@@ -179,9 +180,9 @@ void CGlock::Reload( void )
 	int iResult;
 
 	if (m_iClip == 0)
-		iResult = DefaultReload( 17, GLOCK_RELOAD, 1.5 );
+		iResult = DefaultReload( 25, GLOCK_RELOAD, 1.5 );
 	else
-		iResult = DefaultReload( 17, GLOCK_RELOAD_NOT_EMPTY, 1.5 );
+		iResult = DefaultReload( 25, GLOCK_RELOAD_NOT_EMPTY, 1.5 );
 
 	if (iResult)
 	{

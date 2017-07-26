@@ -20,6 +20,7 @@
 #include "cl_util.h"
 #include "parsemsg.h"
 #include "r_efx.h"
+#include "mp3.h"
 
 //LRC - the fogging fog
 float g_fFogColor[3];
@@ -243,5 +244,14 @@ int CHud :: MsgFunc_Concuss( const char *pszName, int iSize, void *pbuf )
 		this->m_StatusIcons.EnableIcon("dmg_concuss",255,160,0);
 	else
 		this->m_StatusIcons.DisableIcon("dmg_concuss");
+	return 1;
+}
+
+int CHud :: MsgFunc_PlayMP3( const char *pszName, int iSize, void *pbuf ) //AJH -Killar MP3
+{
+	BEGIN_READ( pbuf, iSize );
+
+	gMP3.PlayMP3( READ_STRING() );
+
 	return 1;
 }

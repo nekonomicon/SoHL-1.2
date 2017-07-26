@@ -23,7 +23,8 @@
 #include "gamerules.h"
 
 
-enum python_e {
+enum python_e 
+{
 	PYTHON_IDLE1 = 0,
 	PYTHON_FIDGET,
 	PYTHON_FIRE1,
@@ -50,6 +51,7 @@ int CPython::GetItemInfo(ItemInfo *p)
 	p->iPosition = 1;
 	p->iId = m_iId = WEAPON_PYTHON;
 	p->iWeight = PYTHON_WEIGHT;
+	p->weaponName = "357 Fullautomatic";
 
 	return 1;
 }
@@ -132,27 +134,61 @@ void CPython::Holster( int skiplocal /* = 0 */ )
 
 void CPython::SecondaryAttack( void )
 {
-#ifdef CLIENT_DLL
-	if ( !bIsMultiplayer() )
-#else
-	if ( !g_pGameRules->IsMultiplayer() )
-#endif
+	// don't fire underwater
+	if (m_pPlayer->pev->waterlevel == 3 && m_pPlayer->pev->watertype > CONTENT_FLYFIELD)
 	{
+		PlayEmptySound( );
+		m_flNextSecondaryAttack = 0.15;
 		return;
 	}
 
-	if ( m_pPlayer->pev->fov != 0 )
+	if (m_iClip <= 0)
 	{
-		m_fInZoom = FALSE;
-		m_pPlayer->pev->fov = m_pPlayer->m_iFOV = 0;  // 0 means reset to default fov
-	}
-	else if ( m_pPlayer->pev->fov != 40 )
+		if (!m_fFireOnEmpty)
+			Reload( );
+		else
 	{
-		m_fInZoom = TRUE;
-		m_pPlayer->pev->fov = m_pPlayer->m_iFOV = 40;
+			EMIT_SOUND(ENT(m_pPlayer->pev), CHAN_WEAPON, "weapons/357_cock1.wav", 0.8, ATTN_NORM);
+			m_flNextSecondaryAttack = 0.15;
 	}
 
-	m_flNextSecondaryAttack = 0.5;
+		return;
+	}
+
+	m_pPlayer->m_iWeaponVolume = LOUD_GUN_VOLUME;
+	m_pPlayer->m_iWeaponFlash = BRIGHT_GUN_FLASH;
+
+	m_iClip--;
+
+	m_pPlayer->pev->effects = (int)(m_pPlayer->pev->effects) | EF_MUZZLEFLASH;
+
+	// player "shoot" animation
+	m_pPlayer->SetAnimation( PLAYER_ATTACK1 );
+
+
+	UTIL_MakeVectors( m_pPlayer->pev->v_angle + m_pPlayer->pev->punchangle );
+
+	Vector vecSrc	 = m_pPlayer->GetGunPosition( );
+	Vector vecAiming = m_pPlayer->GetAutoaimVector( AUTOAIM_10DEGREES );
+
+	Vector vecDir;
+	vecDir = m_pPlayer->FireBulletsPlayer( 1, vecSrc, vecAiming, VECTOR_CONE_4DEGREES, 8192, BULLET_PLAYER_357, 0, 0, m_pPlayer->pev, m_pPlayer->random_seed );
+
+    int flags;
+#if defined( CLIENT_WEAPONS )
+	flags = FEV_NOTHOST;
+#else
+	flags = 0;
+#endif
+
+	PLAYBACK_EVENT_FULL( flags, m_pPlayer->edict(), m_usFirePython, 0.0, (float *)&g_vecZero, (float *)&g_vecZero, vecDir.x, vecDir.y, 0, 0, 0, 0 );
+
+	if (!m_iClip && m_pPlayer->m_rgAmmo[m_iPrimaryAmmoType] <= 0)
+		// HEV suit - indicate out of ammo condition
+		m_pPlayer->SetSuitUpdate("!HEV_AMO0", FALSE, 0);
+
+	m_flNextSecondaryAttack = 0.20;
+	m_flTimeWeaponIdle = UTIL_SharedRandomFloat( m_pPlayer->random_seed, 10, 15 );
 }
 
 void CPython::PrimaryAttack()
@@ -289,8 +325,6 @@ void CPython::WeaponIdle( void )
 	SendWeaponAnim( iAnim, UseDecrement() ? 1 : 0, bUseScope );
 }
 
-
-
 class CPythonAmmo : public CBasePlayerAmmo
 {
 	void Spawn( void )
@@ -316,5 +350,30 @@ class CPythonAmmo : public CBasePlayerAmmo
 };
 LINK_ENTITY_TO_CLASS( ammo_357, CPythonAmmo );
 
+class CPythonAmmo2 : public CBasePlayerAmmo
+{
+void Spawn( void )
+{
+Precache( );
+SET_MODEL(ENT(pev), "models/w_357ammo.mdl");
+CBasePlayerAmmo::Spawn( );
+}
+void Precache( void )
+{
+PRECACHE_MODEL ("models/w_357ammo.mdl");
+PRECACHE_SOUND("items/9mmclip1.wav");
+}
+BOOL AddAmmo( CBaseEntity *pOther )
+{
+if (pOther->GiveAmmo( 6, "357", _357_MAX_CARRY ) != -1)
+{
+EMIT_SOUND(ENT(pev), CHAN_ITEM, "items/9mmclip1.wav", 1, ATTN_NORM);
+return TRUE;
+}
+return FALSE;
+}
+};
+LINK_ENTITY_TO_CLASS( ammo_357speed, CPythonAmmo2 );
 
 #endif
+

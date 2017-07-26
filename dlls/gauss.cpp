@@ -1,3 +1,4 @@
+
 /***
 *
 *	Copyright (c) 1996-2002, Valve LLC. All rights reserved.
@@ -115,11 +116,12 @@ int CGauss::GetItemInfo(ItemInfo *p)
 	p->pszAmmo2 = NULL;
 	p->iMaxAmmo2 = -1;
 	p->iMaxClip = WEAPON_NOCLIP;
-	p->iSlot = 3;
+	p->iSlot = 5;
 	p->iPosition = 1;
 	p->iId = m_iId = WEAPON_GAUSS;
 	p->iFlags = 0;
 	p->iWeight = GAUSS_WEIGHT;
+	p->weaponName = "Energie Laser Gun"; 
 
 	return 1;
 }
@@ -134,7 +136,7 @@ void CGauss::Holster( int skiplocal /* = 0 */ )
 {
 	PLAYBACK_EVENT_FULL( FEV_RELIABLE | FEV_GLOBAL, m_pPlayer->edict(), m_usGaussFire, 0.01, (float *)&m_pPlayer->pev->origin, (float *)&m_pPlayer->pev->angles, 0.0, 0.0, 0, 0, 0, 1 );
 	
-	m_pPlayer->m_flNextAttack = UTIL_WeaponTimeBase() + 0.5;
+	m_pPlayer->m_flNextAttack = UTIL_WeaponTimeBase() + 1.0;
 	
 	SendWeaponAnim( GAUSS_HOLSTER );
 	m_fInAttack = 0;
@@ -280,6 +282,9 @@ void CGauss::SecondaryAttack()
 		if ( m_pPlayer->m_flStartCharge < gpGlobals->time - 10 )
 		{
 			// Player charged up too long. Zap him.
+
+			m_pPlayer->m_iWeaponFlash = 768;
+
 			EMIT_SOUND_DYN(ENT(m_pPlayer->pev), CHAN_WEAPON, "weapons/electro4.wav", 1.0, ATTN_NORM, 0, 80 + RANDOM_LONG(0,0x3f));
 			EMIT_SOUND_DYN(ENT(m_pPlayer->pev), CHAN_ITEM,   "weapons/electro6.wav", 1.0, ATTN_NORM, 0, 75 + RANDOM_LONG(0,0x3f));
 			
@@ -344,7 +349,7 @@ void CGauss::StartFire( void )
 			m_pPlayer->pev->velocity = m_pPlayer->pev->velocity - gpGlobals->v_forward * flDamage * 5;
 		}
 
-		if ( !g_pGameRules->IsMultiplayer() )
+		if ( !g_pGameRules->IsMultiplayer() && !g_allowGJump )
 
 		{
 			// in deathmatch, gauss can pop you up into the air. Not in single play.
@@ -353,6 +358,8 @@ void CGauss::StartFire( void )
 #endif
 		// player "shoot" animation
 		m_pPlayer->SetAnimation( PLAYER_ATTACK1 );
+
+		m_pPlayer->m_iWeaponFlash = BRIGHT_GUN_FLASH;
 	}
 
 	// time until aftershock 'static discharge' sound

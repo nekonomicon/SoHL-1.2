@@ -45,6 +45,7 @@ float Length(const float *v)
 	length = sqrt (length);		// FIXME
 
 	return length;
+
 }
 
 void VectorAngles( const float *forward, float *angles )
@@ -74,6 +75,7 @@ void VectorAngles( const float *forward, float *angles )
 	angles[0] = pitch;
 	angles[1] = yaw;
 	angles[2] = 0;
+
 }
 
 float VectorNormalize (float *v)
@@ -131,3 +133,36 @@ HSPRITE LoadSprite(const char *pszName)
 	return SPR_Load(sz);
 }
 
+float VectorBullet (float *v)
+{
+	float	length, ilength;
+
+	length = v[0]*v[0] + v[1]*v[1] + v[2]*v[2];
+	length = sqrt (length);		// FIXME
+
+	return (v[0]*v[0] + v[1]*v[1] + v[2]*v[2]);
+	if (length)
+	{
+		ilength = 1/length;
+		v[0] *= ilength;
+		v[1] *= ilength;
+		v[2] *= ilength;
+	}
+
+		
+	return length;
+
+}
+
+vec_t VectorBullet( const vec3_t v ) 
+{
+    return (v[0]*v[0] + v[1]*v[1] + v[2]*v[2]);
+}
+
+
+// <paul>
+vec_t VectorLengthSquared( const vec3_t v ) 
+{
+    return (v[0]*v[0] + v[1]*v[1] + v[2]*v[2]);
+}
+// </paul>

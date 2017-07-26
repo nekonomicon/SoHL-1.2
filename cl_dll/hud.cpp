@@ -36,6 +36,8 @@ extern client_sprite_t *GetSpriteList(client_sprite_t *pList, const char *psz, i
 
 extern cvar_t *sensitivity;
 cvar_t *cl_lw = NULL;
+cvar_t *cl_rollangle;
+cvar_t *cl_rollspeed;
 
 void ShutdownInput (void);
 
@@ -118,6 +120,81 @@ int __MsgFunc_GameMode(const char *pszName, int iSize, void *pbuf )
 	return gHUD.MsgFunc_GameMode( pszName, iSize, pbuf );
 }
 
+int __MsgFunc_PlayMP3(const char *pszName, int iSize, void *pbuf )
+{
+	return gHUD.MsgFunc_PlayMP3( pszName, iSize, pbuf );
+}
+
+int __MsgFunc_BumpLight(const char *pszName, int iSize, void *pbuf)
+{
+	float rad, strength;
+	Vector pos, col;
+	int moveWithEnt;
+	bool enabled;
+	char* targetname;
+	bool moveWithExtraInfo = false;
+	Vector moveWithPos, moveWithAngles;
+	int style;
+
+	BEGIN_READ(pbuf, iSize);
+
+	int msgtype = READ_BYTE();
+
+	if (msgtype == 0)
+	{
+		// create a new light
+
+		targetname = READ_STRING();
+
+		pos.x = READ_COORD();
+		pos.y = READ_COORD();
+		pos.z = READ_COORD();
+
+		rad = READ_COORD();
+		strength = READ_COORD();
+		col.x = READ_BYTE() / 255.0f;
+		col.y = READ_BYTE() / 255.0f;
+		col.z = READ_BYTE() / 255.0f;
+
+		style = READ_BYTE();
+
+		enabled = (READ_BYTE() ? true : false);
+
+		moveWithEnt = READ_SHORT();
+
+		if (moveWithEnt != -1 && READ_BYTE())
+		{
+			moveWithPos.x = READ_COORD();
+			moveWithPos.y = READ_COORD();
+			moveWithPos.z = READ_COORD();
+
+			moveWithAngles.x = READ_ANGLE();
+			moveWithAngles.y = READ_ANGLE();
+			moveWithAngles.z = READ_ANGLE();
+
+			moveWithExtraInfo = true;
+		}
+
+		g_BumpmapMgr.AddLight(targetname, pos, col, strength, rad, enabled, style, moveWithEnt, moveWithExtraInfo,
+			moveWithPos, moveWithAngles);
+	}
+	else if (msgtype == 1)
+	{
+		// set the enabled/disabled state of an existing one
+
+		targetname = READ_STRING();
+		enabled = (READ_BYTE() ? true : false);
+
+		g_BumpmapMgr.EnableLight(targetname, enabled);
+	}
+	else
+	{
+		gEngfuncs.Con_Printf("BUMPMAPPING: Bogus bump light message type: %i\n", msgtype); // Totally bogus, dude.
+	}
+
+	return 1;
+}
+	
 // TFFree Command Menu
 void __CmdFunc_OpenCommandMenu(void)
 {
@@ -138,6 +215,11 @@ void __CmdFunc_ForceCloseCommandMenu( void )
 
 void __CmdFunc_ToggleServerBrowser( void )
 {
+}
+
+void __CmdFunc_StopMP3( void )
+{
+	gMP3.StopMP3();
 }
 
 // TFFree Command Menu Message Handlers
@@ -211,6 +293,7 @@ int __MsgFunc_AllowSpec(const char *pszName, int iSize, void *pbuf)
 	return 0;
 }
  
+ 
 // This is called every time the DLL is loaded
 void CHud :: Init( void )
 {
@@ -230,6 +313,12 @@ void CHud :: Init( void )
 	HOOK_MESSAGE( AddShine ); //LRC
 	HOOK_MESSAGE( SetSky ); //LRC
 
+	//KILLAR: MP3	
+	if(gMP3.Initialize()){
+		HOOK_MESSAGE( PlayMP3 );
+		HOOK_COMMAND( "stopaudio", StopMP3 );
+	}
+	
 	// TFFree CommandMenu
 	HOOK_COMMAND( "+commandmenu", OpenCommandMenu );
 	HOOK_COMMAND( "-commandmenu", CloseCommandMenu );
@@ -324,6 +413,13 @@ CHud :: ~CHud()
 	delete [] m_rghSprites;
 	delete [] m_rgrcRects;
 	delete [] m_rgszSpriteNames;
+	gMP3.Shutdown();
+	//LRC - clear all shiny surfaces
+	if (m_pShinySurface)
+	{
+		delete m_pShinySurface;
+		m_pShinySurface = NULL;
+	}
 
 	if ( m_pHudList )
 	{
@@ -371,6 +467,14 @@ void CHud :: VidInit( void )
 	
 	m_hsprLogo = 0;	
 	m_hsprCursor = 0;
+	numMirrors = 0;
+
+	//LRC - clear all shiny surfaces
+	if (m_pShinySurface)
+	{
+		delete m_pShinySurface;
+		m_pShinySurface = NULL;
+	}
 
 	if (ScreenWidth < 640)
 		m_iRes = 320;

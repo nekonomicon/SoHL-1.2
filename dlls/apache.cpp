@@ -787,12 +787,28 @@ void CApache :: FireRocket( void )
 	m_iRockets--;
 
 	side = - side;
+
+// Teh_Freak: World Lighting!
+     MESSAGE_BEGIN( MSG_PVS, SVC_TEMPENTITY, vecSrc );
+          WRITE_BYTE( TE_DLIGHT );
+			WRITE_COORD( vecSrc.x );
+			WRITE_COORD( vecSrc.y );
+			WRITE_COORD( vecSrc.z );
+          WRITE_BYTE( 16 );     // radius
+          WRITE_BYTE( 255 );     // R
+          WRITE_BYTE( 255 );     // G
+          WRITE_BYTE( 128 );     // B
+          WRITE_BYTE( 5 );     // life * 10
+          WRITE_BYTE( 32 ); // decay
+     MESSAGE_END();
+// Teh_Freak: World Lighting!
 }
 
 
 
 BOOL CApache :: FireGun( )
 {
+
 	UTIL_MakeAimVectors( pev->angles );
 		
 	Vector posGun, angGun;
@@ -869,6 +885,7 @@ BOOL CApache :: FireGun( )
 			m_pBeam = NULL;
 		}
 	}
+
 	return FALSE;
 }
 

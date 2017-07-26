@@ -1,17 +1,4 @@
-/***
-*
-* NEW file for the Mod "Spirit of Half-Life", by Laurie R. Cheers. (LRC)
-* Created 19/11/00
-*
-***/
-/*
 
-===== alias.cpp ========================================================
-
-Alias entities, replace the less powerful and (IMHO) less intuitive
-trigger_changetarget entity.
-
-*/
 
 #include "extdll.h"
 #include "util.h"

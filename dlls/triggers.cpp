@@ -3399,10 +3399,6 @@ void CChangeLevel :: ChangeLevelNow( CBaseEntity *pActivator )
 
 	ASSERT(!FStrEq(m_szMapName, ""));
 
-	// Don't work in deathmatch
-	if ( g_pGameRules->IsDeathmatch() )
-		return;
-
 	// Some people are firing these multiple times in a frame, disable
 	if ( gpGlobals->time == pev->dmgtime )
 		return;
@@ -3779,6 +3775,56 @@ void CTriggerPush :: Spawn( )
 	UTIL_SetOrigin( this, pev->origin );		// Link into the list
 }
 
+#define SF_REMOVE_ON_FIRE 1
+
+class CTargetFMODAudio : public CPointEntity
+{
+public:
+     void Spawn( void );
+
+     void Use( CBaseEntity *pActivator, CBaseEntity *pCaller,
+          USE_TYPE useType, float value );
+
+     BOOL m_bPlaying;
+};
+
+LINK_ENTITY_TO_CLASS( ambient_fmodstream, CTargetFMODAudio );
+LINK_ENTITY_TO_CLASS( trigger_mp3audio, CTargetFMODAudio );
+
+void CTargetFMODAudio :: Spawn( void )
+{
+     pev->solid = SOLID_NOT;
+     pev->movetype = MOVETYPE_NONE;
+
+     m_bPlaying = FALSE; // start out not playing
+}
+
+void CTargetFMODAudio::Use( CBaseEntity *pActivator, CBaseEntity *pCaller,
+     USE_TYPE useType, float value )
+{
+     char command[64];
+
+     if (!pActivator->IsPlayer()) // activator should be a player
+          return;
+
+     if (!m_bPlaying) // if we're not playing, start playing!
+          m_bPlaying = TRUE;
+     else
+     {     // if we're already playing, stop the mp3
+          m_bPlaying = FALSE;
+          CLIENT_COMMAND(pActivator->edict(), "stopaudio\n");
+          return;
+     }
+
+     // issue the play/loop command
+     sprintf(command, "playaudio %s\n", STRING(pev->message));
+
+     CLIENT_COMMAND(pActivator->edict(), command);
+
+     // remove if set
+     if (FBitSet(pev->spawnflags, SF_REMOVE_ON_FIRE))
+          UTIL_Remove(this);
+}
 
 void CTriggerPush :: Touch( CBaseEntity *pOther )
 {

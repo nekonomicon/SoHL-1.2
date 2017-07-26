@@ -103,6 +103,7 @@ int CMP5::GetItemInfo(ItemInfo *p)
 	p->iFlags = 0;
 	p->iId = m_iId = WEAPON_MP5;
 	p->iWeight = MP5_WEIGHT;
+	p->weaponName = "MP5 submachine gun"; 
 
 	return 1;
 }
@@ -252,7 +253,7 @@ void CMP5::Reload( void )
 	if ( m_pPlayer->ammo_9mm <= 0 )
 		return;
 
-	DefaultReload( MP5_MAX_CLIP, MP5_RELOAD, 1.5 );
+	DefaultReload( MP5_MAX_CLIP, MP5_RELOAD, 3.0 );
 }
 
 

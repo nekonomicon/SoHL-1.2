@@ -223,6 +223,8 @@ redraw the HUD.
 
 int DLLEXPORT HUD_Redraw( float time, int intermission )
 {
+	g_BumpmapMgr.Render(2);
+
 	gHUD.Redraw( time, intermission );
 
 	return 1;

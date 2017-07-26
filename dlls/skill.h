@@ -27,7 +27,18 @@ struct skilldata_t
 
 	float apacheHealth;
 	
+	float apacheblackopHealth;
+	
 	float barneyHealth;
+	float barnielHealth;
+	float kateHealth;
+
+	float plrDmgShockm;
+	float plrDmgShocks;
+	float monDmgShock;
+	float voltigoreDmgBeam;
+
+	float barneysuitHealth;
 
 	float bigmommaHealthFactor;		// Multiply each node's health by this
 	float bigmommaDmgSlash;			// melee attack damage
@@ -54,6 +65,11 @@ struct skilldata_t
 	float hgruntShotgunPellets;
 	float hgruntGrenadeSpeed;
 
+	float hgruntblackopHealth;
+	float hgruntblackopDmgKick;
+	float hgruntblackopShotgunPellets;
+	float hgruntblackopGrenadeSpeed;
+
 	float houndeyeHealth;
 	float houndeyeDmgBlast;
 
@@ -78,6 +94,8 @@ struct skilldata_t
 
 	float scientistHealth;
 
+	float scientistsuitHealth;
+
 	float snarkHealth;
 	float snarkDmgBite;
 	float snarkDmgPop;
@@ -86,6 +104,18 @@ struct skilldata_t
 	float zombieDmgOneSlash;
 	float zombieDmgBothSlash;
 
+	float zombiebarneyHealth;
+	float zombiebarneyDmgOneSlash;
+	float zombiebarneyDmgBothSlash;
+
+	float zombiegusHealth;
+	float zombiegusDmgOneSlash;
+	float zombiegusDmgBothSlash;
+
+	float zombiesoldierHealth;
+	float zombiesoldierDmgOneSlash;
+	float zombiesoldierDmgBothSlash;
+
 	float turretHealth;
 	float miniturretHealth;
 	float sentryHealth;
@@ -93,10 +123,16 @@ struct skilldata_t
 
 // Player Weapons
 	float plrDmgCrowbar;
+	float plrDmgSwort;
 	float plrDmg9MM;
+	float plrDmgEagel;
 	float plrDmg357;
 	float plrDmgMP5;
+	float plrDmgUZI;
+	float plrDmgMinigun;
 	float plrDmgM203Grenade;
+	float plrDmgMP41a;
+	float plrDmgM20341aGrenade;
 	float plrDmgBuckshot;
 	float plrDmgCrossbowClient;
 	float plrDmgCrossbowMonster;
@@ -108,6 +144,8 @@ struct skilldata_t
 	float plrDmgHandGrenade;
 	float plrDmgSatchel;
 	float plrDmgTripmine;
+	float plrDmg50cal;
+	float plrDmgak47;
 	
 // weapons shared by monsters
 	float monDmg9MM;

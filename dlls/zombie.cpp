@@ -31,8 +31,12 @@
 #define	ZOMBIE_AE_ATTACK_RIGHT		0x01
 #define	ZOMBIE_AE_ATTACK_LEFT		0x02
 #define	ZOMBIE_AE_ATTACK_BOTH		0x03
+#define ZOMBIE_AE_CRAB1				0x04
+#define ZOMBIE_AE_CRAB2				0x05
+#define ZOMBIE_AE_CRAB3				0x06
 
 #define ZOMBIE_FLINCH_DELAY			2		// at most one flinch every n secs
+#define ZOMBIE_CRAB					"monster_headcrab" // headcrab jumps from zombie
 
 class CZombie : public CBaseMonster
 {
@@ -43,6 +47,7 @@ public:
 	int  Classify ( void );
 	void HandleAnimEvent( MonsterEvent_t *pEvent );
 	int IgnoreConditions ( void );
+	void SpawnCrab( void ); // headcrab jumps from zombie
 
 	float m_flNextFlinch;
 
@@ -113,6 +118,16 @@ const char *CZombie::pPainSounds[] =
 int	CZombie :: Classify ( void )
 {
 	return m_iClass?m_iClass:CLASS_ALIEN_MONSTER;
+}
+
+//=========================================================
+// Spawn Headcrab - headcrab jumps from zombie
+//=========================================================
+void CZombie :: SpawnCrab( void )
+{
+     CBaseEntity *pCrab = CBaseEntity::Create( ZOMBIE_CRAB, pev->origin, pev->angles, edict() ); // create the crab
+
+     pCrab->pev->spawnflags |= SF_MONSTER_FALL_TO_GROUND; // make the crab fall
 }
 
 //=========================================================
@@ -258,6 +273,32 @@ void CZombie :: HandleAnimEvent( MonsterEvent_t *pEvent )
 		}
 		break;
 
+// headcrab jumps from zombie
+          case ZOMBIE_AE_CRAB1:
+          {
+               ALERT( at_console, "Crab1 spawned!\n" );
+               pev->body = 1; // set the head to a skull
+               SpawnCrab(); // spawn a headcrab
+          }
+          break;
+
+          case ZOMBIE_AE_CRAB2:
+          {
+               ALERT( at_console, "Crab2 spawned!\n" );
+               pev->body = 1; // set the head to a skull
+               SpawnCrab(); // spawn a headcrab
+          }
+          break;
+
+          case ZOMBIE_AE_CRAB3:
+          {
+               ALERT( at_console, "Crab3 spawned!\n" );
+               pev->body = 1; // set the head to a skull
+               SpawnCrab(); // spawn a headcrab
+          }
+          break;
+// headcrab jumps from zombie
+
 		default:
 			CBaseMonster::HandleAnimEvent( pEvent );
 			break;
@@ -279,7 +320,7 @@ void CZombie :: Spawn()
 
 	pev->solid			= SOLID_SLIDEBOX;
 	pev->movetype		= MOVETYPE_STEP;
-	m_bloodColor		= BLOOD_COLOR_GREEN;
+	m_bloodColor		= BLOOD_COLOR_RED;
 	if (pev->health == 0)
 		pev->health			= gSkillData.zombieHealth;
 	pev->view_ofs		= VEC_VIEW;// position of the eyes relative to monster's origin.
@@ -301,6 +342,7 @@ void CZombie :: Precache()
 		PRECACHE_MODEL((char*)STRING(pev->model)); //LRC
 	else
 		PRECACHE_MODEL("models/zombie.mdl");
+		UTIL_PrecacheOther( ZOMBIE_CRAB ); // headcrab jumps from zombie
 
 	for ( i = 0; i < ARRAYSIZE( pAttackHitSounds ); i++ )
 		PRECACHE_SOUND((char *)pAttackHitSounds[i]);
