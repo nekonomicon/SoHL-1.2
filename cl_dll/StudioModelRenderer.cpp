@@ -28,7 +28,7 @@
 
 #include "StudioModelRenderer.h"
 #include "GameStudioModelRenderer.h"
-
+/*
 // Global engine <-> studio model rendering code interface
 engine_studio_api_t IEngineStudio;
 
@@ -42,7 +42,7 @@ __declspec(naked) void HackShadows(void)
         jmp [GL_StudioDrawShadow];
     }
 }
-
+*/
 /////////////////////
 // Implementation of CStudioModelRenderer.h
 
@@ -1736,12 +1736,14 @@ void CStudioModelRenderer::StudioRenderFinal_Hardware( void )
 
 			IEngineStudio.GL_SetRenderMode( rendermode );
 			IEngineStudio.StudioDrawPoints();
+/*
 			if ( CVAR_GET_FLOAT("r_shadows") )
 			{
 			  GL_StudioDrawShadow = (void(*)(void))(((unsigned int)IEngineStudio.GL_StudioDrawShadow)+32);
 			  HackShadows();
 			}
 			else
+*/
 			IEngineStudio.GL_StudioDrawShadow();
 		}
 	}
