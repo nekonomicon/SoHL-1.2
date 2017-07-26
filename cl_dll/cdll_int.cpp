@@ -21,6 +21,7 @@
 #include "hud.h"
 #include "cl_util.h"
 #include "netadr.h"
+//#include "mp3.h"
 
 extern "C"
 {
@@ -29,12 +30,14 @@ extern "C"
 
 #include <string.h>
 #include "interface.h"
+//#include "bumpmap.h"
 
 #include "exportdef.h"
 
 
 cl_enginefunc_t gEngfuncs;
 CHud gHUD;
+//CMP3 gMP3;
 /*hud_player_info_t		g_PlayerInfoList[MAX_PLAYERS+1];	// player info from the engine
 extra_player_info_t		g_PlayerExtraInfo[MAX_PLAYERS+1];	// additional player info sent directly to the client dll
 team_info_t		g_TeamInfo[MAX_TEAMS+1];

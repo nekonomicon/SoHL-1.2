@@ -669,6 +669,10 @@ public:
 	int DrawHudStringReverse( int xpos, int ypos, int iMinX, char *szString, int r, int g, int b );
 	int DrawHudNumberString( int xpos, int ypos, int iMinX, int iNumber, int r, int g, int b );
 	int GetNumWidth(int iNumber, int iFlags);
+	int viewEntityIndex; // for trigger_viewset
+	int viewFlags;
+	struct cl_mirror_s Mirrors[32]; //Limit - 32 mirrors!
+	int numMirrors;
 	int DrawHudStringLen( char *szIt );
 	void DrawDarkRectangle( int x, int y, int wide, int tall );
 
@@ -711,6 +715,9 @@ public:
 	CHudAmmoSecondary	m_AmmoSecondary;
 	CHudTextMessage m_TextMessage;
 	CHudStatusIcons m_StatusIcons;
+// advanced NVG
+	CHudNVG m_NVG;
+// advanced NVG
 	CHudScoreboard  m_Scoreboard;
 	CHudMOTD        m_MOTD;
 	CHudParticle	m_Particle; // (LRC) -- 30/08/02 November235: Particles to Order

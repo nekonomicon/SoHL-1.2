@@ -340,6 +340,13 @@ public:
 	void SetCustomDecalFrames( int nFrames );
 	int GetCustomDecalFrames( void );
 
+	int BloodColor ( void )
+	{
+		if (CVAR_GET_FLOAT( "mp_allowblood" ) != 0)
+			return m_bloodColor;
+		else
+			return DONT_BLEED;
+	}
 	void TabulateAmmo( void );
 
 	float m_flStartCharge;

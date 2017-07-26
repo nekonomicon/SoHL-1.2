@@ -27,8 +27,10 @@
 #include <stdio.h>
 #include "parsemsg.h"
 
+//#include "mp3.h"
 #include "demo.h"
 #include "demo_api.h"
+//#include "bumpmap.h"
 
 cvar_t *hud_textmode;
 float g_hud_text_color[3];
@@ -341,6 +343,8 @@ void CHud :: Init( void )
 	HOOK_MESSAGE( Spectator );
 	HOOK_MESSAGE( AllowSpec );
 
+	HOOK_MESSAGE( BumpLight );
+
 	// VGUI Menus
 	HOOK_MESSAGE( VGUIMenu );
 
@@ -348,8 +352,21 @@ void CHud :: Init( void )
 	CVAR_CREATE( "hud_takesshots", "0", FCVAR_ARCHIVE );		// controls whether or not to automatically take screenshots at the end of a round
 	hud_textmode = CVAR_CREATE( "hud_textmode", "0", FCVAR_ARCHIVE );
 
+	// start glow effect --FragBait0
+	CVAR_CREATE("r_glow", "0", FCVAR_ARCHIVE );
+	//CVAR_CREATE("r_glowmode", "0", FCVAR_ARCHIVE ); //AJH this is now redundant
+	CVAR_CREATE("r_glowstrength", "1", FCVAR_ARCHIVE );
+	CVAR_CREATE("r_glowblur", "4", FCVAR_ARCHIVE );
+	CVAR_CREATE("r_glowdark", "2", FCVAR_ARCHIVE );
+	//CVAR_CREATE("r_shadows", "0", FCVAR_ARCHIVE );
+	// end glow effect
+
+	viewEntityIndex = 0; // trigger_viewset stuff
+	viewFlags = 0;
+
 	m_iLogo = 0;
 	m_iFOV = 0;
+	numMirrors = 0;
 	m_iHUDColor = 0x00FFA000; //255,160,0 -- LRC
 
 	CVAR_CREATE( "zoom_sensitivity_ratio", "1.2", 0 );
@@ -398,9 +415,13 @@ void CHud :: Init( void )
 
 	m_Menu.Init();
 	
-
+// advanced NVG
+	m_NVG.Init();
+// advanced NVG
 
 	MsgFunc_ResetHUD(0, 0, NULL );
+	cl_rollangle = gEngfuncs.pfnRegisterVariable ( "cl_rollangle", "0.65", FCVAR_CLIENTDLL|FCVAR_ARCHIVE );
+	cl_rollspeed = gEngfuncs.pfnRegisterVariable ( "cl_rollspeed", "300", FCVAR_CLIENTDLL|FCVAR_ARCHIVE );
 }
 
 // CHud destructor
@@ -564,6 +585,9 @@ void CHud :: VidInit( void )
 	m_AmmoSecondary.VidInit();
 	m_TextMessage.VidInit();
 	m_StatusIcons.VidInit();
+// advanced NVG
+	m_NVG.VidInit();
+// advanced NVG
 	m_Scoreboard.VidInit();
 	m_MOTD.VidInit();
 	m_Particle.VidInit(); // (LRC) -- 30/08/02 November235: Particles to Order
