@@ -26,6 +26,15 @@ LOCAL_CFLAGS += -DCLIENT_DLL=1
 SRCS=
 SRCS_C=
 SRCS+=./MOTD.cpp
+SRCS+=../dlls/zombie-x/ak47.cpp
+SRCS+=../dlls/zombie-x/auto_shotgun.cpp
+SRCS+=../dlls/zombie-x/eagel.cpp
+SRCS+=../dlls/zombie-x/minigun.cpp
+SRCS+=../dlls/zombie-x/mp41a.cpp
+SRCS+=../dlls/zombie-x/shockgun.cpp
+SRCS+=../dlls/zombie-x/swort.cpp
+SRCS+=../dlls/zombie-x/uzi.cpp
+SRCS+=./zombie-x/nvg.cpp
 SRCS+=../dlls/crossbow.cpp
 SRCS+=../dlls/crowbar.cpp
 SRCS+=../dlls/egon.cpp
