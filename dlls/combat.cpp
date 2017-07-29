@@ -686,7 +686,7 @@ void CBaseMonster :: Killed( entvars_t *pevAttacker, int iGib )
 	
 	m_IdealMonsterState = MONSTERSTATE_DEAD;
 
-	if( pevAttacker )
+/*	if( pevAttacker )
 	{
 	if(GetClassPtr((CBasePlayer *)pevAttacker)->IsPlayer())
 	{
@@ -699,7 +699,7 @@ void CBaseMonster :: Killed( entvars_t *pevAttacker, int iGib )
 	GetClassPtr((CBasePlayer *)pevAttacker->owner)->AddPoints( 1, false );
 	}
 	}
-}
+}*/
 }
 
 //
