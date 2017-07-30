@@ -954,7 +954,7 @@ void StartFrame( void )
    if ((!g_fGameOver) && (respawn_time > 1.0) &&
        (gpGlobals->time >= respawn_time))
    {
-      int index = 0;
+      index = 0;
 
       bot_check_time = gpGlobals->time + 5.0;
 
@@ -1110,7 +1110,7 @@ void StartFrame( void )
             if (IS_DEDICATED_SERVER())
             {
                sprintf(msg, "min_bots set to %d\n", min_bots);
-               printf(msg);
+               printf("%s", msg);
             }
          }
          else if (strcmp(cmd, "max_bots") == 0)
@@ -1123,7 +1123,7 @@ void StartFrame( void )
             if (IS_DEDICATED_SERVER())
             {
                sprintf(msg, "max_bots set to %d\n", max_bots);
-               printf(msg);
+               printf("%s", msg);
             }
          }
          else if (strcmp(cmd, "pause") == 0)
@@ -1137,7 +1137,7 @@ void StartFrame( void )
             ALERT( at_console, msg );
 
             if (IS_DEDICATED_SERVER())
-               printf(msg);
+               printf("%s", msg);
 
             SERVER_COMMAND(server_cmd);
          }

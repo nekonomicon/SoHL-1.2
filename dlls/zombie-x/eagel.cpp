@@ -223,7 +223,7 @@ void CEagel::Reload( void )
 
 	int bUseScope = FALSE;
 
-	int iResult;
+	int iResult = 0;
 
 	if (m_iClip == 0)
 		iResult = DefaultReload( 17, EAGEL_RELOAD, 1.5 );

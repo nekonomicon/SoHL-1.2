@@ -280,7 +280,7 @@ void CHTorch :: GibMonster ( void )
 	{// throw a gun if the grunt has one
 		GetAttachment( 0, vecGunPos, vecGunAngles );
 		
-		CBaseEntity *pGun;
+		CBaseEntity *pGun = NULL;
 		if (FBitSet( pev->weapons, HTORCH_EAGLE ))
 		{
 			pGun = DropItem( "weapon_eagle", vecGunPos, vecGunAngles );
