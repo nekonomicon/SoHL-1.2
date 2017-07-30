@@ -1856,8 +1856,8 @@ void CBasePlayer::Duck( )
 //
 int  CBasePlayer::Classify ( void )
 {
-	if (Illumination() <= g_darklevel)
-	return CLASS_NONE;
+	//if (Illumination() <= g_darklevel)
+	//return CLASS_NONE;
 
 	return CLASS_PLAYER;
 }
