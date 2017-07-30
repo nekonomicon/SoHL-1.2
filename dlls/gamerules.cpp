@@ -332,7 +332,7 @@ void CGameRules::RefreshSkillData ( void )
 
 	// MONSTER WEAPONS
 	gSkillData.monDmg12MM = GetSkillCvar( "sk_12mm_bullet");
-	gSkillData.monDmgMP5 = GetSkillCvar ("sk_9mmAR_bullet" );
+	gSkillData.monDmgMP5 = GetSkillCvar ("sk_plr_9mmAR_bullet" );
 	gSkillData.monDmg9MM = GetSkillCvar( "sk_9mm_bullet");
 
 	// MONSTER HORNET
