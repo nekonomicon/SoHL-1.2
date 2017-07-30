@@ -129,7 +129,7 @@ int __MsgFunc_PlayMP3(const char *pszName, int iSize, void *pbuf )
 
 int __MsgFunc_BumpLight(const char *pszName, int iSize, void *pbuf)
 {
-	float rad, strength;
+/*	float rad, strength;
 	Vector pos, col;
 	int moveWithEnt;
 	bool enabled;
@@ -193,7 +193,7 @@ int __MsgFunc_BumpLight(const char *pszName, int iSize, void *pbuf)
 	{
 		gEngfuncs.Con_Printf("BUMPMAPPING: Bogus bump light message type: %i\n", msgtype); // Totally bogus, dude.
 	}
-
+*/
 	return 1;
 }
 	
@@ -221,7 +221,8 @@ void __CmdFunc_ToggleServerBrowser( void )
 
 void __CmdFunc_StopMP3( void )
 {
-	gMP3.StopMP3();
+	//gMP3.StopMP3();
+	gEngfuncs.pfnPrimeMusicStream( 0, 0 );
 }
 
 // TFFree Command Menu Message Handlers
@@ -316,10 +317,10 @@ void CHud :: Init( void )
 	HOOK_MESSAGE( SetSky ); //LRC
 
 	//KILLAR: MP3	
-	if(gMP3.Initialize()){
+	//if(gMP3.Initialize()){
 		HOOK_MESSAGE( PlayMP3 );
 		HOOK_COMMAND( "stopaudio", StopMP3 );
-	}
+	//}
 	
 	// TFFree CommandMenu
 	HOOK_COMMAND( "+commandmenu", OpenCommandMenu );
@@ -434,7 +435,7 @@ CHud :: ~CHud()
 	delete [] m_rghSprites;
 	delete [] m_rgrcRects;
 	delete [] m_rgszSpriteNames;
-	gMP3.Shutdown();
+	//gMP3.Shutdown();
 	//LRC - clear all shiny surfaces
 	if (m_pShinySurface)
 	{

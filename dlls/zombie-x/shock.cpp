@@ -43,7 +43,7 @@ void CShock::Spawn( )
 	UTIL_SetSize(pev, Vector(0, 0, 0), Vector(0, 0, 0));
 	BlastOn();
 	
-	SetTouch( ShockTouch );
+	SetTouch( &CShock::ShockTouch );
 
 	if ( !FNullEnt(pev->owner) && (pev->owner->v.flags & FL_CLIENT) )
 	{
@@ -236,5 +236,5 @@ void CShock::BlastOn ( void )
 			m_pSprite->pev->flags |= FL_SKIPLOCALHOST;
 //			m_pSprite->pev->owner = m_pPlayer->edict();*/
 
-			EXPORT RelinkBeam();
+			//EXPORT RelinkBeam();
 }

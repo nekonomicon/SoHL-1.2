@@ -5,7 +5,7 @@
 #include	"weapons.h"
 #include	"gamerules.h"
 #include	"game.h"
-#include	"voice_gamemgr.h"
+//#include	"voice_gamemgr.h"
 #include	"teamdm.h"
 
 extern int gmsgScoreInfo;
@@ -62,15 +62,15 @@ void CRulesTeamDM :: ChangePlayerTeam( CBasePlayer *pPlayer, const char *pTeamNa
 	MESSAGE_END();
 }
 
-extern int gmsgVGUIMenu;
+//extern int gmsgVGUIMenu;
 extern void respawn( entvars_t* pev, BOOL fCopyCorpse );
-extern CVoiceGameMgr g_VoiceGameMgr;
+//extern CVoiceGameMgr g_VoiceGameMgr;
 
 BOOL CRulesTeamDM :: ClientCommand( CBasePlayer *pPlayer, const char *pcmd )
 {
 	// UPDATE: this gets rid of the "vban" and "vModEnable" warnings in the console
 
-	if ( g_VoiceGameMgr.ClientCommand( pPlayer, pcmd ) )
+	/*if ( g_VoiceGameMgr.ClientCommand( pPlayer, pcmd ) )
 		return TRUE;
 
 	if ( FStrEq( pcmd, "changeteam" ) )
@@ -81,7 +81,7 @@ BOOL CRulesTeamDM :: ClientCommand( CBasePlayer *pPlayer, const char *pcmd )
 
 		return TRUE;
 	}	
-
+*/
 	if ( FStrEq( pcmd, "jointeam" ) )
 	{
 		if ( CMD_ARGC( ) > 1 )
@@ -378,7 +378,7 @@ void CRulesTeamDM :: Think ( void )
 	int frags_remaining = 0;
 	int time_remaining = 0;
 
-	g_VoiceGameMgr.Update(gpGlobals->frametime);
+	//g_VoiceGameMgr.Update(gpGlobals->frametime);
 
 	if ( g_fGameOver )	// someone else quit the game already
 	{

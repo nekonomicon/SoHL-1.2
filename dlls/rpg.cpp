@@ -253,7 +253,7 @@ pev->owner = NULL; // can't traceline attack owner if this is set
 
 pev->effects |= EF_NODRAW;//stop showing the model!!
 pev->velocity = g_vecZero;//set velocity to "0"
-SetThink( AfterGlow );
+SetThink( &CRpgRocket::AfterGlow );
 pev->nextthink = gpGlobals->time +.7;//set next think into future
 } 
 

@@ -35,8 +35,6 @@ DECLARE_MESSAGE(m_Health, Damage )
 #define PAIN_NAME "sprites/%d_pain.spr"
 #define DAMAGE_NAME "sprites/%d_dmg.spr"
 
-extern int isdead;
-
 int giDmgHeight, giDmgWidth;
 
 int giDmgFlags[NUM_DMG_TYPES] = 
@@ -184,8 +182,6 @@ int CHudHealth::Draw(float flTime)
 	int r, g, b;
 	int a = 0, x, y;
 	int HealthWidth;
-
-	isdead = m_iHealth; //we initialize the var isdead that is the same as the m_iHealth number
 
 	if ( (gHUD.m_iHideHUDDisplay & HIDEHUD_HEALTH) || gEngfuncs.IsSpectateOnly() )
 		return 1;

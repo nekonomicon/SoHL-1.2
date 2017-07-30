@@ -49,8 +49,8 @@ void CShockball::Spawn( )
 	m_vecForward = gpGlobals->v_forward;
 	m_vecUp = gpGlobals->v_up;
 	
-	SetThink( FlyThink );
-	SetTouch( ShockballTouch );
+	SetThink( &CShockball::FlyThink );
+	SetTouch( &CShockball::ShockballTouch );
 	pev->nextthink = gpGlobals->time + 0.1;
 	ResetSequenceInfo( );
 }

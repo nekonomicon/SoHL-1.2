@@ -28,10 +28,10 @@
 
 #include "StudioModelRenderer.h"
 #include "GameStudioModelRenderer.h"
-/*
+
 // Global engine <-> studio model rendering code interface
 engine_studio_api_t IEngineStudio;
-
+/*
 void (*GL_StudioDrawShadow)(void);
 
 __declspec(naked) void HackShadows(void)

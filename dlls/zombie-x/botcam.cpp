@@ -72,7 +72,7 @@ void CBotCam::Spawn( void )
 
    SetTouch( NULL );
 
-   SetThink( IdleThink );
+   SetThink( &CBotCam::IdleThink );
 
    pev->nextthink = gpGlobals->time + 0.1;
 }

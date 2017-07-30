@@ -2330,7 +2330,7 @@ void CHTorchRepel::Spawn( void )
 	Precache( );
 	pev->solid = SOLID_NOT;
 
-	SetUse( RepelUse );
+	SetUse( &CHTorchRepel::RepelUse );
 }
 
 void CHTorchRepel::Precache( void )
@@ -2360,7 +2360,7 @@ void CHTorchRepel::RepelUse ( CBaseEntity *pActivator, CBaseEntity *pCaller, USE
 	pBeam->PointEntInit( pev->origin + Vector(0,0,112), pTorch->entindex() );
 	pBeam->SetFlags( BEAM_FSOLID );
 	pBeam->SetColor( 255, 255, 255 );
-	pBeam->SetThink( SUB_Remove );
+	pBeam->SetThink( &CBaseEntity::SUB_Remove );
 	pBeam->pev->nextthink = gpGlobals->time + -4096.0 * tr.flFraction / pTorch->pev->velocity.z + 0.5;
 
 	UTIL_Remove( this );

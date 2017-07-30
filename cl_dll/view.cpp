@@ -68,7 +68,7 @@ void VectorAngles( const float *forward, float *angles );
 
 extern engine_studio_api_t IEngineStudio;
 
-#include "bumpmap.h"
+//#include "bumpmap.h"
 
 /*
 The view is allowed to move slightly from it's true position for bobbing,
@@ -791,14 +791,14 @@ void V_CalcNormalRefdef ( struct ref_params_s *pparams )
 	v_origin = pparams->vieworg;
 
 	// FGW
-	if (CVAR_GET_FLOAT("bm_enable") != 0 && !g_BumpmapMgr.m_bFailedInit)
-		pparams->nextView = 1;
+	//if (CVAR_GET_FLOAT("bm_enable") != 0 && !g_BumpmapMgr.m_bFailedInit)
+		//pparams->nextView = 1;
 	}
 	else
 		pparams->nextView = 0;
 
 	// FGW
-	g_BumpmapMgr.Render(1 - pparams->nextView);
+	//g_BumpmapMgr.Render(1 - pparams->nextView);
 
 	//LRC
 	RenderFog();

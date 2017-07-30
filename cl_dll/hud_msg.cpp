@@ -20,7 +20,7 @@
 #include "cl_util.h"
 #include "parsemsg.h"
 #include "r_efx.h"
-#include "mp3.h"
+//#include "mp3.h"
 
 //LRC - the fogging fog
 float g_fFogColor[3];
@@ -251,7 +251,8 @@ int CHud :: MsgFunc_PlayMP3( const char *pszName, int iSize, void *pbuf ) //AJH 
 {
 	BEGIN_READ( pbuf, iSize );
 
-	gMP3.PlayMP3( READ_STRING() );
+	//gMP3.PlayMP3( READ_STRING() );
+	gEngfuncs.pfnPrimeMusicStream( READ_STRING(), 1 );
 
 	return 1;
 }

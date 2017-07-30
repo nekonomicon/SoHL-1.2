@@ -3199,6 +3199,7 @@ ReturnTeamSpot:
 
 void CBasePlayer::Spawn( void )
 {
+	int i;
 //	ALERT(at_console, "PLAYER spawns at time %f\n", gpGlobals->time);
 
 	m_flNextDecalTime    = 0;// let this player decal as soon as he spawns.
@@ -3282,7 +3283,7 @@ void CBasePlayer::Spawn( void )
 	m_iClientBattery = -1;
 
 	// reset all ammo values to 0
-	for ( int i = 0; i < MAX_AMMO_SLOTS; i++ )
+	for ( i = 0; i < MAX_AMMO_SLOTS; i++ )
 	{
 		m_rgAmmo[i] = 0;
 		m_rgAmmoLast[i] = 0;  // client ammo values also have to be reset  (the death hud clear messages does on the client side)
