@@ -573,3 +573,7 @@ int GetStdLightStyle (int iStyle); //LRC- declared here so it can be used by eve
 									// needs to deal with the standard lightstyles.
 // LRC- for aliases and groups
 CBaseEntity* UTIL_FollowReference( CBaseEntity* pStartEntity, const char* szName );
+
+BOOL IsCurrentMap( const char* mapname );
+BOOL IsCurrentMapPartOfCampaignOrTraining();
+float GetIdealRenderDistance( float defaultDistance );

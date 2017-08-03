@@ -917,6 +917,9 @@ public:
 		return FALSE;
 #endif
 	}
+
+	BOOL HasInfiniteAmmo();
+	BOOL IsUseable();
 };
 
 class CSatchel : public CBasePlayerWeapon

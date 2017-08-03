@@ -270,6 +270,13 @@ BOOL CBaseMonster :: HasHumanGibs( void )
 {
 	int myClass = Classify();
 
+	// Only reapers.
+	if( myClass == CLASS_ALIEN_MONSTER && !FClassnameIs( pev, "monster_bigmomma" ) && !FClassnameIs( pev, "monster_houndeye" ) )
+		return TRUE;
+
+	// Witches are humans and should use human gibs.
+	if( myClass == CLASS_ALIEN_MILITARY && FClassnameIs( pev, "monster_alien_slave" ) )
+		return TRUE;
 	// these types of monster don't use gibs
 	if ( myClass == CLASS_NONE || myClass == CLASS_MACHINE ||
 		( myClass == CLASS_PLAYER_BIOWEAPON && myClass == CLASS_ALIEN_BIOWEAPON ) )
@@ -297,6 +304,13 @@ BOOL CBaseMonster :: HasAlienGibs( void )
 {
 	int myClass = Classify();
 
+	// Big momma pumpkin and martians should use alien gibs.
+	if( myClass == CLASS_ALIEN_MONSTER && ( FClassnameIs( pev, "monster_bigmomma" ) || FClassnameIs( pev, "monster_houndeye" ) ) )
+		return TRUE;
+
+	// Witches are humans and should not use alien gibs.
+	if( myClass == CLASS_ALIEN_MILITARY && !FClassnameIs( pev, "monster_alien_slave" ) )
+		return TRUE;
 	// these types of monster don't use gibs
 	if ( myClass == CLASS_NONE || myClass == CLASS_MACHINE ||
 		( myClass == CLASS_PLAYER_BIOWEAPON && myClass == CLASS_ALIEN_BIOWEAPON ) )
@@ -305,7 +319,7 @@ BOOL CBaseMonster :: HasAlienGibs( void )
 	}
 	else
 	{
-		return (this->m_bloodColor == BLOOD_COLOR_GREEN);
+		return (this->m_bloodColor == BLOOD_COLOR_YELLOW);
 	}
 
 //	int myClass = Classify();

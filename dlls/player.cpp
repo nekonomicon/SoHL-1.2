@@ -35,6 +35,7 @@
 #include "gamerules.h"
 #include "game.h"
 #include "hltv.h"
+#include "shall_map_fixes.h"
 #include "effects.h" //LRC
 #include "movewith.h" //LRC
 
@@ -125,6 +126,8 @@ TYPEDESCRIPTION	CBasePlayer::m_playerSaveData[] =
 	DEFINE_FIELD( CBasePlayer, m_pTank, FIELD_EHANDLE ), // NB: this points to a CFuncTank*Controls* now. --LRC
 	DEFINE_FIELD( CBasePlayer, m_iHideHUD, FIELD_INTEGER ),
 	DEFINE_FIELD( CBasePlayer, m_iFOV, FIELD_INTEGER ),
+
+	DEFINE_FIELD( CBasePlayer, m_bWasTouchingTriggerPushBeforeFinalBattle, FIELD_BOOLEAN ),
 
 	//LRC
 //	DEFINE_FIELD( CBasePlayer, m_iFogStartDist, FIELD_INTEGER ),
@@ -472,6 +475,14 @@ void CBasePlayer :: TraceAttack( entvars_t *pevAttacker, float flDamage, Vector 
 
 int CBasePlayer :: TakeDamage( entvars_t *pevInflictor, entvars_t *pevAttacker, float flDamage, int bitsDamageType )
 {
+	// If players are descending to the final battle,
+	// prevent them from taking damage.
+	if( m_bWasTouchingTriggerPushBeforeFinalBattle )
+	{
+		m_bWasTouchingTriggerPushBeforeFinalBattle = FALSE;
+		return 0;
+	}
+
 	// have suit diagnose the problem - ie: report damage type
 	int bitsDamage = bitsDamageType;
 	int ffound = TRUE;
@@ -3050,6 +3061,12 @@ void CBasePlayer::Spawn( void )
 	m_lastx = m_lasty = 0;
 	
 	m_flNextChatTime = gpGlobals->time;
+
+	// On 2001 version level, give the the suit to player.
+	if( IsCurrentMap( "trick" ) )
+		pev->weapons |= ( 1 << WEAPON_SUIT );
+
+	m_bWasTouchingTriggerPushBeforeFinalBattle = FALSE;
 
 	g_pGameRules->PlayerSpawn( this );
 }

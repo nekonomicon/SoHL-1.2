@@ -534,7 +534,8 @@ void CISlave :: Spawn()
 
 	pev->solid			= SOLID_SLIDEBOX;
 	pev->movetype		= MOVETYPE_STEP;
-	m_bloodColor		= BLOOD_COLOR_GREEN;
+	// Witches should use red blood color.
+	m_bloodColor		= BLOOD_COLOR_RED;
 	pev->effects		= 0;
 	if (pev->health == 0)
 		pev->health			= gSkillData.slaveHealth;

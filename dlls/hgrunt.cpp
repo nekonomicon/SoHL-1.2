@@ -147,6 +147,7 @@ public:
 	void Shotgun ( void );
 	void PrescheduleThink ( void );
 	void GibMonster( void );
+	BOOL ShouldGibMonster( int iGib );
 	void SpeakSentence( void );
 
 	int	Save( CSave &save ); 
@@ -162,6 +163,7 @@ public:
 
 	BOOL FOkToSpeak( void );
 	void JustSpoke( void );
+	BOOL IsWhiteLadySpirit();
 
 	CUSTOM_SCHEDULES;
 	static TYPEDESCRIPTION m_SaveData[];
@@ -312,6 +314,12 @@ void CHGrunt :: GibMonster ( void )
 		}
 	}
 
+	if( IsWhiteLadySpirit() )
+	{
+		// White lady spirits should not be gibbed.
+		FadeMonster();
+		return;
+	}
 	CBaseMonster :: GibMonster();
 }
 
@@ -333,6 +341,9 @@ int CHGrunt :: ISoundMask ( void )
 //=========================================================
 BOOL CHGrunt :: FOkToSpeak( void )
 {
+	// Scarecrows; werewolves; white Ladies; hell minions;
+	// should not use team radio.
+	return FALSE;
 // if someone else is talking, don't speak
 	if (gpGlobals->time <= CTalkMonster::g_talkWaitTime)
 		return FALSE;
@@ -446,6 +457,9 @@ BOOL CHGrunt :: CheckMeleeAttack1 ( float flDot, float flDist )
 //=========================================================
 BOOL CHGrunt :: CheckRangeAttack1 ( float flDot, float flDist )
 {
+	// Scarecrows; werewolves; white Ladies; hell minions;
+	// cannot use range attacks.
+	return FALSE;
 	if ( !HasConditions( bits_COND_ENEMY_OCCLUDED ) && flDist <= 2048 && flDot >= 0.5 && NoFriendlyFire() )
 	{
 		TraceResult	tr;
@@ -476,6 +490,9 @@ BOOL CHGrunt :: CheckRangeAttack1 ( float flDot, float flDist )
 //=========================================================
 BOOL CHGrunt :: CheckRangeAttack2 ( float flDot, float flDist )
 {
+	// Scarecrows; werewolves; white Ladies; hell minions;
+	// cannot use range attacks.
+	return FALSE;
 	if (! FBitSet(pev->weapons, (HGRUNT_HANDGRENADE | HGRUNT_GRENADELAUNCHER)))
 	{
 		return FALSE;
@@ -606,23 +623,8 @@ BOOL CHGrunt :: CheckRangeAttack2 ( float flDot, float flDist )
 //=========================================================
 void CHGrunt :: TraceAttack( entvars_t *pevAttacker, float flDamage, Vector vecDir, TraceResult *ptr, int bitsDamageType)
 {
-	// check for helmet shot
-	if (ptr->iHitgroup == 11)
-	{
-		// make sure we're wearing one
-		if (GetBodygroup( 1 ) == HEAD_GRUNT && (bitsDamageType & (DMG_BULLET | DMG_SLASH | DMG_BLAST | DMG_CLUB)))
-		{
-			// absorb damage
-			flDamage -= 20;
-			if (flDamage <= 0)
-			{
-				UTIL_Ricochet( ptr->vecEndPos, 1.0 );
-				flDamage = 0.01;
-			}
-		}
-		// it's head shot anyways
-		ptr->iHitgroup = HITGROUP_HEAD;
-	}
+	// Scarecrows; werewolves; white Ladies; hell minions;
+	// do not wear armors or helmets.
 	CSquadMonster::TraceAttack( pevAttacker, flDamage, vecDir, ptr, bitsDamageType );
 }
 
@@ -1033,11 +1035,16 @@ void CHGrunt :: Spawn()
 
 	pev->solid			= SOLID_SLIDEBOX;
 	pev->movetype		= MOVETYPE_STEP;
-	m_bloodColor		= BLOOD_COLOR_RED;
+	if( IsWhiteLadySpirit() )
+		m_bloodColor		= DONT_BLEED;
+	else
+		m_bloodColor		= BLOOD_COLOR_RED;
 	pev->effects		= 0;
 	if (pev->health == 0)
 		pev->health			= gSkillData.hgruntHealth;
-	m_flFieldOfView		= 0.2;// indicates the width of this monster's forward view cone ( as a dotproduct result )
+	// Allow Scarecrows; werewolves; white Ladies; hell minions;
+	// are allowed to see 360 degrees (+180/-180).
+	m_flFieldOfView		= -1.0f;// indicates the width of this monster's forward view cone ( as a dotproduct result )
 	m_MonsterState		= MONSTERSTATE_NONE;
 	m_flNextGrenadeCheck = gpGlobals->time + 1;
 	m_flNextPainTime	= gpGlobals->time;
@@ -1972,7 +1979,7 @@ void CHGrunt :: SetActivity ( Activity NewActivity )
 			ALERT( at_debug, "No grenades available. "); // flow into the error message we get at the end...
 		}
 		break;
-	case ACT_RUN:
+	/*case ACT_RUN:
 		if ( pev->health <= HGRUNT_LIMP_HEALTH )
 		{
 			// limp!
@@ -1982,7 +1989,7 @@ void CHGrunt :: SetActivity ( Activity NewActivity )
 		{
 			iSequence = LookupActivity ( NewActivity );
 		}
-		break;
+		break;*/
 	case ACT_WALK:
 		if ( pev->health <= HGRUNT_LIMP_HEALTH )
 		{
@@ -2033,248 +2040,41 @@ void CHGrunt :: SetActivity ( Activity NewActivity )
 //=========================================================
 Schedule_t *CHGrunt :: GetSchedule( void )
 {
-
-	// clear old sentence
-	m_iSentence = HGRUNT_SENT_NONE;
-
-	// flying? If PRONE, barnacle has me. IF not, it's assumed I am rapelling. 
-	if ( pev->movetype == MOVETYPE_FLY && m_MonsterState != MONSTERSTATE_PRONE )
+	if( m_MonsterState == MONSTERSTATE_PRONE )
 	{
-		if (pev->flags & FL_ONGROUND)
-		{
-			// just landed
-			pev->movetype = MOVETYPE_STEP;
-			return GetScheduleOfType ( SCHED_GRUNT_REPEL_LAND );
-		}
-		else
-		{
-			// repel down a rope, 
-			if ( m_MonsterState == MONSTERSTATE_COMBAT )
-				return GetScheduleOfType ( SCHED_GRUNT_REPEL_ATTACK );
-			else
-				return GetScheduleOfType ( SCHED_GRUNT_REPEL );
-		}
+		return CSquadMonster::GetSchedule();
 	}
 
-	// grunts place HIGH priority on running away from danger sounds.
-	if ( HasConditions(bits_COND_HEAR_SOUND) )
+	switch( m_MonsterState )
 	{
-		CSound *pSound;
-		pSound = PBestSound();
-
-		ASSERT( pSound != NULL );
-		if ( pSound)
+	case MONSTERSTATE_IDLE:
 		{
-			if (pSound->m_iType & bits_SOUND_DANGER)
-			{
-				// dangerous sound nearby!
-				
-				//!!!KELLY - currently, this is the grunt's signal that a grenade has landed nearby,
-				// and the grunt should find cover from the blast
-				// good place for "SHIT!" or some other colorful verbal indicator of dismay.
-				// It's not safe to play a verbal order here "Scatter", etc cause 
-				// this may only affect a single individual in a squad. 
-				
-				if (FOkToSpeak())
-				{
-					SENTENCEG_PlayRndSz( ENT(pev), "HG_GREN", HGRUNT_SENTENCE_VOLUME, GRUNT_ATTN, 0, m_voicePitch);
-					JustSpoke();
-				}
-				return GetScheduleOfType( SCHED_TAKE_COVER_FROM_BEST_SOUND );
-			}
-			/*
-			if (!HasConditions( bits_COND_SEE_ENEMY ) && ( pSound->m_iType & (bits_SOUND_PLAYER | bits_SOUND_COMBAT) ))
-			{
-				MakeIdealYaw( pSound->m_vecOrigin );
-			}
-			*/
+			return GetScheduleOfType( SCHED_IDLE_STAND );
 		}
-	}
-	switch	( m_MonsterState )
-	{
+		break;
+	case MONSTERSTATE_ALERT:
+		{
+			return GetScheduleOfType( SCHED_ALERT_STAND );
+		}
+		break;
 	case MONSTERSTATE_COMBAT:
 		{
-			// dead enemy
-			if ( HasConditions( bits_COND_ENEMY_DEAD ) )
+			if( HasConditions( bits_COND_SEE_ENEMY ) && !HasConditions( bits_COND_ENEMY_OCCLUDED ) )
 			{
-				// call base class, all code to handle dead enemies is centralized there.
-				return CBaseMonster :: GetSchedule();
+				if( HasConditions( bits_COND_CAN_MELEE_ATTACK1 ) )
+				{
+					return GetScheduleOfType( SCHED_MELEE_ATTACK1 );
+				}
+				if( HasConditions( bits_COND_CAN_MELEE_ATTACK2 ) )
+				{
+					return GetScheduleOfType( SCHED_MELEE_ATTACK2 );
+				}
 			}
 
-			// new enemy
-			if ( HasConditions(bits_COND_NEW_ENEMY) )
-			{
-				if ( InSquad() )
-				{
-					MySquadLeader()->m_fEnemyEluded = FALSE;
-
-					if ( !IsLeader() )
-					{
-						return GetScheduleOfType ( SCHED_TAKE_COVER_FROM_ENEMY );
-					}
-					else 
-					{
-						ALERT(at_aiconsole,"leader spotted player!\n");
-						//!!!KELLY - the leader of a squad of grunts has just seen the player or a 
-						// monster and has made it the squad's enemy. You
-						// can check pev->flags for FL_CLIENT to determine whether this is the player
-						// or a monster. He's going to immediately start
-						// firing, though. If you'd like, we can make an alternate "first sight" 
-						// schedule where the leader plays a handsign anim
-						// that gives us enough time to hear a short sentence or spoken command
-						// before he starts pluggin away.
-						if (FOkToSpeak())// && RANDOM_LONG(0,1))
-						{
-							if ((m_hEnemy != NULL) && m_hEnemy->IsPlayer())
-								// player
-								SENTENCEG_PlayRndSz( ENT(pev), "HG_ALERT", HGRUNT_SENTENCE_VOLUME, GRUNT_ATTN, 0, m_voicePitch);
-							else if ((m_hEnemy != NULL) &&
-									(m_hEnemy->Classify() != CLASS_PLAYER_ALLY) && 
-									(m_hEnemy->Classify() != CLASS_HUMAN_PASSIVE) && 
-									(m_hEnemy->Classify() != CLASS_MACHINE))
-								// monster
-								SENTENCEG_PlayRndSz( ENT(pev), "HG_MONST", HGRUNT_SENTENCE_VOLUME, GRUNT_ATTN, 0, m_voicePitch);
-
-							JustSpoke();
-						}
-						
-						if ( HasConditions ( bits_COND_CAN_RANGE_ATTACK1 ) )
-						{
-							return GetScheduleOfType ( SCHED_GRUNT_SUPPRESS );
-						}
-						else
-						{
-							return GetScheduleOfType ( SCHED_GRUNT_ESTABLISH_LINE_OF_FIRE );
-						}
-					}
-				}
-			}
-			// no ammo
-			else if ( HasConditions ( bits_COND_NO_AMMO_LOADED ) )
-			{
-				//!!!KELLY - this individual just realized he's out of bullet ammo. 
-				// He's going to try to find cover to run to and reload, but rarely, if 
-				// none is available, he'll drop and reload in the open here. 
-				return GetScheduleOfType ( SCHED_GRUNT_COVER_AND_RELOAD );
-			}
-			
-			// damaged just a little
-			else if ( HasConditions( bits_COND_LIGHT_DAMAGE ) )
-			{
-				// if hurt:
-				// 90% chance of taking cover
-				// 10% chance of flinch.
-				int iPercent = RANDOM_LONG(0,99);
-
-				if ( iPercent <= 90 && m_hEnemy != NULL )
-				{
-					// only try to take cover if we actually have an enemy!
-
-					//!!!KELLY - this grunt was hit and is going to run to cover.
-					if (FOkToSpeak()) // && RANDOM_LONG(0,1))
-					{
-						//SENTENCEG_PlayRndSz( ENT(pev), "HG_COVER", HGRUNT_SENTENCE_VOLUME, GRUNT_ATTN, 0, m_voicePitch);
-						m_iSentence = HGRUNT_SENT_COVER;
-						//JustSpoke();
-					}
-					return GetScheduleOfType( SCHED_TAKE_COVER_FROM_ENEMY );
-				}
-				else
-				{
-					return GetScheduleOfType( SCHED_SMALL_FLINCH );
-				}
-			}
-			// can kick
-			else if ( HasConditions ( bits_COND_CAN_MELEE_ATTACK1 ) )
-			{
-				return GetScheduleOfType ( SCHED_MELEE_ATTACK1 );
-			}
-			// can grenade launch
-
-			else if ( FBitSet( pev->weapons, HGRUNT_GRENADELAUNCHER) && HasConditions ( bits_COND_CAN_RANGE_ATTACK2 ) && OccupySlot( bits_SLOTS_HGRUNT_GRENADE ) )
-			{
-				// shoot a grenade if you can
-				return GetScheduleOfType( SCHED_RANGE_ATTACK2 );
-			}
-			// can shoot
-			else if ( HasConditions ( bits_COND_CAN_RANGE_ATTACK1 ) )
-			{
-				if ( InSquad() )
-				{
-					// if the enemy has eluded the squad and a squad member has just located the enemy
-					// and the enemy does not see the squad member, issue a call to the squad to waste a 
-					// little time and give the player a chance to turn.
-					if ( MySquadLeader()->m_fEnemyEluded && !HasConditions ( bits_COND_ENEMY_FACING_ME ) )
-					{
-						MySquadLeader()->m_fEnemyEluded = FALSE;
-						return GetScheduleOfType ( SCHED_GRUNT_FOUND_ENEMY );
-					}
-				}
-
-				if ( OccupySlot ( bits_SLOTS_HGRUNT_ENGAGE ) )
-				{
-					// try to take an available ENGAGE slot
-					return GetScheduleOfType( SCHED_RANGE_ATTACK1 );
-				}
-				else if ( HasConditions ( bits_COND_CAN_RANGE_ATTACK2 ) && OccupySlot( bits_SLOTS_HGRUNT_GRENADE ) )
-				{
-					// throw a grenade if can and no engage slots are available
-					return GetScheduleOfType( SCHED_RANGE_ATTACK2 );
-				}
-				else
-				{
-					// hide!
-					return GetScheduleOfType( SCHED_TAKE_COVER_FROM_ENEMY );
-				}
-			}
-			// can't see enemy
-			else if ( HasConditions( bits_COND_ENEMY_OCCLUDED ) )
-			{
-				if ( HasConditions( bits_COND_CAN_RANGE_ATTACK2 ) && OccupySlot( bits_SLOTS_HGRUNT_GRENADE ) )
-				{
-					//!!!KELLY - this grunt is about to throw or fire a grenade at the player. Great place for "fire in the hole"  "frag out" etc
-					if (FOkToSpeak())
-					{
-						SENTENCEG_PlayRndSz( ENT(pev), "HG_THROW", HGRUNT_SENTENCE_VOLUME, GRUNT_ATTN, 0, m_voicePitch);
-						JustSpoke();
-					}
-					return GetScheduleOfType( SCHED_RANGE_ATTACK2 );
-				}
-				else if ( OccupySlot( bits_SLOTS_HGRUNT_ENGAGE ) )
-				{
-					//!!!KELLY - grunt cannot see the enemy and has just decided to 
-					// charge the enemy's position. 
-					if (FOkToSpeak())// && RANDOM_LONG(0,1))
-					{
-						//SENTENCEG_PlayRndSz( ENT(pev), "HG_CHARGE", HGRUNT_SENTENCE_VOLUME, GRUNT_ATTN, 0, m_voicePitch);
-						m_iSentence = HGRUNT_SENT_CHARGE;
-						//JustSpoke();
-					}
-
-					return GetScheduleOfType( SCHED_GRUNT_ESTABLISH_LINE_OF_FIRE );
-				}
-				else
-				{
-					//!!!KELLY - grunt is going to stay put for a couple seconds to see if
-					// the enemy wanders back out into the open, or approaches the
-					// grunt's covered position. Good place for a taunt, I guess?
-					if (FOkToSpeak() && RANDOM_LONG(0,1))
-					{
-						SENTENCEG_PlayRndSz( ENT(pev), "HG_TAUNT", HGRUNT_SENTENCE_VOLUME, GRUNT_ATTN, 0, m_voicePitch);
-						JustSpoke();
-					}
-					return GetScheduleOfType( SCHED_STANDOFF );
-				}
-			}
-			
-			if ( HasConditions( bits_COND_SEE_ENEMY ) && !HasConditions ( bits_COND_CAN_RANGE_ATTACK1 ) )
-			{
-				return GetScheduleOfType ( SCHED_GRUNT_ESTABLISH_LINE_OF_FIRE );
-			}
+			return GetScheduleOfType( SCHED_CHASE_ENEMY );
 		}
-		break;
 	default:
-		break;
+		return CSquadMonster::GetSchedule();
 	}
 	
 	// no special cases here, call the base class
@@ -2427,6 +2227,14 @@ Schedule_t* CHGrunt :: GetScheduleOfType ( int Type )
 		{
 			return &slGruntRepelLand[ 0 ];
 		}
+	// Scarecrows; werewolves; white Ladies; hell minions;
+	// should not use flinch schedule.
+	case SCHED_ALERT_SMALL_FLINCH:
+	case SCHED_ALERT_BIG_FLINCH:
+	case SCHED_SMALL_FLINCH:
+		{
+			return GetScheduleOfType( SCHED_COMBAT_STAND );
+		}
 	default:
 		{
 			return CSquadMonster :: GetScheduleOfType ( Type );
@@ -2434,6 +2242,20 @@ Schedule_t* CHGrunt :: GetScheduleOfType ( int Type )
 	}
 }
 
+BOOL CHGrunt::ShouldGibMonster( int iGib )
+{
+	// Gibbing is allowed if the current model
+	// is not a white lady (spirit).
+	if( IsWhiteLadySpirit() )
+		return FALSE;
+
+	return CSquadMonster::ShouldGibMonster( iGib );
+}
+
+BOOL CHGrunt::IsWhiteLadySpirit()
+{
+	return GetBodygroup( HEAD_GROUP ) == HEAD_GRUNT;
+}
 
 //=========================================================
 // CHGruntRepel - when triggered, spawns a monster_human_grunt

@@ -90,6 +90,7 @@ public:
 	int TakeDamage( entvars_t *pevInflictor, entvars_t *pevAttacker, float flDamage, int bitsDamageType );
 	void Killed( entvars_t *pevAttacker, int iGib );
 	void GibMonster( void );
+	BOOL ShouldGibMonster( int iGib ) { return FALSE; } // Ghosts should not gib.
 
 	CSprite *m_pBall[2];	// hand balls
 	int m_iBall[2];			// how bright it should be
@@ -228,7 +229,8 @@ void CController::GibMonster( void )
 		UTIL_Remove( m_pBall[1] );
 		m_pBall[1] = NULL;
 	}
-	CSquadMonster::GibMonster( );
+	// Ghosts do not gib.
+	FadeMonster();
 }
 
 
@@ -383,7 +385,7 @@ void CController :: Spawn()
 	pev->solid			= SOLID_SLIDEBOX;
 	pev->movetype		= MOVETYPE_FLY;
 	pev->flags			|= FL_FLY;
-	m_bloodColor		= BLOOD_COLOR_GREEN;
+	m_bloodColor		= DONT_BLEED;
 	if (pev->health == 0)
 		pev->health			= gSkillData.controllerHealth;
 	pev->view_ofs		= Vector( 0, 0, -2 );// position of the eyes relative to monster's origin.

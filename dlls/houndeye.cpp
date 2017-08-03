@@ -332,7 +332,8 @@ void CHoundeye :: Spawn()
 		SET_MODEL(ENT(pev), STRING(pev->model)); //LRC
 	else
 		SET_MODEL(ENT(pev), "models/houndeye.mdl");
-	UTIL_SetSize(pev, Vector ( -16, -16, 0 ), Vector ( 16, 16, 36 ) );
+	// Aliens should use human hull.
+	UTIL_SetSize( pev, VEC_HUMAN_HULL_MIN, VEC_HUMAN_HULL_MAX );
 
 	pev->solid			= SOLID_SLIDEBOX;
 	pev->movetype		= MOVETYPE_STEP;
@@ -341,7 +342,8 @@ void CHoundeye :: Spawn()
 	if (pev->health == 0)
 		pev->health			= gSkillData.houndeyeHealth;
 	pev->yaw_speed		= 5;//!!! should we put this in the monster's changeanim function since turn rates may vary with state/anim?
-	m_flFieldOfView		= 0.5;// indicates the width of this monster's forward view cone ( as a dotproduct result )
+	// Allow martians to see 360 degrees (+180/-180)
+	m_flFieldOfView		= -1.0f;// indicates the width of this monster's forward view cone ( as a dotproduct result )
 	m_MonsterState		= MONSTERSTATE_NONE;
 	m_fAsleep			= FALSE; // everyone spawns awake
 	m_fDontBlink		= FALSE;

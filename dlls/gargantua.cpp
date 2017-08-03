@@ -231,7 +231,7 @@ public:
 	void EyeOn( int level );
 	void EyeUpdate( void );
 	void Leap( void );
-	void StompAttack( void );
+/*	void StompAttack( void );
 	void FlameCreate( void );
 	void FlameUpdate( void );
 	void FlameControls( float angleX, float angleY );
@@ -239,7 +239,7 @@ public:
 	inline BOOL FlameIsOn( void ) { return m_pFlame[0] != NULL; }
 
 	void FlameDamage( Vector vecStart, Vector vecEnd, entvars_t *pevInflictor, entvars_t *pevAttacker, float flDamage, int iClassIgnore, int bitsDamageType );
-
+*/
 	virtual int		Save( CSave &save );
 	virtual int		Restore( CRestore &restore );
 	static	TYPEDESCRIPTION m_SaveData[];
@@ -469,7 +469,7 @@ void CGargantua::EyeUpdate( void )
 	}
 }
 
-
+/*
 void CGargantua::StompAttack( void )
 {
 	TraceResult trace;
@@ -689,11 +689,11 @@ void CGargantua :: FlameDestroy( void )
 		}
 	}
 }
-
+*/
 
 void CGargantua :: PrescheduleThink( void )
 {
-	if ( !HasConditions( bits_COND_SEE_ENEMY ) )
+/*	if ( !HasConditions( bits_COND_SEE_ENEMY ) )
 	{
 		m_seeTime = gpGlobals->time + 5;
 		EyeOff();
@@ -701,7 +701,7 @@ void CGargantua :: PrescheduleThink( void )
 	else
 		EyeOn( 200 );
 	
-	EyeUpdate();
+	EyeUpdate();*/
 }
 
 
@@ -769,9 +769,9 @@ void CGargantua :: Spawn()
 
 	MonsterInit();
 
-	m_pEyeGlow = CSprite::SpriteCreate( GARG_EYE_SPRITE_NAME, pev->origin, FALSE );
+/*	m_pEyeGlow = CSprite::SpriteCreate( GARG_EYE_SPRITE_NAME, pev->origin, FALSE );
 	m_pEyeGlow->SetTransparency( kRenderGlow, 255, 255, 255, 0, kRenderFxNoDissipation );
-	m_pEyeGlow->SetAttachment( edict(), 1 );
+	m_pEyeGlow->SetAttachment( edict(), 1 );*/
 	EyeOff();
 	m_seeTime = gpGlobals->time + 5;
 	m_flameTime = gpGlobals->time + 2;
@@ -855,13 +855,15 @@ void CGargantua::TraceAttack( entvars_t *pevAttacker, float flDamage, Vector vec
 
 	if ( bitsDamageType == 0)
 	{
-		if ( pev->dmgtime != gpGlobals->time || (RANDOM_LONG(0,100) < 20) )
+		// Final boss (Reaper) does not wear armor.
+		// Also, leave it immune to any damage.
+		/*if ( pev->dmgtime != gpGlobals->time || (RANDOM_LONG(0,100) < 20) )
 		{
 			UTIL_Ricochet( ptr->vecEndPos, RANDOM_FLOAT(0.5,1.5) );
 			pev->dmgtime = gpGlobals->time;
 //			if ( RANDOM_LONG(0,100) < 25 )
 //				EMIT_SOUND_DYN( ENT(pev), CHAN_BODY, pRicSounds[ RANDOM_LONG(0,ARRAYSIZE(pRicSounds)-1) ], 1.0, ATTN_NORM, 0, PITCH_NORM );
-		}
+		}*/
 		flDamage = 0;
 	}
 
@@ -915,8 +917,8 @@ void CGargantua::DeathEffect( void )
 void CGargantua::Killed( entvars_t *pevAttacker, int iGib )
 {
 	EyeOff();
-	UTIL_Remove( m_pEyeGlow );
-	m_pEyeGlow = NULL;
+	/*UTIL_Remove( m_pEyeGlow );
+	m_pEyeGlow = NULL;*/
 	CBaseMonster::Killed( pevAttacker, GIB_NEVER );
 }
 
@@ -943,14 +945,15 @@ BOOL CGargantua::CheckMeleeAttack2( float flDot, float flDist )
 {
 //	ALERT(at_aiconsole, "CheckMelee(%f, %f)\n", flDot, flDist);
 
-	if ( gpGlobals->time > m_flameTime )
+	/*if ( gpGlobals->time > m_flameTime )
 	{
 		if (flDot >= 0.8 && flDist > GARG_ATTACKDIST)
 		{
 			if ( flDist <= GARG_FLAME_LENGTH )
 				return TRUE;
 		}
-	}
+	}*/
+	// Final boss (Reaper) should not use melee attack 2.
 	return FALSE;
 }
 
@@ -966,13 +969,14 @@ BOOL CGargantua::CheckMeleeAttack2( float flDot, float flDist )
 //=========================================================
 BOOL CGargantua::CheckRangeAttack1( float flDot, float flDist )
 {
-	if ( gpGlobals->time > m_seeTime )
+	/*if ( gpGlobals->time > m_seeTime )
 	{
 		if (flDot >= 0.7 && flDist > GARG_ATTACKDIST)
 		{
 				return TRUE;
 		}
-	}
+	}*/
+	// Final boss (Reaper) should not use range attack 1.
 	return FALSE;
 }
 
@@ -1018,8 +1022,8 @@ void CGargantua::HandleAnimEvent(MonsterEvent_t *pEvent)
 		break;
 
 	case GARG_AE_STOMP:
-		StompAttack();
-		m_seeTime = gpGlobals->time + 12;
+		/*StompAttack();
+		m_seeTime = gpGlobals->time + 12;*/
 		break;
 
 	case GARG_AE_BREATHE:
@@ -1075,13 +1079,13 @@ CBaseEntity* CGargantua::GargantuaCheckTraceHullAttack(float flDist, int iDamage
 Schedule_t *CGargantua::GetScheduleOfType( int Type )
 {
 	// HACKHACK - turn off the flames if they are on and garg goes scripted / dead
-	if ( FlameIsOn() )
-		FlameDestroy();
+	/*if ( FlameIsOn() )
+		FlameDestroy();*/
 
 	switch( Type )
 	{
-		case SCHED_MELEE_ATTACK2:
-			return slGargFlame;
+		/*case SCHED_MELEE_ATTACK2:
+			return slGargFlame;*/
 		case SCHED_MELEE_ATTACK1:
 			return slGargSwipe;
 		break;
@@ -1095,13 +1099,13 @@ void CGargantua::StartTask( Task_t *pTask )
 {
 	switch ( pTask->iTask )
 	{
-	case TASK_FLAME_SWEEP:
+	/*case TASK_FLAME_SWEEP:
 		FlameCreate();
 		m_flWaitFinished = gpGlobals->time + pTask->flData;
 		m_flameTime = gpGlobals->time + 6;
 		m_flameX = 0;
 		m_flameY = 0;
-		break;
+		break;*/
 
 	case TASK_SOUND_ATTACK:
 		if ( RANDOM_LONG(0,100) < 30 )
@@ -1235,7 +1239,7 @@ void CGargantua::RunTask( Task_t *pTask )
 			CBaseMonster::RunTask( pTask );
 			break;
 		}
-	case TASK_FLAME_SWEEP:
+/*	case TASK_FLAME_SWEEP:
 		if ( gpGlobals->time > m_flWaitFinished )
 		{
 			FlameDestroy();
@@ -1278,7 +1282,7 @@ void CGargantua::RunTask( Task_t *pTask )
 			// FlameControls( angles.x + 2 * sin(gpGlobals->time*8), angles.y + 28 * sin(gpGlobals->time*8.5) );
 			FlameControls( angles.x, angles.y );
 		}
-		break;
+		break;*/
 
 	default:
 		CBaseMonster::RunTask( pTask );

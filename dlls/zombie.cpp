@@ -62,6 +62,8 @@ public:
 	BOOL CheckRangeAttack1 ( float flDot, float flDist ) { return FALSE; }
 	BOOL CheckRangeAttack2 ( float flDot, float flDist ) { return FALSE; }
 	int TakeDamage( entvars_t *pevInflictor, entvars_t *pevAttacker, float flDamage, int bitsDamageType );
+	BOOL ShouldGibMonster(int iGib) { return FALSE; } // Reapers should not gib.
+	void GibMonster( void );
 };
 
 LINK_ENTITY_TO_CLASS( monster_zombie, CZombie );
@@ -275,11 +277,13 @@ void CZombie :: Spawn()
 		SET_MODEL(ENT(pev), STRING(pev->model)); //LRC
 	else
 		SET_MODEL(ENT(pev), "models/zombie.mdl");
-	UTIL_SetSize( pev, VEC_HUMAN_HULL_MIN, VEC_HUMAN_HULL_MAX );
+	// Reapers have a taller model.
+	UTIL_SetSize( pev, VEC_HUMAN_HULL_MIN + Vector( -8, -8, 0 ), VEC_HUMAN_HULL_MAX + Vector( 8, 8, 48 ) );
 
 	pev->solid			= SOLID_SLIDEBOX;
 	pev->movetype		= MOVETYPE_STEP;
-	m_bloodColor		= BLOOD_COLOR_GREEN;
+	// Reapers should use red blood color.
+	m_bloodColor		= BLOOD_COLOR_RED;
 	if (pev->health == 0)
 		pev->health			= gSkillData.zombieHealth;
 	pev->view_ofs		= VEC_VIEW;// position of the eyes relative to monster's origin.
@@ -350,4 +354,9 @@ int CZombie::IgnoreConditions ( void )
 
 	return iIgnore;
 	
+}
+
+void CZombie::GibMonster( void )
+{
+	FadeMonster();
 }
