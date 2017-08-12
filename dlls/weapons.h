@@ -61,23 +61,22 @@ public:
 #define ITEM_ANTIDOTE		2
 #define ITEM_SECURITY		3
 #define ITEM_BATTERY		4
+#define ITEM_FLASHLIGHT		5
 
 #define WEAPON_NONE				0
-#define WEAPON_CROWBAR			1
-#define	WEAPON_GLOCK			2
-#define WEAPON_PYTHON			3
-#define WEAPON_MP5				4
-#define WEAPON_CHAINGUN			5
-#define WEAPON_CROSSBOW			6
-#define WEAPON_SHOTGUN			7
-#define WEAPON_RPG				8
-#define WEAPON_GAUSS			9
-#define WEAPON_EGON				10
-#define WEAPON_HORNETGUN		11
-#define WEAPON_HANDGRENADE		12
-#define WEAPON_TRIPMINE			13
-#define	WEAPON_SATCHEL			14
-#define	WEAPON_SNARK			15
+#define WEAPON_KNIFE			1
+#define WEAPON_AXE			2
+#define WEAPON_HAMMER			3
+#define WEAPON_P228			4
+#define WEAPON_BERETTA			5
+#define	WEAPON_GLOCK			6
+#define WEAPON_REVOLVER			7
+#define WEAPON_MP5K				8
+#define WEAPON_UZI			9
+#define WEAPON_GMGENERAL			10
+#define WEAPON_SHOTGUN			11
+#define WEAPON_DEAGLE				12
+#define WEAPON_SPEAR			13
 
 #define WEAPON_ALLWEAPONS		(~(1<<WEAPON_SUIT))
 
@@ -90,85 +89,67 @@ public:
 
 
 // weapon weight factors (for auto-switching)   (-1 = noswitch)
-#define CROWBAR_WEIGHT		0
+#define KNIFE_WEIGHT		0
+#define AXE_WEIGHT		0
+#define HAMMER_WEIGHT		0
+#define P228_WEIGHT		10
+#define BERETTA_WEIGHT		10
 #define GLOCK_WEIGHT		10
-#define PYTHON_WEIGHT		15
-#define MP5_WEIGHT			15
+#define REVOLVER_WEIGHT		15
+#define MP5K_WEIGHT		15
 #define SHOTGUN_WEIGHT		15
-#define CROSSBOW_WEIGHT		10
-#define RPG_WEIGHT			20
-#define GAUSS_WEIGHT		20
-#define EGON_WEIGHT			20
-#define HORNETGUN_WEIGHT	10
-#define HANDGRENADE_WEIGHT	5
-#define SNARK_WEIGHT		5
-#define SATCHEL_WEIGHT		-10
-#define TRIPMINE_WEIGHT		-10
-
+#define DEAGLE_WEIGHT		10
+#define UZI_WEIGHT		15
+#define GMGENERAL_WEIGHT	20
+#define SPEAR_WEIGHT		20
 
 // weapon clip/carry ammo capacities
-#define URANIUM_MAX_CARRY		100
-#define	_9MM_MAX_CARRY			250
-#define _357_MAX_CARRY			36
-#define BUCKSHOT_MAX_CARRY		125
-#define BOLT_MAX_CARRY			50
-#define ROCKET_MAX_CARRY		5
-#define HANDGRENADE_MAX_CARRY	10
-#define SATCHEL_MAX_CARRY		5
-#define TRIPMINE_MAX_CARRY		5
-#define SNARK_MAX_CARRY			15
-#define HORNET_MAX_CARRY		8
-#define M203_GRENADE_MAX_CARRY	10
+#define P228_MAX_CARRY		100
+#define	GLOCK_MAX_CARRY		250
+#define BERETTA_MAX_CARRY	250
+#define REVOLVER_MAX_CARRY	36
+#define BUCKSHOT_MAX_CARRY	125
+#define UZI_MAX_CARRY		250
+#define DEAGLE_MAX_CARRY	200
+#define MP5K_MAX_CARRY		250
+#define GMGENERAL_MAX_CARRY	-1
 
 // the maximum amount of ammo each weapon's clip can hold
 #define WEAPON_NOCLIP			-1
 
-//#define CROWBAR_MAX_CLIP		WEAPON_NOCLIP
-#define GLOCK_MAX_CLIP			17
-#define PYTHON_MAX_CLIP			6
-#define MP5_MAX_CLIP			50
-#define MP5_DEFAULT_AMMO		25
+//#define KNIFE_MAX_CLIP		WEAPON_NOCLIP
+#define P228_MAX_CLIP			13
+#define GLOCK_MAX_CLIP			20
+#define BERETTA_MAX_CLIP		15
+#define REVOLVER_MAX_CLIP		6
+#define MP5K_MAX_CLIP			30
+#define MP5K_DEFAULT_AMMO		30
 #define SHOTGUN_MAX_CLIP		8
-#define CROSSBOW_MAX_CLIP		5
-#define RPG_MAX_CLIP			1
-#define GAUSS_MAX_CLIP			WEAPON_NOCLIP
-#define EGON_MAX_CLIP			WEAPON_NOCLIP
-#define HORNETGUN_MAX_CLIP		WEAPON_NOCLIP
-#define HANDGRENADE_MAX_CLIP	WEAPON_NOCLIP
-#define SATCHEL_MAX_CLIP		WEAPON_NOCLIP
-#define TRIPMINE_MAX_CLIP		WEAPON_NOCLIP
-#define SNARK_MAX_CLIP			WEAPON_NOCLIP
-
+#define UZI_MAX_CLIP			30
+#define DEAGLE_MAX_CLIP			30
+#define GMGENERAL_MAX_CLIP		WEAPON_NOCLIP
 
 // the default amount of ammo that comes with each gun when it spawns
-#define GLOCK_DEFAULT_GIVE			17
-#define PYTHON_DEFAULT_GIVE			6
-#define MP5_DEFAULT_GIVE			25
-#define MP5_DEFAULT_AMMO			25
-#define MP5_M203_DEFAULT_GIVE		0
+#define P228_DEFAULT_GIVE		13
+#define GLOCK_DEFAULT_GIVE		20
+#define BERETTA_DEFAULT_GIVE		15
+#define REVOLVER_DEFAULT_GIVE		6
+#define MP5K_DEFAULT_GIVE		30
 #define SHOTGUN_DEFAULT_GIVE		12
-#define CROSSBOW_DEFAULT_GIVE		5
-#define RPG_DEFAULT_GIVE			1
-#define GAUSS_DEFAULT_GIVE			20
-#define EGON_DEFAULT_GIVE			20
-#define HANDGRENADE_DEFAULT_GIVE	5
-#define SATCHEL_DEFAULT_GIVE		1
-#define TRIPMINE_DEFAULT_GIVE		1
-#define SNARK_DEFAULT_GIVE			5
-#define HIVEHAND_DEFAULT_GIVE		8
+#define UZI_DEFAULT_GIVE		30
+#define DEAGLE_DEFAULT_GIVE		30
+#define GMGENERAL_DEFAULT_GIVE		0
 
 // The amount of ammo given to a player by an ammo item.
-#define AMMO_URANIUMBOX_GIVE	20
+#define AMMO_P228CLIP_GIVE		P228_MAX_CLIP
 #define AMMO_GLOCKCLIP_GIVE		GLOCK_MAX_CLIP
-#define AMMO_357BOX_GIVE		PYTHON_MAX_CLIP
-#define AMMO_MP5CLIP_GIVE		MP5_MAX_CLIP
-#define AMMO_CHAINBOX_GIVE		200
-#define AMMO_M203BOX_GIVE		2
-#define AMMO_BUCKSHOTBOX_GIVE	12
-#define AMMO_CROSSBOWCLIP_GIVE	CROSSBOW_MAX_CLIP
-#define AMMO_RPGCLIP_GIVE		RPG_MAX_CLIP
-#define AMMO_URANIUMBOX_GIVE	20
-#define AMMO_SNARKBOX_GIVE		5
+#define AMMO_BERETTACLIP_GIVE		BERETTA_MAX_CLIP
+#define AMMO_REVOLVERBOX_GIVE		REVOLVER_MAX_CLIP
+#define AMMO_MP5KCLIP_GIVE		MP5K_MAX_CLIP
+#define AMMO_BUCKSHOTBOX_GIVE		SHOTGUN_DEFAULT_GIVE
+#define AMMO_UZICLIP_GIVE		UZI_MAX_CLIP
+#define AMMO_DEAGLECLIP_GIVE		DEAGLE_MAX_CLIP
+#define AMMO_GMGENERALCLIP_GIVE		0
 
 // bullet types
 typedef	enum
@@ -499,7 +480,7 @@ private:
 	unsigned short m_usFireGlock2;
 };
 
-
+/*
 class CCrowbar : public CBasePlayerWeapon
 {
 public:
@@ -625,7 +606,7 @@ private:
 	unsigned short m_usCrossbow;
 	unsigned short m_usCrossbow2;
 };
-
+*/
 class CShotgun : public CBasePlayerWeapon
 {
 public:
@@ -666,6 +647,7 @@ private:
 	unsigned short m_usSingleFire;
 };
 
+/*
 class CLaserSpot : public CBaseEntity
 {
 	void Spawn( void );
@@ -1016,6 +998,6 @@ public:
 private:
 	unsigned short m_usSnarkFire;
 };
-
+*/
 
 #endif // WEAPONS_H

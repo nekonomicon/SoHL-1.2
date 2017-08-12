@@ -317,74 +317,56 @@ void W_Precache(void)
 	UTIL_PrecacheOther( "item_antidote" );
 	UTIL_PrecacheOther( "item_security" );
 	UTIL_PrecacheOther( "item_longjump" );
+	UTIL_PrecacheOther( "item_flashlight" );
 
 	// shotgun
 	UTIL_PrecacheOtherWeapon( "weapon_shotgun" );
 	UTIL_PrecacheOther( "ammo_buckshot" );
 
-	// crowbar
-	UTIL_PrecacheOtherWeapon( "weapon_crowbar" );
+	// knife
+	UTIL_PrecacheOtherWeapon( "weapon_knife" );
+
+	// axe
+	UTIL_PrecacheOtherWeapon( "weapon_axe" );
+
+	// hammer
+	UTIL_PrecacheOtherWeapon( "weapon_hammer" );
+
+	// spear
+	UTIL_PrecacheOtherWeapon( "weapon_Spear" );
 
 	// glock
-	UTIL_PrecacheOtherWeapon( "weapon_9mmhandgun" );
-	UTIL_PrecacheOther( "ammo_9mmclip" );
+	UTIL_PrecacheOtherWeapon( "weapon_glock" );
+	UTIL_PrecacheOther( "ammo_glock" );
 	UTIL_PrecacheOther( "ammo_9mmbox" ); //LRC
 
-	// mp5
-	UTIL_PrecacheOtherWeapon( "weapon_9mmAR" );
-	UTIL_PrecacheOther( "ammo_9mmAR" );
-	UTIL_PrecacheOther( "ammo_ARgrenades" );
+	// mp5k
+	UTIL_PrecacheOtherWeapon( "weapon_mp5k" );
+	UTIL_PrecacheOther( "ammo_mp5k" );
 
-#if !defined( OEM_BUILD ) && !defined( HLDEMO_BUILD )
-	// python
-	UTIL_PrecacheOtherWeapon( "weapon_357" );
-	UTIL_PrecacheOther( "ammo_357" );
-#endif
-	
-#if !defined( OEM_BUILD ) && !defined( HLDEMO_BUILD )
-	// gauss
-	UTIL_PrecacheOtherWeapon( "weapon_gauss" );
-	UTIL_PrecacheOther( "ammo_gaussclip" );
-#endif
+	// revolver
+	UTIL_PrecacheOtherWeapon( "weapon_revolver" );
+	UTIL_PrecacheOther( "ammo_revolver" );
 
-#if !defined( OEM_BUILD ) && !defined( HLDEMO_BUILD )
-	// rpg
-	UTIL_PrecacheOtherWeapon( "weapon_rpg" );
-	UTIL_PrecacheOther( "ammo_rpgclip" );
-#endif
+	// p228
+	UTIL_PrecacheOtherWeapon( "weapon_P228" );
+	UTIL_PrecacheOther( "ammo_P228" );
 
-#if !defined( OEM_BUILD ) && !defined( HLDEMO_BUILD )
-	// crossbow
-	UTIL_PrecacheOtherWeapon( "weapon_crossbow" );
-	UTIL_PrecacheOther( "ammo_crossbow" );
-#endif
+	// uzi
+	UTIL_PrecacheOtherWeapon( "weapon_uzi" );
+	UTIL_PrecacheOther( "ammo_uzi" );
 
-#if !defined( OEM_BUILD ) && !defined( HLDEMO_BUILD )
-	// egon
-	UTIL_PrecacheOtherWeapon( "weapon_egon" );
-#endif
+	// beretta
+	UTIL_PrecacheOtherWeapon( "weapon_beretta" );
+	UTIL_PrecacheOther( "ammo_beretta" );
 
-	// tripmine
-	UTIL_PrecacheOtherWeapon( "weapon_tripmine" );
+	// desert eagle
+	UTIL_PrecacheOtherWeapon( "weapon_deagle" );
+	UTIL_PrecacheOther( "ammo_deagle" );
 
-#if !defined( OEM_BUILD ) && !defined( HLDEMO_BUILD )
-	// satchel charge
-	UTIL_PrecacheOtherWeapon( "weapon_satchel" );
-#endif
-
-	// hand grenade
-	UTIL_PrecacheOtherWeapon("weapon_handgrenade");
-
-#if !defined( OEM_BUILD ) && !defined( HLDEMO_BUILD )
-	// squeak grenade
-	UTIL_PrecacheOtherWeapon( "weapon_snark" );
-#endif
-
-#if !defined( OEM_BUILD ) && !defined( HLDEMO_BUILD )
-	// hornetgun
-	UTIL_PrecacheOtherWeapon( "weapon_hornetgun" );
-#endif
-
+	// gmgeneral
+	UTIL_PrecacheOtherWeapon( "weapon_gmgeneral" );
+	UTIL_PrecacheOther( "ammo_gmgeneral" );
 
 #if !defined( OEM_BUILD ) && !defined( HLDEMO_BUILD )
 	if ( g_pGameRules->IsDeathmatch() )
