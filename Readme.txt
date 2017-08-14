@@ -1,14 +1,36 @@
-Spirit of Half-Life version 1.2
-Source code release 20/11/03
+Afraid of Monsters Director's Cut recreation(not finished)
 
-(wow, should I be scared that the last source release was almost a
-year ago?)
-
-Basically, this is Spirit 1.0, ported to the HLSDK version 2.3 by
-Codiac.
-There are a couple of Dark Truths features, including the Aurora
-particle system, here - along with a few minor bug fixes both by
-Gollum and me.
-
---
-Laurie Cheers
+List of new entities(Needed to implement):
+ammo_beretta
+ammo_deagle
+ammo_glock
+ammo_mp5k
+ammo_P228
+ammo_revolver
+ammo_uzi
+env_drawstatic
+env_gamebeaten1
+env_gamebeaten2
+env_gamebeaten3
+env_gamebeaten4
+env_hidehud
+func_lol
+item_flashlight
+monster_david
+monster_ghost
+monster_wheelchair
+monster_zombie2
+monster_zombie3
+monster_zombie4
+weapon_Spear
+weapon_axe
+weapon_beretta
+weapon_deagle
+weapon_glock
+weapon_hammer
+weapon_knife
+weapon_mp5k
+weapon_P228
+weapon_revolver
+weapon_uzi
+weapon_gmgeneral
