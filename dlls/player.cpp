@@ -3501,7 +3501,7 @@ void CBasePlayer :: FlashlightTurnOn( void )
 	}
 #endif
 
-	if ( (pev->weapons & (1<<WEAPON_SUIT)) )
+	if ( (pev->weapons & (1<<WEAPON_FLASHLIGHT)) )
 	{
 		EMIT_SOUND_DYN( ENT(pev), CHAN_WEAPON, SOUND_FLASHLIGHT_ON, 1.0, ATTN_NORM, 0, PITCH_NORM );
 

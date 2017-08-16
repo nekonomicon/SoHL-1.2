@@ -61,7 +61,6 @@ public:
 #define ITEM_ANTIDOTE		2
 #define ITEM_SECURITY		3
 #define ITEM_BATTERY		4
-#define ITEM_FLASHLIGHT		5
 
 #define WEAPON_NONE				0
 #define WEAPON_KNIFE			1
@@ -80,6 +79,7 @@ public:
 
 #define WEAPON_ALLWEAPONS		(~(1<<WEAPON_SUIT))
 
+#define WEAPON_FLASHLIGHT			30
 #define WEAPON_SUIT				31	// ?????
 
 #define MAX_WEAPONS			32
