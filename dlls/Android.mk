@@ -37,7 +37,10 @@ LOCAL_SRC_FILES := aflock.cpp agrunt.cpp AI_BaseNPC_Schedule.cpp airtank.cpp \
 		singleplay_gamerules.cpp skill.cpp sound.cpp soundent.cpp spectator.cpp squadmonster.cpp \
 		stats.cpp subs.cpp talkmonster.cpp teamplay_gamerules.cpp tempmonster.cpp \
 		tentacle.cpp triggers.cpp turret.cpp util.cpp weapons.cpp world.cpp xen.cpp \
-		zombie.cpp wpn_shared/hl_wpn_glock.cpp \
+		zombie.cpp rpg.cpp squeakgrenade.cpp aomdc/knife.cpp aomdc/axe.cpp \
+		aomdc/hammer.cpp aomdc/spear.cpp aomdc/glock.cpp aomdc/beretta.cpp \
+		aomdc/p228.cpp aomdc/deagle.cpp aomdc/revolver.cpp aomdc/mp5k.cpp \
+		aomdc/uzi.cpp aomdc/gmgeneral.cpp \
 	   ../pm_shared/pm_debug.c ../pm_shared/pm_math.c ../pm_shared/pm_shared.c
 
 

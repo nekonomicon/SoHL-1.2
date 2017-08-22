@@ -454,12 +454,10 @@ public:
 	//We use this variables to store each ammo count.
 	int ammo_9mm;
 	int ammo_357;
-	int ammo_bolts;
+	int ammo_50ae;
 	int ammo_buckshot;
-	int ammo_rockets;
-	int ammo_uranium;
-	int ammo_hornets;
-	int ammo_argrens;
+	int ammo_9mmar;
+
 	//Special stuff for grenades and satchels.
 	float m_flStartThrow;
 	float m_flReleaseThrow;

@@ -52,10 +52,19 @@ int   g_irunninggausspred = 0;
 vec3_t previousorigin;
 
 // HLDM Weapon placeholder entities.
+CKnife g_Knife;
+CAxe g_Axe;
+CHammer g_Hammer;
+CSpear g_Spear;
 CGlock g_Glock;
-//CMP5 g_Mp5;
+CBeretta g_Beretta;
+CP228 g_P228;
+CDeagle g_Deagle;
+CRevolver g_Revolver;
 CShotgun g_Shotgun;
-
+CMP5K g_MP5k;
+CUzi g_Uzi;
+CGMGeneral g_GMGeneral;
 
 /*
 ======================
@@ -617,9 +626,19 @@ void HUD_InitClientWeapons( void )
 	HUD_PrepEntity( &player		, NULL );
 
 	// Allocate slot(s) for each weapon that we are going to be predicting
-	HUD_PrepEntity( &g_Glock	, &player );
-	//HUD_PrepEntity( &g_Mp5	, &player );
-	HUD_PrepEntity( &g_Shotgun	, &player );
+	HUD_PrepEntity( &g_Knife, &player );
+	HUD_PrepEntity( &g_Axe, &player );
+	HUD_PrepEntity( &g_Hammer, &player );
+	HUD_PrepEntity( &g_Spear, &player );
+	HUD_PrepEntity( &g_Glock, &player );
+	HUD_PrepEntity( &g_Beretta, &player );
+	HUD_PrepEntity( &g_P228, &player );
+	HUD_PrepEntity( &g_Deagle, &player );
+	HUD_PrepEntity( &g_Revolver, &player );
+	HUD_PrepEntity( &g_Shotgun, &player );
+	HUD_PrepEntity( &g_MP5k, &player );
+	HUD_PrepEntity( &g_Uzi, &player );
+	HUD_PrepEntity( &g_GMGeneral, &player );
 }
 
 /*
@@ -685,18 +704,45 @@ void HUD_WeaponsPostThink( local_state_s *from, local_state_s *to, usercmd_t *cm
 	// FIXME, make this a method in each weapon?  where you pass in an entity_state_t *?
 	switch ( from->client.m_iId )
 	{
+		case WEAPON_KNIFE:
+                        pWeapon = &g_Knife;
+                        break;
+		case WEAPON_AXE:
+                        pWeapon = &g_Axe;
+                        break;
+		case WEAPON_HAMMER:
+                        pWeapon = &g_Hammer;
+                        break;
+		case WEAPON_SPEAR:
+                        pWeapon = &g_Spear;
+                        break;
 		case WEAPON_GLOCK:
 			pWeapon = &g_Glock;
 			break;
-			break;
-			
-		case WEAPON_MP5K:
-			//pWeapon = &g_Mp5;
-			break;
-
+		case WEAPON_BERETTA:
+                        pWeapon = &g_Beretta;
+                        break;
+		case WEAPON_P228:
+                        pWeapon = &g_P228;
+                        break;
+		case WEAPON_DEAGLE:
+                        pWeapon = &g_Deagle;
+                        break;
+		case WEAPON_REVOLVER:
+                        pWeapon = &g_Revolver;
+                        break;
 		case WEAPON_SHOTGUN:
-			pWeapon = &g_Shotgun;
+                        pWeapon = &g_Shotgun;
+                        break;
+		case WEAPON_MP5K:
+			pWeapon = &g_MP5k;
 			break;
+		case WEAPON_UZI:
+                        pWeapon = &g_Uzi;
+                        break;
+		case WEAPON_GMGENERAL:
+                        pWeapon = &g_GMGeneral;
+                        break;
 	}
 
 	// Store pointer to our destination entity_state_t so we can get our origin, etc. from it
@@ -789,13 +835,9 @@ void HUD_WeaponsPostThink( local_state_s *from, local_state_s *to, usercmd_t *cm
 	//Stores all our ammo info, so the client side weapons can use them.
 	player.ammo_9mm			= (int)from->client.vuser1[0];
 	player.ammo_357			= (int)from->client.vuser1[1];
-	player.ammo_argrens		= (int)from->client.vuser1[2];
-	player.ammo_bolts		= (int)from->client.ammo_nails; //is an int anyways...
-	player.ammo_buckshot	= (int)from->client.ammo_shells; 
-	player.ammo_uranium		= (int)from->client.ammo_cells;
-	player.ammo_hornets		= (int)from->client.vuser2[0];
-	player.ammo_rockets		= (int)from->client.ammo_rockets;
-
+	player.ammo_9mmar		= (int)from->client.vuser1[2];
+	player.ammo_50ae		= (int)from->client.ammo_nails; //is an int anyways...
+	player.ammo_buckshot	= (int)from->client.ammo_shells;
 	
 	// Point to current weapon object
 	if ( from->client.m_iId )
@@ -857,13 +899,10 @@ void HUD_WeaponsPostThink( local_state_s *from, local_state_s *to, usercmd_t *cm
 	//HL Weapons
 	to->client.vuser1[0]				= player.ammo_9mm;
 	to->client.vuser1[1]				= player.ammo_357;
-	to->client.vuser1[2]				= player.ammo_argrens;
+	to->client.vuser1[2]				= player.ammo_9mmar;
 
-	to->client.ammo_nails				= player.ammo_bolts;
+	to->client.ammo_nails				= player.ammo_50ae;
 	to->client.ammo_shells				= player.ammo_buckshot;
-	to->client.ammo_cells				= player.ammo_uranium;
-	to->client.vuser2[0]				= player.ammo_hornets;
-	to->client.ammo_rockets				= player.ammo_rockets;
 
 	// Make sure that weapon animation matches what the game .dll is telling us
 	//  over the wire ( fixes some animation glitches )
@@ -871,14 +910,6 @@ void HUD_WeaponsPostThink( local_state_s *from, local_state_s *to, usercmd_t *cm
 	{
 		int body = 2;
 
-		//Pop the model to body 0.
-		if ( pWeapon == &g_Tripmine )
-			 body = 0;
-
-		//Show laser sight/scope combo
-		if ( pWeapon == &g_Python && bIsMultiplayer() )
-			 body = 1;
-		
 		// Force a fixed anim down to viewmodel
 		HUD_SendWeaponAnim( to->client.weaponanim, body, 1 );
 	}
