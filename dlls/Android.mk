@@ -19,7 +19,8 @@ LOCAL_C_INCLUDES := $(LOCAL_PATH)/. \
 		    $(LOCAL_PATH)/../engine \
 		    $(LOCAL_PATH)/../public \
 		    $(LOCAL_PATH)/../pm_shared \
-		    $(LOCAL_PATH)/../game_shared
+		    $(LOCAL_PATH)/../game_shared \
+		    $(LOCAL_PATH)/aomdc
 
 LOCAL_SRC_FILES := aflock.cpp agrunt.cpp AI_BaseNPC_Schedule.cpp airtank.cpp \
 		alias.cpp animating.cpp animation.cpp apache.cpp barnacle.cpp barney.cpp \
@@ -40,7 +41,7 @@ LOCAL_SRC_FILES := aflock.cpp agrunt.cpp AI_BaseNPC_Schedule.cpp airtank.cpp \
 		zombie.cpp rpg.cpp squeakgrenade.cpp aomdc/knife.cpp aomdc/axe.cpp \
 		aomdc/hammer.cpp aomdc/spear.cpp aomdc/glock.cpp aomdc/beretta.cpp \
 		aomdc/p228.cpp aomdc/deagle.cpp aomdc/revolver.cpp aomdc/mp5k.cpp \
-		aomdc/uzi.cpp aomdc/gmgeneral.cpp \
+		aomdc/uzi.cpp aomdc/gmgeneral.cpp aomdc/zombie2.cpp aomdc/zombie3.cpp aomdc/zombie4.cpp \
 	   ../pm_shared/pm_debug.c ../pm_shared/pm_math.c ../pm_shared/pm_shared.c
 
 
@@ -49,6 +50,6 @@ ifeq ($(TARGET_ARCH_ABI),armeabi-v7a-hard)
 LOCAL_MODULE_FILENAME = libserver_hardfp
 endif
 
-LOCAL_CPPFLAGS := $(LOCAL_CFLAGS) -frtti
+LOCAL_CPPFLAGS := $(LOCAL_CFLAGS)
 
 include $(BUILD_SHARED_LIBRARY)

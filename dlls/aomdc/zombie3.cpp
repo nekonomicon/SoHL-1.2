@@ -18,95 +18,72 @@
 
 #include	"zombie.h"
 
-LINK_ENTITY_TO_CLASS( monster_zombie, CZombie );
 
-const char *CZombie::pAttackHitSounds[] = 
+class CZombie3 : public CZombie
 {
-	"zombie/claw_strike1.wav",
-	"zombie/claw_strike2.wav",
-	"zombie/claw_strike3.wav",
+public:
+	void Spawn( void );
+	void Precache( void );
+	void HandleAnimEvent( MonsterEvent_t *pEvent );
+
+	float m_flNextFlinch;
+
+	void PainSound( void );
+	void AlertSound( void );
+	void IdleSound( void );
+	void AttackSound( void );
+
+	static const char *pAttackSounds[];
+	static const char *pIdleSounds[];
+	static const char *pAlertSounds[];
+	static const char *pPainSounds[];
+	static const char *pAttackHitSounds[];
+	static const char *pAttackMissSounds[];
 };
 
-const char *CZombie::pAttackMissSounds[] = 
+LINK_ENTITY_TO_CLASS( monster_zombie3, CZombie3 );
+
+const char *CZombie3::pAttackHitSounds[] = 
 {
-	"zombie/claw_miss1.wav",
-	"zombie/claw_miss2.wav",
+	"zombie3/claw_strike1.wav",
+	"zombie3/claw_strike2.wav",
+	"zombie3/claw_strike3.wav",
 };
 
-const char *CZombie::pAttackSounds[] = 
+const char *CZombie3::pAttackMissSounds[] = 
 {
-	"zombie/zo_attack1.wav",
-	"zombie/zo_attack2.wav",
+	"zombie3/claw_miss1.wav",
+	"zombie3/claw_miss2.wav",
 };
 
-const char *CZombie::pIdleSounds[] = 
+const char *CZombie3::pAttackSounds[] = 
 {
-	"zombie/zo_idle1.wav",
-	"zombie/zo_idle2.wav",
-	"zombie/zo_idle3.wav",
-	"zombie/zo_idle4.wav",
+	"zombie3/zo_attack1.wav",
+	"zombie3/zo_attack2.wav",
 };
 
-const char *CZombie::pAlertSounds[] = 
+const char *CZombie3::pIdleSounds[] = 
 {
-	"zombie/zo_alert10.wav",
-	"zombie/zo_alert20.wav",
-	"zombie/zo_alert30.wav",
+	"zombie3/zo_idle1.wav",
+	"zombie3/zo_idle2.wav",
+	"zombie3/zo_idle3.wav",
+	"zombie3/zo_idle4.wav",
 };
 
-const char *CZombie::pPainSounds[] = 
+const char *CZombie3::pAlertSounds[] = 
 {
-	"zombie/zo_pain1.wav",
-	"zombie/zo_pain2.wav",
+	"zombie3/zo_alert10.wav",
+	"zombie3/zo_alert20.wav",
+	"zombie3/zo_alert30.wav",
 };
 
-//=========================================================
-// Classify - indicates this monster's place in the 
-// relationship table.
-//=========================================================
-int	CZombie :: Classify ( void )
+const char *CZombie3::pPainSounds[] = 
 {
-	return m_iClass?m_iClass:CLASS_ALIEN_MONSTER;
-}
+	"zombie3/zo_pain1.wav",
+	"zombie3/zo_pain2.wav",
+};
 
-//=========================================================
-// SetYawSpeed - allows each sequence to have a different
-// turn rate associated with it.
-//=========================================================
-void CZombie :: SetYawSpeed ( void )
-{
-	int ys;
-
-	ys = 120;
-
-#if 0
-	switch ( m_Activity )
-	{
-	}
-#endif
-
-	pev->yaw_speed = ys;
-}
-
-int CZombie :: TakeDamage( entvars_t *pevInflictor, entvars_t *pevAttacker, float flDamage, int bitsDamageType )
-{
-	// Take 30% damage from bullets
-	if ( bitsDamageType == DMG_BULLET )
-	{
-		Vector vecDir = pev->origin - (pevInflictor->absmin + pevInflictor->absmax) * 0.5;
-		vecDir = vecDir.Normalize();
-		float flForce = DamageForce( flDamage );
-		pev->velocity = pev->velocity + vecDir * flForce;
-		flDamage *= 0.3;
-	}
-
-	// HACK HACK -- until we fix this.
-	if ( IsAlive() )
-		PainSound();
-	return CBaseMonster::TakeDamage( pevInflictor, pevAttacker, flDamage, bitsDamageType );
-}
-
-void CZombie :: PainSound( void )
+void CZombie3 :: PainSound( void )
 {
 	int pitch = 95 + RANDOM_LONG(0,9);
 
@@ -114,14 +91,14 @@ void CZombie :: PainSound( void )
 		EMIT_SOUND_DYN ( ENT(pev), CHAN_VOICE, pPainSounds[ RANDOM_LONG(0,ARRAYSIZE(pPainSounds)-1) ], 1.0, ATTN_NORM, 0, pitch );
 }
 
-void CZombie :: AlertSound( void )
+void CZombie3 :: AlertSound( void )
 {
 	int pitch = 95 + RANDOM_LONG(0,9);
 
 	EMIT_SOUND_DYN ( ENT(pev), CHAN_VOICE, pAlertSounds[ RANDOM_LONG(0,ARRAYSIZE(pAlertSounds)-1) ], 1.0, ATTN_NORM, 0, pitch );
 }
 
-void CZombie :: IdleSound( void )
+void CZombie3 :: IdleSound( void )
 {
 	int pitch = 95 + RANDOM_LONG(0,9);
 
@@ -129,7 +106,7 @@ void CZombie :: IdleSound( void )
 	EMIT_SOUND_DYN ( ENT(pev), CHAN_VOICE, pIdleSounds[ RANDOM_LONG(0,ARRAYSIZE(pIdleSounds)-1) ], 1.0, ATTN_NORM, 0, 100 + RANDOM_LONG(-5,5) );
 }
 
-void CZombie :: AttackSound( void )
+void CZombie3 :: AttackSound( void )
 {
 	// Play a random attack sound
 	EMIT_SOUND_DYN ( ENT(pev), CHAN_VOICE, pAttackSounds[ RANDOM_LONG(0,ARRAYSIZE(pAttackSounds)-1) ], 1.0, ATTN_NORM, 0, 100 + RANDOM_LONG(-5,5) );
@@ -140,7 +117,7 @@ void CZombie :: AttackSound( void )
 // HandleAnimEvent - catches the monster-specific messages
 // that occur when tagged animation frames are played.
 //=========================================================
-void CZombie :: HandleAnimEvent( MonsterEvent_t *pEvent )
+void CZombie3 :: HandleAnimEvent( MonsterEvent_t *pEvent )
 {
 	switch( pEvent->event )
 	{
@@ -148,7 +125,7 @@ void CZombie :: HandleAnimEvent( MonsterEvent_t *pEvent )
 		{
 			// do stuff for this event.
 	//		ALERT( at_console, "Slash right!\n" );
-			CBaseEntity *pHurt = CheckTraceHullAttack( 70, gSkillData.zombieDmgOneSlash, DMG_SLASH );
+			CBaseEntity *pHurt = CheckTraceHullAttack( 70, gSkillData.zombie3DmgOneSlash, DMG_SLASH );
 			if ( pHurt )
 			{
 				if ( pHurt->pev->flags & (FL_MONSTER|FL_CLIENT) )
@@ -172,7 +149,7 @@ void CZombie :: HandleAnimEvent( MonsterEvent_t *pEvent )
 		{
 			// do stuff for this event.
 	//		ALERT( at_console, "Slash left!\n" );
-			CBaseEntity *pHurt = CheckTraceHullAttack( 70, gSkillData.zombieDmgOneSlash, DMG_SLASH );
+			CBaseEntity *pHurt = CheckTraceHullAttack( 70, gSkillData.zombie3DmgOneSlash, DMG_SLASH );
 			if ( pHurt )
 			{
 				if ( pHurt->pev->flags & (FL_MONSTER|FL_CLIENT) )
@@ -194,7 +171,7 @@ void CZombie :: HandleAnimEvent( MonsterEvent_t *pEvent )
 		case ZOMBIE_AE_ATTACK_BOTH:
 		{
 			// do stuff for this event.
-			CBaseEntity *pHurt = CheckTraceHullAttack( 70, gSkillData.zombieDmgBothSlash, DMG_SLASH );
+			CBaseEntity *pHurt = CheckTraceHullAttack( 70, gSkillData.zombie3DmgBothSlash, DMG_SLASH );
 			if ( pHurt )
 			{
 				if ( pHurt->pev->flags & (FL_MONSTER|FL_CLIENT) )
@@ -221,21 +198,21 @@ void CZombie :: HandleAnimEvent( MonsterEvent_t *pEvent )
 //=========================================================
 // Spawn
 //=========================================================
-void CZombie :: Spawn()
+void CZombie3 :: Spawn()
 {
 	Precache( );
 
 	if (pev->model)
 		SET_MODEL(ENT(pev), STRING(pev->model)); //LRC
 	else
-		SET_MODEL(ENT(pev), "models/zombie.mdl");
+		SET_MODEL(ENT(pev), "models/zombie3.mdl");
 	UTIL_SetSize( pev, VEC_HUMAN_HULL_MIN, VEC_HUMAN_HULL_MAX );
 
 	pev->solid			= SOLID_SLIDEBOX;
 	pev->movetype		= MOVETYPE_STEP;
 	m_bloodColor		= BLOOD_COLOR_GREEN;
 	if (pev->health == 0)
-		pev->health			= gSkillData.zombieHealth;
+		pev->health			= gSkillData.zombie3Health;
 	pev->view_ofs		= VEC_VIEW;// position of the eyes relative to monster's origin.
 	m_flFieldOfView		= 0.5;// indicates the width of this monster's forward view cone ( as a dotproduct result )
 	m_MonsterState		= MONSTERSTATE_NONE;
@@ -247,14 +224,14 @@ void CZombie :: Spawn()
 //=========================================================
 // Precache - precaches all resources this monster needs
 //=========================================================
-void CZombie :: Precache()
+void CZombie3 :: Precache()
 {
 	int i;
 
 	if (pev->model)
 		PRECACHE_MODEL((char*)STRING(pev->model)); //LRC
 	else
-		PRECACHE_MODEL("models/zombie.mdl");
+		PRECACHE_MODEL("models/zombie3.mdl");
 
 	for ( i = 0; i < ARRAYSIZE( pAttackHitSounds ); i++ )
 		PRECACHE_SOUND((char *)pAttackHitSounds[i]);
@@ -279,29 +256,3 @@ void CZombie :: Precache()
 // AI Schedules Specific to this monster
 //=========================================================
 
-
-
-int CZombie::IgnoreConditions ( void )
-{
-	int iIgnore = CBaseMonster::IgnoreConditions();
-
-	if ((m_Activity == ACT_MELEE_ATTACK1) || (m_Activity == ACT_MELEE_ATTACK1))
-	{
-#if 0
-		if (pev->health < 20)
-			iIgnore |= (bits_COND_LIGHT_DAMAGE|bits_COND_HEAVY_DAMAGE);
-		else
-#endif			
-		if (m_flNextFlinch >= gpGlobals->time)
-			iIgnore |= (bits_COND_LIGHT_DAMAGE|bits_COND_HEAVY_DAMAGE);
-	}
-
-	if ((m_Activity == ACT_SMALL_FLINCH) || (m_Activity == ACT_BIG_FLINCH))
-	{
-		if (m_flNextFlinch < gpGlobals->time)
-			m_flNextFlinch = gpGlobals->time + ZOMBIE_FLINCH_DELAY;
-	}
-
-	return iIgnore;
-	
-}
