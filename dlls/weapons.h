@@ -98,20 +98,20 @@ public:
 #define REVOLVER_WEIGHT		15
 #define MP5K_WEIGHT		15
 #define SHOTGUN_WEIGHT		15
-#define DEAGLE_WEIGHT		10
+#define DEAGLE_WEIGHT		15
 #define UZI_WEIGHT		15
 #define GMGENERAL_WEIGHT	20
 #define SPEAR_WEIGHT		20
 
 // weapon clip/carry ammo capacities
-#define P228_MAX_CARRY		100
+#define P228_MAX_CARRY		250
 #define	GLOCK_MAX_CARRY		250
 #define BERETTA_MAX_CARRY	250
-#define REVOLVER_MAX_CARRY	36
+#define REVOLVER_MAX_CARRY	150
 #define BUCKSHOT_MAX_CARRY	125
-#define UZI_MAX_CARRY		250
-#define DEAGLE_MAX_CARRY	200
-#define MP5K_MAX_CARRY		250
+#define UZI_MAX_CARRY		200
+#define DEAGLE_MAX_CARRY	170
+#define MP5K_MAX_CARRY		200
 #define GMGENERAL_MAX_CARRY	-1
 
 // the maximum amount of ammo each weapon's clip can hold
@@ -125,8 +125,8 @@ public:
 #define MP5K_MAX_CLIP			30
 #define MP5K_DEFAULT_AMMO		30
 #define SHOTGUN_MAX_CLIP		8
-#define UZI_MAX_CLIP			30
-#define DEAGLE_MAX_CLIP			30
+#define UZI_MAX_CLIP			25
+#define DEAGLE_MAX_CLIP			7
 #define GMGENERAL_MAX_CLIP		WEAPON_NOCLIP
 
 // the default amount of ammo that comes with each gun when it spawns
@@ -136,8 +136,8 @@ public:
 #define REVOLVER_DEFAULT_GIVE		6
 #define MP5K_DEFAULT_GIVE		30
 #define SHOTGUN_DEFAULT_GIVE		12
-#define UZI_DEFAULT_GIVE		30
-#define DEAGLE_DEFAULT_GIVE		30
+#define UZI_DEFAULT_GIVE		25
+#define DEAGLE_DEFAULT_GIVE		7
 #define GMGENERAL_DEFAULT_GIVE		0
 
 // The amount of ammo given to a player by an ammo item.
