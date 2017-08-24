@@ -85,7 +85,7 @@ int CHudBattery::Draw(float flTime)
 
 	UnpackRGB(r,g,b, gHUD.m_iHUDColor);
 
-	if (!(gHUD.m_iWeaponBits & (1<<(WEAPON_SUIT)) ))
+	if (!(gHUD.m_iWeaponBits & (1<<(WEAPON_FLASHLIGHT)) ))
 		return 1;
 
 	// Has health changed? Flash the health #
@@ -113,8 +113,8 @@ int CHudBattery::Draw(float flTime)
 	
 	int iOffset = (m_prc1->bottom - m_prc1->top)/6;
 
-	y = ScreenHeight - gHUD.m_iFontHeight - gHUD.m_iFontHeight / 2;
-	x = ScreenWidth/5;
+	y = m_iHeight + m_iHeight / 2;
+        x = ScreenWidth - m_iHeight * 3;
 
 	// make sure we have the right sprite handles
 	if ( !m_hSprite1 )

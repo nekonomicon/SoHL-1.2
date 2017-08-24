@@ -509,29 +509,6 @@ int CBasePlayer :: TakeDamage( entvars_t *pevInflictor, entvars_t *pevAttacker, 
 	// keep track of amount of damage last sustained
 	m_lastDamageAmount = flDamage;
 
-	// Armor. 
-	if (pev->armorvalue && !(bitsDamageType & (DMG_FALL | DMG_DROWN)) )// armor doesn't protect against fall or drown damage!
-	{
-		float flNew = flDamage * flRatio;
-
-		float flArmor;
-
-		flArmor = (flDamage - flNew) * flBonus;
-
-		// Does this use more armor than we have?
-		if (flArmor > pev->armorvalue)
-		{
-			flArmor = pev->armorvalue;
-			flArmor *= (1/flBonus);
-			flNew = flDamage - flArmor;
-			pev->armorvalue = 0;
-		}
-		else
-			pev->armorvalue -= flArmor;
-		
-		flDamage = flNew;
-	}
-
 	// this cast to INT is critical!!! If a player ends up with 0.5 health, the engine will get that
 	// as an int (zero) and think the player is dead! (this will incite a clientside screentilt, etc)
 	fTookDamage = CBaseMonster::TakeDamage(pevInflictor, pevAttacker, (int)flDamage, bitsDamageType);
@@ -4235,17 +4212,25 @@ void CBasePlayer :: UpdateClientData( void )
 				m_iFlashBattery--;
 				
 				if (!m_iFlashBattery)
-					FlashlightTurnOff();
+				{
+					if( pev->armorvalue )
+					{
+						m_iFlashBattery = 99;
+						pev->armorvalue--;
+					}
+					else
+						FlashlightTurnOff();
+				}
 			}
 		}
 		else
 		{
-			if (m_iFlashBattery < 100)
+			/*if (m_iFlashBattery < 100)
 			{
 				m_flFlashLightTime = FLASH_CHARGE_TIME + gpGlobals->time;
 				m_iFlashBattery++;
 			}
-			else
+			else*/
 				m_flFlashLightTime = 0;
 		}
 

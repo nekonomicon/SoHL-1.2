@@ -218,7 +218,7 @@ class CItemBattery : public CItem
 		if (pev->model)
 			SET_MODEL(ENT(pev), STRING(pev->model)); //LRC
 		else
-			SET_MODEL(ENT(pev), "models/w_battery.mdl");
+			SET_MODEL(ENT(pev), "models/battery.mdl");
 		CItem::Spawn( );
 	}
 	void Precache( void )
@@ -226,7 +226,7 @@ class CItemBattery : public CItem
 		if (pev->model)
 			PRECACHE_MODEL((char*)STRING(pev->model)); //LRC
 		else
-			PRECACHE_MODEL ("models/w_battery.mdl");
+			PRECACHE_MODEL ("models/battery.mdl");
 
 		if (pev->noise)
 			PRECACHE_SOUND( (char*)STRING(pev->noise) ); //LRC
@@ -241,7 +241,7 @@ class CItemBattery : public CItem
 		}
 
 		if ((pPlayer->pev->armorvalue < MAX_NORMAL_BATTERY) &&
-			(pPlayer->pev->weapons & (1<<WEAPON_SUIT)))
+			(pPlayer->pev->weapons & (1<<WEAPON_FLASHLIGHT)))
 		{
 			int pct;
 			char szcharge[64];
@@ -348,6 +348,7 @@ class CItemFlashlight : public CItem
 		EMIT_SOUND(pPlayer->edict(), CHAN_ITEM, "items/gunpickup2.wav", 1, ATTN_NORM);
 
 		pPlayer->pev->weapons |= (1 << WEAPON_FLASHLIGHT);
+		pPlayer->pev->armorvalue = 15;
 		return TRUE;
 	}
 };
