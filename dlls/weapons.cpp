@@ -588,6 +588,9 @@ void CBasePlayerItem::DefaultTouch( CBaseEntity *pOther )
 
 	CBasePlayer *pPlayer = (CBasePlayer *)pOther;
 
+	if( !( pPlayer->m_afButtonPressed & IN_USE ))
+		return FALSE;
+
 	// can I have this?
 	if ( !g_pGameRules->CanHavePlayerItem( pPlayer, this ) )
 	{
@@ -1091,6 +1094,11 @@ void CBasePlayerAmmo :: DefaultTouch( CBaseEntity *pOther )
 	{
 		return;
 	}
+
+	CBasePlayer *pPlayer = (CBasePlayer *)pOther;
+
+	if( !( pPlayer->m_afButtonPressed & IN_USE ))
+		return FALSE;
 
 	if (AddAmmo( pOther ))
 	{
