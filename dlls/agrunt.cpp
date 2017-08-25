@@ -592,7 +592,7 @@ void CAGrunt :: Spawn()
 
 	pev->solid			= SOLID_SLIDEBOX;
 	pev->movetype		= MOVETYPE_STEP;
-	m_bloodColor		= BLOOD_COLOR_GREEN;
+	m_bloodColor		= DONT_BLEED;
 	pev->effects		= 0;
 	if (pev->health == 0)
 		pev->health			= gSkillData.agruntHealth;

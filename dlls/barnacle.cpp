@@ -113,7 +113,7 @@ void CBarnacle :: Spawn()
 	pev->solid			= SOLID_SLIDEBOX;
 	pev->movetype		= MOVETYPE_NONE;
 	pev->takedamage		= DAMAGE_AIM;
-	m_bloodColor		= BLOOD_COLOR_RED;
+	m_bloodColor		= DONT_BLEED;
 	pev->effects		= EF_INVLIGHT; // take light from the ceiling 
 	pev->health			= 25;
 	m_flFieldOfView		= 0.5;// indicates the width of this monster's forward view cone ( as a dotproduct result )

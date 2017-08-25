@@ -210,7 +210,7 @@ void CZombie3 :: Spawn()
 
 	pev->solid			= SOLID_SLIDEBOX;
 	pev->movetype		= MOVETYPE_STEP;
-	m_bloodColor		= BLOOD_COLOR_GREEN;
+	m_bloodColor		= BLOOD_COLOR_RED;
 	if (pev->health == 0)
 		pev->health			= gSkillData.zombie3Health;
 	pev->view_ofs		= VEC_VIEW;// position of the eyes relative to monster's origin.
