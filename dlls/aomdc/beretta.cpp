@@ -89,7 +89,7 @@ int CBeretta::GetItemInfo(ItemInfo *p)
 	p->iMaxAmmo2 = -1;
 	p->iMaxClip = BERETTA_MAX_CLIP;
 	p->iSlot = 1;
-	p->iPosition = 0;
+	p->iPosition = 1;
 	p->iFlags = 0;
 	p->iId = m_iId = WEAPON_BERETTA;
 	p->iWeight = BERETTA_WEIGHT;

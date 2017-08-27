@@ -196,6 +196,23 @@ typedef struct
 	int iId;
 } AmmoInfo;
 
+static const char *WorldWeaponModels[] =
+{
+	NULL,
+	"models/w_kitchenknife.mdl",
+	"models/w_axe.mdl",
+	"models/w_hammer.mdl",
+	"models/w_p228.mdl",
+	"models/w_beretta.mdl",
+	"models/w_glock.mdl",
+	"models/w_revolver.mdl",
+	"models/w_mp5k.mdl",
+	"models/w_uzi.mdl",
+	"models/gmgeneral_around.aomdc",
+	"models/w_shotgun.mdl",
+	"models/w_deagle.mdl",
+	"models/w_spear.mdl"
+};
 // Items that the player has in their inventory that they can use
 class CBasePlayerItem : public CBaseAnimating
 {

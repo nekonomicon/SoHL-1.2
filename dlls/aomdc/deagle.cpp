@@ -86,7 +86,7 @@ int CDeagle::GetItemInfo(ItemInfo *p)
 	p->iMaxAmmo2 = -1;
 	p->iMaxClip = DEAGLE_MAX_CLIP;
 	p->iSlot = 3;
-	p->iPosition = 0;
+	p->iPosition = 1;
 	p->iFlags = 0;
 	p->iId = m_iId = WEAPON_DEAGLE;
 	p->iWeight = DEAGLE_WEIGHT;

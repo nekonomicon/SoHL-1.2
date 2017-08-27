@@ -82,7 +82,7 @@ int CUzi::GetItemInfo(ItemInfo *p)
 	p->iMaxAmmo2 = -1;
 	p->iMaxClip = UZI_MAX_CLIP;
 	p->iSlot = 2;
-	p->iPosition = 0;
+	p->iPosition = 1;
 	p->iFlags = 0;
 	p->iId = m_iId = WEAPON_UZI;
 	p->iWeight = UZI_WEIGHT;

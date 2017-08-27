@@ -591,6 +591,18 @@ void CBasePlayerItem::DefaultTouch( CBaseEntity *pOther )
 	if( !( pPlayer->m_afButtonPressed & IN_USE ))
 		return FALSE;
 
+	for( int i = 0; i < MAX_ITEM_TYPES; i++ )
+        {
+		if( !pPlayer->m_rgpPlayerItems[i] )
+			continue;
+		if( !strcmp( STRING( pPlayer->m_rgpPlayerItems[i]->pev->classname ), STRING( pev->classname ) ) )
+			break;
+		if( pPlayer->m_rgpPlayerItems[i]->iItemSlot() == iItemSlot() )
+		{
+			pPlayer->DropPlayerItem( (char*)STRING( pPlayer->m_rgpPlayerItems[i]->pev->classname ) );
+				break;
+		}
+        }
 	// can I have this?
 	if ( !g_pGameRules->CanHavePlayerItem( pPlayer, this ) )
 	{
@@ -948,31 +960,6 @@ BOOL CBasePlayerWeapon :: IsUseable( void )
 
 BOOL CBasePlayerWeapon :: CanDeploy( void )
 {
-	BOOL bHasAmmo = 0;
-
-	if ( !pszAmmo1() )
-	{
-		// this weapon doesn't use ammo, can always deploy.
-		return TRUE;
-	}
-
-	if ( pszAmmo1() )
-	{
-		bHasAmmo |= (m_pPlayer->m_rgAmmo[m_iPrimaryAmmoType] != 0);
-	}
-	if ( pszAmmo2() )
-	{
-		bHasAmmo |= (m_pPlayer->m_rgAmmo[m_iSecondaryAmmoType] != 0);
-	}
-	if (m_iClip > 0)
-	{
-		bHasAmmo |= 1;
-	}
-	if (!bHasAmmo)
-	{
-		return FALSE;
-	}
-
 	return TRUE;
 }
 
@@ -1326,6 +1313,24 @@ void CWeaponBox::Touch( CBaseEntity *pOther )
 
 	CBasePlayer *pPlayer = (CBasePlayer *)pOther;
 	int i;
+
+	if( !( pPlayer->m_afButtonPressed & IN_USE ) )
+		return;
+
+	for( i = 0; i < MAX_ITEM_TYPES; i++ )
+	{
+		if( !pPlayer->m_rgpPlayerItems[i] )
+			continue;
+
+		if( m_rgpPlayerItems[pPlayer->m_rgpPlayerItems[i]->iItemSlot()] )
+		{
+			if( !strcmp( STRING( pPlayer->m_rgpPlayerItems[i]->pev->classname ), STRING( m_rgpPlayerItems[pPlayer->m_rgpPlayerItems[i]->iItemSlot()]->pev->classname ) ) )
+				break;
+
+			pPlayer->DropPlayerItem( (char*)STRING( pPlayer->m_rgpPlayerItems[i]->pev->classname ) );
+			break;
+		}
+	}
 
 // dole out ammo
 	for ( i = 0 ; i < MAX_AMMO_SLOTS ; i++ )

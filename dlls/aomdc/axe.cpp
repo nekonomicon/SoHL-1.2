@@ -81,7 +81,7 @@ int CAxe::GetItemInfo(ItemInfo *p)
 	p->iMaxAmmo2 = -1;
 	p->iMaxClip = WEAPON_NOCLIP;
 	p->iSlot = 0;
-	p->iPosition = 0;
+	p->iPosition = 1;
 	p->iId = WEAPON_AXE;
 	p->iWeight = AXE_WEIGHT;
 	return 1;

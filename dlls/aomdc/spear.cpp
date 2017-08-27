@@ -84,7 +84,7 @@ int CSpear::GetItemInfo(ItemInfo *p)
 	p->iMaxAmmo2 = -1;
 	p->iMaxClip = WEAPON_NOCLIP;
 	p->iSlot = 0;
-	p->iPosition = 0;
+	p->iPosition = 3;
 	p->iId = WEAPON_SPEAR;
 	p->iWeight = SPEAR_WEIGHT;
 	return 1;
