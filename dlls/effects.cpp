@@ -4640,3 +4640,40 @@ void CParticle::Use( CBaseEntity *pActivator, CBaseEntity *pCaller, USE_TYPE use
 		//ALERT(at_console, "Setting body %d\n", pev->body);
 	}
 }
+
+//=========================================================
+//  env_hidehud, Hide/Unhide the HUD
+//=========================================================
+class CEnvHideHUD : public CPointEntity
+{
+public:
+	void	Spawn( void );
+	void	Use( CBaseEntity *pActivator, CBaseEntity *pCaller, USE_TYPE useType, float value );
+};
+
+LINK_ENTITY_TO_CLASS( env_hidehud, CEnvHideHUD );
+
+void CEnvHideHUD::Spawn( void )
+{
+	pev->effects		= EF_NODRAW;
+	pev->solid		= SOLID_NOT;
+	pev->movetype		= MOVETYPE_NONE;
+}
+
+void CEnvHideHUD::Use( CBaseEntity *pActivator, CBaseEntity *pCaller, USE_TYPE useType, float value )
+{
+	CBasePlayer *pPlayer = NULL;
+
+	if( pActivator && pActivator->IsPlayer() )
+		pPlayer = (CBasePlayer *)pActivator;
+	else
+		pPlayer = (CBasePlayer *)CBaseEntity::Instance( g_engfuncs.pfnPEntityOfEntIndex( 1 ) );
+
+	if( pPlayer )
+	{
+		if( !( pPlayer->m_iHideHUD & ( HIDEHUD_WEAPONS | HIDEHUD_HEALTH | HIDEHUD_FLASHLIGHT ) ) )
+			pPlayer->m_iHideHUD |= ( HIDEHUD_WEAPONS | HIDEHUD_HEALTH | HIDEHUD_FLASHLIGHT );
+		else
+			pPlayer->m_iHideHUD &= ~( HIDEHUD_WEAPONS | HIDEHUD_HEALTH | HIDEHUD_FLASHLIGHT);
+	}
+}
