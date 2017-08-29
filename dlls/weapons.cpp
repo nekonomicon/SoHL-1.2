@@ -686,6 +686,8 @@ void CBasePlayerWeapon::ItemPostFrame( void )
 
 		m_fFireOnEmpty = FALSE;
 
+		m_iShotCounter = 0;
+
 		if ( !IsUseable() && m_flNextPrimaryAttack < ( UseDecrement() ? 0.0 : gpGlobals->time ) ) 
 		{
 			// weapon isn't useable, switch.

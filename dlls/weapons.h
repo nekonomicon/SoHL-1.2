@@ -355,7 +355,7 @@ public:
 	int		m_fInReload;										// Are we in the middle of a reload;
 
 	int		m_iDefaultAmmo;// how much ammo you get when you pick up this weapon as placed by a level designer.
-
+	int		m_iShotCounter;
 };
 
 

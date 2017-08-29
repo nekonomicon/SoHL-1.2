@@ -118,6 +118,14 @@ void CGlock::PrimaryAttack( void )
 
 void CGlock::GlockFire( float flSpread , float flCycleTime, BOOL fUseAutoAim )
 {
+	if( fUseAutoAim )
+	{
+		m_iShotCounter++;
+
+		if( m_iShotCounter > 1 )
+			return;
+	}
+
 	if (m_iClip <= 0)
 	{
 		if (m_fFireOnEmpty)

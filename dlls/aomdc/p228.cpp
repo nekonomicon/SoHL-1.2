@@ -107,6 +107,11 @@ void CP228::PrimaryAttack( void )
 	float flCycleTime = 0.3;
 	BOOL fUseAutoAim = TRUE;
 
+	m_iShotCounter++;
+
+	if( m_iShotCounter > 1 )
+		return;
+
 	if (m_iClip <= 0)
 	{
 		if (m_fFireOnEmpty)
