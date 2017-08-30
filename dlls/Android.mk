@@ -30,7 +30,7 @@ LOCAL_SRC_FILES := aflock.cpp agrunt.cpp AI_BaseNPC_Schedule.cpp airtank.cpp \
 		func_tank.cpp game.cpp gamerules.cpp gargantua.cpp genericmonster.cpp \
 		ggrenade.cpp globals.cpp gman.cpp h_ai.cpp hassassin.cpp \
 		h_battery.cpp h_cine.cpp h_cycler.cpp headcrab.cpp healthkit.cpp h_export.cpp \
-		hgrunt.cpp hornet.cpp houndeye.cpp ichthyosaur.cpp islave_deamon.cpp \
+		hgrunt.cpp hornet.cpp houndeye.cpp ichthyosaur.cpp \
 		items.cpp leech.cpp lights.cpp locus.cpp maprules.cpp monstermaker.cpp monsters.cpp \
 		monsterstate.cpp mortar.cpp movewith.cpp multiplay_gamerules.cpp nihilanth.cpp \
 		nodes.cpp osprey.cpp pathcorner.cpp plane.cpp plats.cpp player.cpp playermonster.cpp \
@@ -42,6 +42,7 @@ LOCAL_SRC_FILES := aflock.cpp agrunt.cpp AI_BaseNPC_Schedule.cpp airtank.cpp \
 		aomdc/hammer.cpp aomdc/spear.cpp aomdc/glock.cpp aomdc/beretta.cpp \
 		aomdc/p228.cpp aomdc/deagle.cpp aomdc/revolver.cpp aomdc/mp5k.cpp \
 		aomdc/uzi.cpp aomdc/gmgeneral.cpp aomdc/zombie2.cpp aomdc/zombie3.cpp aomdc/zombie4.cpp \
+		aomdc/ghost.cpp \
 	   ../pm_shared/pm_debug.c ../pm_shared/pm_math.c ../pm_shared/pm_shared.c
 
 
