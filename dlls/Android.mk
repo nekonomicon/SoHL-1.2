@@ -42,7 +42,7 @@ LOCAL_SRC_FILES := aflock.cpp agrunt.cpp AI_BaseNPC_Schedule.cpp airtank.cpp \
 		aomdc/hammer.cpp aomdc/spear.cpp aomdc/glock.cpp aomdc/beretta.cpp \
 		aomdc/p228.cpp aomdc/deagle.cpp aomdc/revolver.cpp aomdc/mp5k.cpp \
 		aomdc/uzi.cpp aomdc/gmgeneral.cpp aomdc/zombie2.cpp aomdc/zombie3.cpp aomdc/zombie4.cpp \
-		aomdc/ghost.cpp \
+		aomdc/ghost.cpp aomdc/wheelchair.cpp \
 	   ../pm_shared/pm_debug.c ../pm_shared/pm_math.c ../pm_shared/pm_shared.c
 
 
