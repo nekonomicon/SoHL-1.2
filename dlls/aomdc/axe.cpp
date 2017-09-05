@@ -244,13 +244,8 @@ int CAxe::Swing( int fFirst )
 				EMIT_SOUND(ENT(m_pPlayer->pev), CHAN_ITEM, "weapons/Axe_hitbody.wav", 1, ATTN_NORM);
 
 				m_pPlayer->m_iWeaponVolume = CROWBAR_BODYHIT_VOLUME;
-				if ( !pEntity->IsAlive() )
-				{
-					m_flNextPrimaryAttack = UTIL_WeaponTimeBase() + 0.25; //LRC: corrected half-life bug
-					return TRUE;
-				}
-				else
-					  flVol = 0.1;
+
+				flVol = 0.1;
 
 				fHitWorld = FALSE;
 			}
@@ -280,12 +275,10 @@ int CAxe::Swing( int fFirst )
 
 		m_pPlayer->m_iWeaponVolume = flVol * CROWBAR_WALLHIT_VOLUME;
 #endif
-		m_flNextPrimaryAttack = UTIL_WeaponTimeBase() + 0.25;
+		m_flNextPrimaryAttack = UTIL_WeaponTimeBase() + 1.65;
 		
 		SetThink(&CAxe:: Smack );
-		SetNextThink( 0.2 );
-
-		
+		SetNextThink( 0.2 );		
 	}
 	return fDidHit;
 }

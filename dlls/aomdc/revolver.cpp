@@ -105,24 +105,11 @@ BOOL CRevolver::Deploy( )
 
 void CRevolver::PrimaryAttack()
 {
-	// don't fire underwater
-	if (m_pPlayer->pev->waterlevel == 3 && m_pPlayer->pev->watertype > CONTENT_FLYFIELD)
+	if( ( m_iClip <= 0 && m_fFireOnEmpty ) ||
+		( m_pPlayer->pev->waterlevel == 3 && m_pPlayer->pev->watertype > CONTENT_FLYFIELD ) ) // don't fire underwater
 	{
 		PlayEmptySound( );
 		m_flNextPrimaryAttack = 0.15;
-		return;
-	}
-
-	if (m_iClip <= 0)
-	{
-		if (!m_fFireOnEmpty)
-			Reload( );
-		else
-		{
-			EMIT_SOUND(ENT(m_pPlayer->pev), CHAN_WEAPON, "weapons/357_cock1.wav", 0.8, ATTN_NORM);
-			m_flNextPrimaryAttack = 0.15;
-		}
-
 		return;
 	}
 
@@ -135,7 +122,6 @@ void CRevolver::PrimaryAttack()
 
 	// player "shoot" animation
 	m_pPlayer->SetAnimation( PLAYER_ATTACK1 );
-
 
 	UTIL_MakeVectors( m_pPlayer->pev->v_angle + m_pPlayer->pev->punchangle );
 
@@ -184,7 +170,12 @@ void CRevolver::WeaponIdle( void )
 		m_flSoundDelay = 0;
 	}
 
-	return;
+	if (m_flTimeWeaponIdle > UTIL_WeaponTimeBase() )
+                return;
+
+	SendWeaponAnim( REVOLVER_IDLE, 1 );
+         
+	m_flTimeWeaponIdle = UTIL_SharedRandomFloat( m_pPlayer->random_seed, 10, 15 ); // how long till we do this again.
 }
 
 

@@ -103,8 +103,6 @@ BOOL CDeagle::Deploy( )
 void CDeagle::PrimaryAttack( void )
 {
 	float flSpread = 0.01;
-	float flCycleTime = 0.3;
-	BOOL fUseAutoAim = TRUE;
 
 	if (m_iClip <= 0)
 	{
@@ -137,23 +135,13 @@ void CDeagle::PrimaryAttack( void )
 	m_pPlayer->m_iWeaponFlash = NORMAL_GUN_FLASH;
 
 	Vector vecSrc	 = m_pPlayer->GetGunPosition( );
-	Vector vecAiming;
-	
-	if ( fUseAutoAim )
-	{
-		vecAiming = m_pPlayer->GetAutoaimVector( AUTOAIM_10DEGREES );
-	}
-	else
-	{
-		vecAiming = gpGlobals->v_forward;
-	}
+	Vector vecAiming = m_pPlayer->GetAutoaimVector( AUTOAIM_10DEGREES );
 
-	Vector vecDir;
-	vecDir = m_pPlayer->FireBulletsPlayer( 1, vecSrc, vecAiming, Vector( flSpread, flSpread, flSpread ), 8192, BULLET_PLAYER_9MM, 0, 0, m_pPlayer->pev, m_pPlayer->random_seed );
+	Vector vecDir = m_pPlayer->FireBulletsPlayer( 1, vecSrc, vecAiming, Vector( flSpread, flSpread, flSpread ), 8192, BULLET_PLAYER_9MM, 0, 0, m_pPlayer->pev, m_pPlayer->random_seed );
 
 	PLAYBACK_EVENT_FULL( flags, m_pPlayer->edict(), m_usFireDeagle, 0.0, (float *)&g_vecZero, (float *)&g_vecZero, vecDir.x, vecDir.y, 0, 0, ( m_iClip == 0 ) ? 1 : 0, 0 );
 
-	m_flNextPrimaryAttack = m_flNextSecondaryAttack = UTIL_WeaponTimeBase() + flCycleTime;
+	m_flNextPrimaryAttack = UTIL_WeaponTimeBase() + 0.75f;
 
 	m_flTimeWeaponIdle = UTIL_WeaponTimeBase() + UTIL_SharedRandomFloat( m_pPlayer->random_seed, 10, 15 );
 }
@@ -164,17 +152,7 @@ void CDeagle::Reload( void )
 	if( m_pPlayer->m_rgAmmo[m_iPrimaryAmmoType] <= 0 || m_iClip == DEAGLE_MAX_CLIP )
 		 return;
 
-	int iResult;
-
-	if (m_iClip == 0)
-		iResult = DefaultReload( DEAGLE_MAX_CLIP, DEAGLE_RELOAD_EMPTY, 1.5 );
-	else
-		iResult = DefaultReload( DEAGLE_MAX_CLIP, DEAGLE_RELOAD, 1.5 );
-
-	if (iResult)
-	{
-		m_flTimeWeaponIdle = UTIL_WeaponTimeBase() + UTIL_SharedRandomFloat( m_pPlayer->random_seed, 10, 15 );
-	}
+	DefaultReload( DEAGLE_MAX_CLIP, m_iClip ? DEAGLE_RELOAD : DEAGLE_RELOAD_EMPTY, 1.5 );
 }
 
 
@@ -188,24 +166,9 @@ void CDeagle::WeaponIdle( void )
 	if ( m_flTimeWeaponIdle > UTIL_WeaponTimeBase() )
 		return;
 
-	// only idle if the slid isn't back
-	if (m_iClip != 0)
-	{
-		int iAnim;
-		float flRand = UTIL_SharedRandomFloat( m_pPlayer->random_seed, 0.0, 1.0 );
+	SendWeaponAnim( DEAGLE_IDLE1, 1 );
 
-		if (flRand <= 0.6 + 0 * 0.875)
-		{
-			iAnim = DEAGLE_IDLE1;
-			m_flTimeWeaponIdle = UTIL_WeaponTimeBase() + 60.0 / 16.0;
-		}
-		else
-		{
-			iAnim = DEAGLE_IDLE2;
-			m_flTimeWeaponIdle = UTIL_WeaponTimeBase() + 40.0 / 16.0;
-		}
-		SendWeaponAnim( iAnim, 1 );
-	}
+	m_flTimeWeaponIdle = UTIL_WeaponTimeBase() + UTIL_SharedRandomFloat( m_pPlayer->random_seed, 10, 15 ); // how long till we do this again.
 }
 
 class CDeagleAmmo : public CBasePlayerAmmo

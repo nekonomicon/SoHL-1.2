@@ -787,7 +787,7 @@ void EV_FireBeretta( event_args_t *args )
 	if ( EV_IsLocal( idx ) )
 	{
 		EV_MuzzleFlash();
-		gEngfuncs.pEventAPI->EV_WeaponAnimation( empty ? BERETTA_FIRE_LOAD : (BERETTA_FIRE1 + gEngfuncs.pfnRandomLong(0,1)), 2 );
+		gEngfuncs.pEventAPI->EV_WeaponAnimation( empty ? BERETTA_FIRE_LOAD : BERETTA_FIRE1, 2 );
 
 		V_PunchAxis( 0, -2.0 );
 	}
@@ -850,7 +850,7 @@ void EV_FireP228( event_args_t *args )
 	if ( EV_IsLocal( idx ) )
 	{
 		EV_MuzzleFlash();
-		gEngfuncs.pEventAPI->EV_WeaponAnimation( empty ? P228_FIRE_LOAD : (P228_FIRE1 + gEngfuncs.pfnRandomLong(0,1)), 2 );
+		gEngfuncs.pEventAPI->EV_WeaponAnimation( empty ? P228_FIRE_LOAD : P228_FIRE1, 2 );
 
 		V_PunchAxis( 0, -2.0 );
 	}
@@ -913,7 +913,7 @@ void EV_FireDeagle( event_args_t *args )
 	if ( EV_IsLocal( idx ) )
 	{
 		EV_MuzzleFlash();
-		gEngfuncs.pEventAPI->EV_WeaponAnimation( empty ? DEAGLE_FIRE_LOAD : (DEAGLE_FIRE1 + gEngfuncs.pfnRandomLong(0,1)), 2 );
+		gEngfuncs.pEventAPI->EV_WeaponAnimation( empty ? DEAGLE_FIRE_LOAD : DEAGLE_FIRE1 , 2 );
 
 		V_PunchAxis( 0, -2.0 );
 	}
@@ -969,7 +969,7 @@ void EV_FireRevolver( event_args_t *args )
 	{
 		// Add muzzle flash to current weapon model
 		EV_MuzzleFlash();
-		gEngfuncs.pEventAPI->EV_WeaponAnimation( REVOLVER_SHOOT1 + gEngfuncs.pfnRandomLong(0,1), 0 );
+		gEngfuncs.pEventAPI->EV_WeaponAnimation( REVOLVER_SHOOT1, 0 );
 
 		V_PunchAxis( 0, -10.0 );
 	}
@@ -1037,19 +1037,12 @@ void EV_FireShotGunSingle( event_args_t *args )
 
 	EV_EjectBrass ( ShellOrigin, ShellVelocity, angles[ YAW ], shell, TE_BOUNCE_SHOTSHELL ); 
 
-	gEngfuncs.pEventAPI->EV_PlaySound( idx, origin, CHAN_WEAPON, "weapons/sbarrel1.wav", gEngfuncs.pfnRandomFloat(0.95, 1.0), ATTN_NORM, 0, 93 + gEngfuncs.pfnRandomLong( 0, 0x1f ) );
+	gEngfuncs.pEventAPI->EV_PlaySound( idx, origin, CHAN_WEAPON, "weapons/shotgun_fire.wav", gEngfuncs.pfnRandomFloat(0.95, 1.0), ATTN_NORM, 0, 93 + gEngfuncs.pfnRandomLong( 0, 0x1f ) );
 
 	EV_GetGunPosition( args, vecSrc, origin );
 	VectorCopy( forward, vecAiming );
 
-	if ( gEngfuncs.GetMaxClients() > 1 )
-	{
-		EV_HLDM_FireBullets( idx, forward, right, up, 4, vecSrc, vecAiming, 2048, BULLET_PLAYER_BUCKSHOT, 0, &tracerCount[idx-1], 0.08716, 0.04362 );
-	}
-	else
-	{
-		EV_HLDM_FireBullets( idx, forward, right, up, 6, vecSrc, vecAiming, 2048, BULLET_PLAYER_BUCKSHOT, 0, &tracerCount[idx-1], 0.08716, 0.08716 );
-	}
+	EV_HLDM_FireBullets( idx, forward, right, up, 8, vecSrc, vecAiming, 2048, BULLET_PLAYER_BUCKSHOT, 0, &tracerCount[idx-1], 0.08716, 0.08716 );
 }
 //======================
 //	   SHOTGUN END

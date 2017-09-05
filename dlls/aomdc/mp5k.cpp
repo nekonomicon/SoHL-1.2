@@ -193,22 +193,9 @@ void CMP5K::WeaponIdle( void )
 	if ( m_flTimeWeaponIdle > UTIL_WeaponTimeBase() )
 		return;
 
-	int iAnim;
-	switch ( RANDOM_LONG( 0, 1 ) )
-	{
-	case 0:	
-		iAnim = MP5K_FIDGET;	
-		break;
-	
-	default:
-	case 1:
-		iAnim = MP5K_IDLE;
-		break;
-	}
+	SendWeaponAnim( RANDOM_LONG( MP5K_IDLE, MP5K_FIDGET ) );
 
-	SendWeaponAnim( iAnim );
-
-	m_flTimeWeaponIdle = UTIL_SharedRandomFloat( m_pPlayer->random_seed, 10, 15 ); // how long till we do this again.
+	m_flTimeWeaponIdle = UTIL_WeaponTimeBase() + UTIL_SharedRandomFloat( m_pPlayer->random_seed, 10, 15 ); // how long till we do this again.
 }
 
 
