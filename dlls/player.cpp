@@ -4116,6 +4116,12 @@ void CBasePlayer :: UpdateClientData( void )
 		InitStatusBar();
 	}
 
+	// Give item_suit in AoMDC hazard course.
+	if( !( pev->weapons & ( 1 << WEAPON_SUIT ) ) && FStrEq( STRING( gpGlobals->mapname ), "training" ) )
+	{
+		pev->weapons |= ( 1 << WEAPON_SUIT );
+	}
+
 	if ( m_iHideHUD != m_iClientHideHUD )
 	{
 		MESSAGE_BEGIN( MSG_ONE, gmsgHideWeapon, NULL, pev );
