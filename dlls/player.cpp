@@ -67,7 +67,7 @@ extern CGraph	WorldGraph;
 #define TRAIN_FAST		0x04 
 #define TRAIN_BACK		0x05
 
-#define	FLASH_DRAIN_TIME	 1.2 //100 units/3 minutes
+#define	FLASH_DRAIN_TIME	 0.15 // 100 units/15 seconds
 #define	FLASH_CHARGE_TIME	 0.2 // 100 units/20 seconds  (seconds per unit)
 
 #ifdef XENWARRIOR
@@ -2978,8 +2978,8 @@ void CBasePlayer::Spawn( void )
 	m_flNextAttack	= UTIL_WeaponTimeBase();
 	StartSneaking();
 
-	m_iFlashBattery = 99;
-	m_flFlashLightTime = 1; // force first message
+	m_iFlashBattery = 0;
+	m_flFlashLightTime = 0; // force first message
 
 // dont let uninitialized value here hurt the player
 	m_flFallVelocity = 0;
@@ -4210,33 +4210,41 @@ void CBasePlayer :: UpdateClientData( void )
 	// Update Flashlight
 	if ((m_flFlashLightTime) && (m_flFlashLightTime <= gpGlobals->time))
 	{
+		if (pev->armorvalue == 100)
+			m_iFlashBattery = 0;
+
 		if (FlashlightIsOn())
 		{
 			if (m_iFlashBattery)
 			{
 				m_flFlashLightTime = FLASH_DRAIN_TIME + gpGlobals->time;
 				m_iFlashBattery--;
-				
-				if (!m_iFlashBattery)
-				{
-					if( pev->armorvalue )
-					{
-						m_iFlashBattery = 99;
-						pev->armorvalue--;
-					}
-					else
-						FlashlightTurnOff();
-				}
 			}
+			else if (!m_iFlashBattery && pev->armorvalue)
+			{
+				m_flFlashLightTime = FLASH_DRAIN_TIME + gpGlobals->time;
+				m_iFlashBattery = 99;
+				pev->armorvalue--;
+			}
+			else
+				FlashlightTurnOff();
 		}
 		else
 		{
-			/*if (m_iFlashBattery < 100)
+			if (pev->armorvalue < 5)
 			{
-				m_flFlashLightTime = FLASH_CHARGE_TIME + gpGlobals->time;
-				m_iFlashBattery++;
+				if (m_iFlashBattery < 100)
+				{
+					m_flFlashLightTime = FLASH_CHARGE_TIME + gpGlobals->time;
+					m_iFlashBattery++;
+				}
+				else
+				{
+					pev->armorvalue++;
+					m_iFlashBattery = 0;
+				}
 			}
-			else*/
+			else
 				m_flFlashLightTime = 0;
 		}
 
