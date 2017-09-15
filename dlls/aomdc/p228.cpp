@@ -154,10 +154,22 @@ void CP228::PrimaryAttack( void )
 
 void CP228::Reload( void )
 {
+	int iAnim;
+	float fTime;
 	if( m_pPlayer->m_rgAmmo[m_iPrimaryAmmoType] <= 0 || m_iClip == P228_MAX_CLIP )
 		 return;
 
-	DefaultReload( P228_MAX_CLIP, m_iClip ? P228_RELOAD : P228_RELOAD_EMPTY, 1.5 );
+	if( m_iClip )
+	{
+		iAnim = P228_RELOAD;
+		fTime = 1.93;
+	}
+	else
+	{
+		iAnim = P228_RELOAD_EMPTY;
+		fTime = 2.1;
+	}
+	DefaultReload( P228_MAX_CLIP, iAnim, fTime );
 }
 
 void CP228::WeaponIdle( void )

@@ -109,7 +109,7 @@ void CDeagle::PrimaryAttack( void )
 		if (m_fFireOnEmpty)
 		{
 			PlayEmptySound();
-			m_flNextPrimaryAttack = UTIL_WeaponTimeBase() + 0.2;
+			m_flNextPrimaryAttack = UTIL_WeaponTimeBase() + 0.15;
 		}
 
 		return;
@@ -141,7 +141,7 @@ void CDeagle::PrimaryAttack( void )
 
 	PLAYBACK_EVENT_FULL( flags, m_pPlayer->edict(), m_usFireDeagle, 0.0, (float *)&g_vecZero, (float *)&g_vecZero, vecDir.x, vecDir.y, 0, 0, ( m_iClip == 0 ) ? 1 : 0, 0 );
 
-	m_flNextPrimaryAttack = UTIL_WeaponTimeBase() + 0.75f;
+	m_flNextPrimaryAttack = UTIL_WeaponTimeBase() + 0.7f;
 
 	m_flTimeWeaponIdle = UTIL_WeaponTimeBase() + UTIL_SharedRandomFloat( m_pPlayer->random_seed, 10, 15 );
 }
@@ -149,10 +149,22 @@ void CDeagle::PrimaryAttack( void )
 
 void CDeagle::Reload( void )
 {
+	int iAnim;
+	float fTime;
 	if( m_pPlayer->m_rgAmmo[m_iPrimaryAmmoType] <= 0 || m_iClip == DEAGLE_MAX_CLIP )
 		 return;
 
-	DefaultReload( DEAGLE_MAX_CLIP, m_iClip ? DEAGLE_RELOAD : DEAGLE_RELOAD_EMPTY, 1.5 );
+	if( m_iClip )
+        {
+                iAnim = DEAGLE_RELOAD;
+                fTime = 2.43;
+        }
+        else
+        {
+                iAnim = DEAGLE_RELOAD_EMPTY;
+                fTime = 2.7;
+        }
+	DefaultReload( DEAGLE_MAX_CLIP, iAnim, fTime );
 }
 
 

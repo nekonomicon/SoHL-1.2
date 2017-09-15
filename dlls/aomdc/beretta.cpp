@@ -157,10 +157,23 @@ void CBeretta::PrimaryAttack( void )
 
 void CBeretta::Reload( void )
 {
+	int iAnim;
+	float fTime;
 	if( m_pPlayer->m_rgAmmo[m_iPrimaryAmmoType] <= 0 || m_iClip == BERETTA_MAX_CLIP )
 		 return;
 
-	DefaultReload( BERETTA_MAX_CLIP, m_iClip ? BERETTA_RELOAD : BERETTA_RELOAD_EMPTY, 1.5 );
+	if( m_iClip )
+	{
+		iAnim = BERETTA_RELOAD;
+		fTime = 2.43;
+	}
+	else
+	{
+		iAnim = BERETTA_RELOAD_EMPTY;
+		fTime = 2.7;
+	}
+
+	DefaultReload( BERETTA_MAX_CLIP, iAnim, fTime );
 }
 
 void CBeretta::WeaponIdle( void )

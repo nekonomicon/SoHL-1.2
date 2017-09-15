@@ -140,7 +140,7 @@ void CRevolver::PrimaryAttack()
 
 	PLAYBACK_EVENT_FULL( flags, m_pPlayer->edict(), m_usFireRevolver, 0.0, (float *)&g_vecZero, (float *)&g_vecZero, vecDir.x, vecDir.y, 0, 0, 0, 0 );
 
-	m_flNextPrimaryAttack = 0.75;
+	m_flNextPrimaryAttack = 0.9;
 	m_flTimeWeaponIdle = UTIL_SharedRandomFloat( m_pPlayer->random_seed, 10, 15 );
 }
 
@@ -150,7 +150,7 @@ void CRevolver::Reload( void )
 	if( m_pPlayer->m_rgAmmo[m_iPrimaryAmmoType] <= 0 || m_iClip == REVOLVER_MAX_CLIP )
 		return;
 
-	if (DefaultReload( REVOLVER_MAX_CLIP, REVOLVER_RELOAD, 2.0))
+	if (DefaultReload( REVOLVER_MAX_CLIP, REVOLVER_RELOAD, 2.76))
 	{
 		m_flSoundDelay = 1.5;
 	}

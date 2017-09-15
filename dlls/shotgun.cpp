@@ -160,11 +160,11 @@ void CShotgun::PrimaryAttack()
 	if (m_iClip != 0)
 		m_flPumpTime = gpGlobals->time + 0.5;
 
-	m_flNextPrimaryAttack = UTIL_WeaponTimeBase() + 1.25;
+	m_flNextPrimaryAttack = UTIL_WeaponTimeBase() + 1.3;
 	if (m_iClip != 0)
 		m_flTimeWeaponIdle = UTIL_WeaponTimeBase() + 5.0;
 	else
-		m_flTimeWeaponIdle = UTIL_WeaponTimeBase() + 0.75;
+		m_flTimeWeaponIdle = UTIL_WeaponTimeBase() + 1.3;
 	m_fInSpecialReload = 0;
 }
 
@@ -248,19 +248,8 @@ void CShotgun::WeaponIdle( void )
 		}
 		else
 		{
-			int iAnim;
-			float flRand = UTIL_SharedRandomFloat( m_pPlayer->random_seed, 0, 1 );
-			if (flRand <= 0.95)
-			{
-				iAnim = SHOTGUN_IDLE;
-				m_flTimeWeaponIdle = UTIL_WeaponTimeBase() + (20.0/9.0);
-			}
-			else
-			{
-				iAnim = SHOTGUN_IDLE2;
-				m_flTimeWeaponIdle = UTIL_WeaponTimeBase() + (20.0/9.0);
-			}
-			SendWeaponAnim( iAnim );
+			SendWeaponAnim( SHOTGUN_IDLE );
+			m_flTimeWeaponIdle = UTIL_WeaponTimeBase() + (20.0/9.0);
 		}
 	}
 }

@@ -275,7 +275,7 @@ int CHammer::Swing( int fFirst )
 
 		m_pPlayer->m_iWeaponVolume = flVol * CROWBAR_WALLHIT_VOLUME;
 #endif
-		m_flNextPrimaryAttack = UTIL_WeaponTimeBase() + 1.65;
+		m_flNextPrimaryAttack = UTIL_WeaponTimeBase() + 1.7;
 		
 		SetThink(&CHammer:: Smack );
 		SetNextThink( 0.2 );

@@ -63,19 +63,19 @@ public:
 #define ITEM_BATTERY		4
 
 #define WEAPON_NONE				0
-#define WEAPON_KNIFE			1
-#define WEAPON_AXE			2
-#define WEAPON_HAMMER			3
-#define WEAPON_P228			4
-#define WEAPON_BERETTA			5
-#define	WEAPON_GLOCK			6
-#define WEAPON_REVOLVER			7
-#define WEAPON_MP5K				8
-#define WEAPON_UZI			9
-#define WEAPON_GMGENERAL			10
-#define WEAPON_SHOTGUN			11
-#define WEAPON_DEAGLE				12
-#define WEAPON_SPEAR			13
+#define WEAPON_SHOTGUN				7
+#define WEAPON_BERETTA				16
+#define WEAPON_GLOCK				17
+#define WEAPON_P228				18
+#define WEAPON_DEAGLE				19
+#define WEAPON_REVOLVER				20
+#define WEAPON_MP5K				21
+#define WEAPON_UZI				22
+#define WEAPON_KNIFE				23
+#define WEAPON_AXE				24
+#define WEAPON_HAMMER				25
+#define WEAPON_SPEAR				26
+#define WEAPON_GMGENERAL			27
 
 #define WEAPON_ALLWEAPONS		(~(1<<WEAPON_SUIT))
 
@@ -198,20 +198,34 @@ typedef struct
 
 static const char *WorldWeaponModels[] =
 {
-	NULL,
-	"models/w_kitchenknife.mdl",
-	"models/w_axe.mdl",
-	"models/w_hammer.mdl",
-	"models/w_p228.mdl",
-	"models/w_beretta.mdl",
-	"models/w_glock.mdl",
-	"models/w_revolver.mdl",
-	"models/w_mp5k.mdl",
-	"models/w_uzi.mdl",
-	"models/gmgeneral_around.aomdc",
-	"models/w_shotgun.mdl",
-	"models/w_deagle.mdl",
-	"models/w_spear.mdl"
+	NULL,				// WEAPON_NONE
+	NULL, 				// WEAPON_CROWBAR
+	NULL,				// WEAPON_GLOCK1
+	NULL,				// WEAPON_PYTHON
+	NULL,				// WEAPON_MP5
+	NULL,				// WEAPON_CHAINGUN
+	NULL,				// WEAPON_CROSSBOW
+	"models/w_shotgun.mdl",		// WEAPON_SHOTGUN
+	NULL,				// WEAPON_RPG
+	NULL,				// WEAPON_GAUSS
+	NULL,				// WEAPON_EGON
+	NULL,				// WEAPON_HORNETGUN
+	NULL,				// WEAPON_HANDGRENADE
+	NULL,				// WEAPON_TRIPMINE
+	NULL,				// WEAPON_SATCHEL
+	NULL,				// WEAPON_SNARK
+	"models/w_beretta.mdl",		// WEAPON_BERETTA
+	"models/w_glock.mdl",		// WEAPON_GLOCK2
+	"models/w_p228.mdl",		// WEAPON_P228
+	"models/w_deagle.mdl",		// WEAPON_DEAGLE
+	"models/w_revolver.mdl",	// WEAPON_REVOLVER
+	"models/w_mp5k.mdl",		// WEAPON_MP5K
+	"models/w_uzi.mdl",		// WEAPON_UZI
+	"models/w_kitchenknife.mdl",	// WEAPON_KNIFE
+	"models/w_axe.mdl",		// WEAPON_AXE
+	"models/w_hammer.mdl",		// WEAPON_HAMMER
+	"models/w_spear.mdl",		// WEAPON_SPEAR
+	"models/gmgeneral_around.aomdc"	// WEAPON_GMGENERAL
 };
 // Items that the player has in their inventory that they can use
 class CBasePlayerItem : public CBaseAnimating

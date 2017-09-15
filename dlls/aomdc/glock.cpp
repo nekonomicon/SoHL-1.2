@@ -108,7 +108,7 @@ BOOL CGlock::Deploy( )
 
 void CGlock::SecondaryAttack( void )
 {
-	GlockFire( 0.02, 0.1, FALSE );
+	GlockFire( 0.02, 0.15, FALSE );
 }
 
 void CGlock::PrimaryAttack( void )
@@ -116,7 +116,7 @@ void CGlock::PrimaryAttack( void )
 	GlockFire( 0.01, 0.2, TRUE );
 }
 
-void CGlock::GlockFire( float flSpread , float flCycleTime, BOOL fUseAutoAim )
+void CGlock::GlockFire( float flSpread, float flCycleTime, BOOL fUseAutoAim )
 {
 	if( fUseAutoAim )
 	{
@@ -180,10 +180,23 @@ void CGlock::GlockFire( float flSpread , float flCycleTime, BOOL fUseAutoAim )
 
 void CGlock::Reload( void )
 {
+	int iAnim;
+	float fTime;
+
 	if( m_pPlayer->m_rgAmmo[m_iPrimaryAmmoType] <= 0 || m_iClip == GLOCK_MAX_CLIP )
 		 return;
 
-	DefaultReload( GLOCK_MAX_CLIP, m_iClip ? GLOCK_RELOAD : GLOCK_RELOAD_EMPTY, 1.5 );
+	if( m_iClip )
+	{
+		iAnim = GLOCK_RELOAD;
+		fTime = 1.93;
+	}
+	else
+	{
+		iAnim = GLOCK_RELOAD_EMPTY;
+		fTime = 2.1;
+	}
+	DefaultReload( GLOCK_MAX_CLIP, iAnim, fTime );
 }
 
 void CGlock::WeaponIdle( void )

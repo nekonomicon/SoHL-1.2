@@ -160,10 +160,10 @@ void CGMGeneral::PrimaryAttack()
 
 	PLAYBACK_EVENT_FULL( flags, m_pPlayer->edict(), m_usGMGeneral, 0.0, (float *)&g_vecZero, (float *)&g_vecZero, vecDir.x, vecDir.y, 0, 0, 0, 0 );
 
-	m_flNextPrimaryAttack = UTIL_WeaponTimeBase() + 0.1;
+	m_flNextPrimaryAttack = UTIL_WeaponTimeBase() + 0.07;
 
 	if ( m_flNextPrimaryAttack < UTIL_WeaponTimeBase() )
-		m_flNextPrimaryAttack = UTIL_WeaponTimeBase() + 0.1;
+		m_flNextPrimaryAttack = UTIL_WeaponTimeBase() + 0.07;
 
 	m_flTimeWeaponIdle = UTIL_WeaponTimeBase() + UTIL_SharedRandomFloat( m_pPlayer->random_seed, 10, 15 );
 }
@@ -173,7 +173,7 @@ void CGMGeneral::Reload( void )
 	//if ( m_pPlayer->ammo_9mm <= 0 )
 		//return;
 
-	DefaultReload( GMGENERAL_MAX_CLIP, GMGENERAL_RELOAD, 1.5 );
+	DefaultReload( GMGENERAL_MAX_CLIP, GMGENERAL_RELOAD, 2.63 );
 }
 
 
