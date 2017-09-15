@@ -104,14 +104,11 @@ void CDeagle::PrimaryAttack( void )
 {
 	float flSpread = 0.01;
 
-	if (m_iClip <= 0)
-	{
-		if (m_fFireOnEmpty)
-		{
-			PlayEmptySound();
-			m_flNextPrimaryAttack = UTIL_WeaponTimeBase() + 0.15;
-		}
 
+	if ( ( m_iClip <= 0 && m_fFireOnEmpty )|| (m_pPlayer->pev->waterlevel == 3 && m_pPlayer->pev->watertype > CONTENT_FLYFIELD) )
+	{
+		PlayEmptySound();
+		m_flNextPrimaryAttack = UTIL_WeaponTimeBase() + 0.15;
 		return;
 	}
 

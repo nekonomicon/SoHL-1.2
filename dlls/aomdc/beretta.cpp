@@ -112,14 +112,10 @@ void CBeretta::PrimaryAttack( void )
 	if( m_iShotCounter > 1 )
 		return;
 
-	if (m_iClip <= 0)
+	if ( ( m_iClip <= 0 && m_fFireOnEmpty ) || (m_pPlayer->pev->waterlevel == 3 && m_pPlayer->pev->watertype > CONTENT_FLYFIELD) )
 	{
-		if (m_fFireOnEmpty)
-		{
-			PlayEmptySound();
-			m_flNextPrimaryAttack = UTIL_WeaponTimeBase() + 0.2;
-		}
-
+		PlayEmptySound();
+		m_flNextPrimaryAttack = UTIL_WeaponTimeBase() + 0.15;
 		return;
 	}
 
