@@ -21,7 +21,7 @@
 #include "nodes.h"
 #include "player.h"
 #include "gamerules.h"
-
+#include "shake.h"
 
 #define	CROWBAR_BODYHIT_VOLUME 128
 #define	CROWBAR_WALLHIT_VOLUME 512
@@ -56,9 +56,10 @@ void CSpear::Precache( void )
 	PRECACHE_MODEL("models/v_spear.mdl");
 	PRECACHE_MODEL("models/w_spear.mdl");
 	PRECACHE_MODEL("models/p_crowbar.mdl");
-	PRECACHE_SOUND("weapons/spear_hit.wav");
+	PRECACHE_SOUND("weapons/spear_stab.wav");
 	PRECACHE_SOUND("weapons/spear_hitwall.wav");
 	PRECACHE_SOUND("weapons/spear_swing.wav");
+	PRECACHE_SOUND("weapons/spear_electrocute.wav");
 
 	m_usSpear = PRECACHE_EVENT ( 1, "events/null.sc" );
 }
@@ -146,36 +147,40 @@ void FindHullIntersection( const Vector &vecSrc, TraceResult &tr, float *mins, f
 
 void CSpear::PrimaryAttack()
 {
-	if (! Swing( 1 ))
+	if( m_pPlayer->pev->waterlevel )
 	{
-		SetThink(&CSpear:: SwingAgain );
-		SetNextThink( 0.1 );
+		SendWeaponAnim( SPEAR_ELECTROCUTE );
+		m_flNextPrimaryAttack = UTIL_WeaponTimeBase() + 2.34;
+#ifndef CLIENT_DLL
+		UTIL_ScreenFade( m_pPlayer, Vector( 255, 255, 255 ), 0.5, 0.0, 100, FFADE_IN );
+		m_pPlayer->TakeDamage(m_pPlayer->pev, m_pPlayer->pev, 2, DMG_SHOCK );
+		EMIT_SOUND(ENT(m_pPlayer->pev), CHAN_ITEM, "weapons/spear_electrocute.wav", 1, ATTN_NORM);
+#endif
+	}
+	else
+	{
+		SendWeaponAnim( SPEAR_STAB_START );
+		m_flNextPrimaryAttack = UTIL_WeaponTimeBase() + 1.0;
+
+#ifndef CLIENT_DLL
+		SetThink( &CSpear::BigSpearStab );
+		pev->nextthink = gpGlobals->time + 0.3;
+#endif
 	}
 }
 
-
-void CSpear::Smack( )
+void CSpear::UnStab()
 {
-	DecalGunshot( &m_trHit, BULLET_PLAYER_CROWBAR );
+	m_pPlayer->EnableControl(TRUE);
 }
 
-
-void CSpear::SwingAgain( void )
+void CSpear::BigSpearStab()
 {
-	Swing( 0 );
-}
-
-
-int CSpear::Swing( int fFirst )
-{
-	int fDidHit = FALSE;
-
 	TraceResult tr;
 
 	UTIL_MakeVectors (m_pPlayer->pev->v_angle);
 	Vector vecSrc	= m_pPlayer->GetGunPosition( );
 	Vector vecEnd	= vecSrc + gpGlobals->v_forward * 32;
-
 	UTIL_TraceLine( vecSrc, vecEnd, dont_ignore_monsters, ENT( m_pPlayer->pev ), &tr );
 
 #ifndef CLIENT_DLL
@@ -198,63 +203,41 @@ int CSpear::Swing( int fFirst )
 	0.0, (float *)&g_vecZero, (float *)&g_vecZero, 0, 0, 0,
 	0.0, 0, 0.0 );
 
-
 	if ( tr.flFraction >= 1.0 )
 	{
-		if (fFirst)
-		{
-			// miss
-			m_flNextPrimaryAttack = UTIL_WeaponTimeBase() + 0.5;
-			
-			// player "shoot" animation
-			m_pPlayer->SetAnimation( PLAYER_ATTACK1 );
-		}
+		SendWeaponAnim( SPEAR_STAB_MISS );
 	}
 	else
 	{
 		SendWeaponAnim( SPEAR_STAB );
 
-		// player "shoot" animation
-		m_pPlayer->SetAnimation( PLAYER_ATTACK1 );
-		
 #ifndef CLIENT_DLL
 
 		// hit
-		fDidHit = TRUE;
 		CBaseEntity *pEntity = CBaseEntity::Instance(tr.pHit);
-
-		ClearMultiDamage( );
-
-		if ( (m_flNextPrimaryAttack + 1 < UTIL_WeaponTimeBase() ) || g_pGameRules->IsMultiplayer() )
-		{
-			// first swing does full damage
-			pEntity->TraceAttack(m_pPlayer->pev, gSkillData.plrDmgKnife, gpGlobals->v_forward, &tr, DMG_CLUB ); 
-		}
-		else
-		{
-			// subsequent swings do half
-			pEntity->TraceAttack(m_pPlayer->pev, gSkillData.plrDmgKnife / 2, gpGlobals->v_forward, &tr, DMG_CLUB ); 
-		}	
-		ApplyMultiDamage( m_pPlayer->pev, m_pPlayer->pev );
 
 		// play thwack, smack, or dong sound
 		float flVol = 1.0;
 		int fHitWorld = TRUE;
 
+		UTIL_ScreenShake( m_pPlayer->pev->origin, 5.0, 1.0, 0.7, 0.25 );
+
+		m_pPlayer->EnableControl(FALSE);		
+		SetThink( &CSpear::UnStab );
+		pev->nextthink = gpGlobals->time + 0.4;
+
 		if (pEntity)
 		{
+			ClearMultiDamage( );     
+			pEntity->TraceAttack(m_pPlayer->pev, gSkillData.plrDmgKnife, gpGlobals->v_forward, &tr, DMG_SHOCK );
+			ApplyMultiDamage( m_pPlayer->pev, m_pPlayer->pev );
+
 			if ( pEntity->Classify() != CLASS_NONE && pEntity->Classify() != CLASS_MACHINE )
 			{
 				// play thwack or smack sound
-				EMIT_SOUND(ENT(m_pPlayer->pev), CHAN_ITEM, "weapons/spear_hitwall.wav", 1, ATTN_NORM);
+				EMIT_SOUND(ENT(m_pPlayer->pev), CHAN_ITEM, "weapons/spear_stab.wav", 1, ATTN_NORM);
 				m_pPlayer->m_iWeaponVolume = CROWBAR_BODYHIT_VOLUME;
-				if ( !pEntity->IsAlive() )
-				{
-					m_flNextPrimaryAttack = UTIL_WeaponTimeBase() + 0.25; //LRC: corrected half-life bug
-					return TRUE;
-				}
-				else
-					  flVol = 0.1;
+				flVol = 0.1;
 
 				fHitWorld = FALSE;
 			}
@@ -276,7 +259,7 @@ int CSpear::Swing( int fFirst )
 			}
 
 			// also play spear strike
-			EMIT_SOUND_DYN(ENT(m_pPlayer->pev), CHAN_ITEM, "weapons/spear_hit.wav", fvolbar, ATTN_NORM, 0, 98 + RANDOM_LONG(0,3)); 
+			EMIT_SOUND_DYN(ENT(m_pPlayer->pev), CHAN_ITEM, "weapons/spear_hitwall.wav", fvolbar, ATTN_NORM, 0, 98 + RANDOM_LONG(0,3)); 
 
 			// delay the decal a bit
 			m_trHit = tr;
@@ -284,15 +267,6 @@ int CSpear::Swing( int fFirst )
 
 		m_pPlayer->m_iWeaponVolume = flVol * CROWBAR_WALLHIT_VOLUME;
 #endif
-		m_flNextPrimaryAttack = UTIL_WeaponTimeBase() + 0.25;
-		
-		SetThink(&CSpear:: Smack );
-		SetNextThink( 0.2 );
-
-		
+		DecalGunshot( &m_trHit, BULLET_PLAYER_CROWBAR );		
 	}
-	return fDidHit;
 }
-
-
-
