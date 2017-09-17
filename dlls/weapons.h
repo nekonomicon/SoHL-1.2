@@ -112,7 +112,7 @@ public:
 #define UZI_MAX_CARRY		200
 #define DEAGLE_MAX_CARRY	170
 #define MP5K_MAX_CARRY		200
-#define GMGENERAL_MAX_CARRY	-1
+#define GMGENERAL_MAX_CARRY	210
 
 // the maximum amount of ammo each weapon's clip can hold
 #define WEAPON_NOCLIP			-1
@@ -127,7 +127,7 @@ public:
 #define SHOTGUN_MAX_CLIP		8
 #define UZI_MAX_CLIP			25
 #define DEAGLE_MAX_CLIP			7
-#define GMGENERAL_MAX_CLIP		WEAPON_NOCLIP
+#define GMGENERAL_MAX_CLIP		30
 
 // the default amount of ammo that comes with each gun when it spawns
 #define P228_DEFAULT_GIVE		13
@@ -138,7 +138,7 @@ public:
 #define SHOTGUN_DEFAULT_GIVE		12
 #define UZI_DEFAULT_GIVE		25
 #define DEAGLE_DEFAULT_GIVE		7
-#define GMGENERAL_DEFAULT_GIVE		0
+#define GMGENERAL_DEFAULT_GIVE		30
 
 // The amount of ammo given to a player by an ammo item.
 #define AMMO_P228CLIP_GIVE		P228_MAX_CLIP
@@ -149,7 +149,7 @@ public:
 #define AMMO_BUCKSHOTBOX_GIVE		SHOTGUN_DEFAULT_GIVE
 #define AMMO_UZICLIP_GIVE		UZI_MAX_CLIP
 #define AMMO_DEAGLECLIP_GIVE		DEAGLE_MAX_CLIP
-#define AMMO_GMGENERALCLIP_GIVE		0
+#define AMMO_GMGENERALCLIP_GIVE		GMGENERAL_DEFAULT_GIVE
 
 // bullet types
 typedef	enum
@@ -859,12 +859,16 @@ public:
 	int GetItemInfo(ItemInfo *p);
 	int AddToPlayer( CBasePlayer *pPlayer );
 
+	void Holster( int skiplocal = 0 );
 	void PrimaryAttack( void );
+	void SecondaryAttack( void );
 	BOOL Deploy( void );
 	void Reload( void );
 	void WeaponIdle( void );
 	float m_flNextAnimTime;
 	int m_iShell;
+
+	BOOL m_fInZoom;
 
 	virtual BOOL UseDecrement( void )
 	{ 

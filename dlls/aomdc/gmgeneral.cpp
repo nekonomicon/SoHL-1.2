@@ -40,7 +40,6 @@ LINK_ENTITY_TO_CLASS( weapon_gmgeneral, CGMGeneral );
 //=========================================================
 void CGMGeneral::Spawn( )
 {
-	return;
 	Precache( );
 	SET_MODEL(ENT(pev), "models/gmgeneral_around.aomdc");
 	m_iId = WEAPON_GMGENERAL;
@@ -53,11 +52,14 @@ void CGMGeneral::Spawn( )
 
 void CGMGeneral::Precache( void )
 {
-//	PRECACHE_MODEL("models/gmgeneral_display.aomdc");
-//	PRECACHE_MODEL("models/gmgeneral_around.aomdc");
+	PRECACHE_MODEL("models/gmgeneral_display.aomdc");
+	PRECACHE_MODEL("models/gmgeneral_around.aomdc");
 	PRECACHE_MODEL("models/p_9mmAR.mdl");
 
 	m_iShell = PRECACHE_MODEL ("models/shell.mdl");// brass shellTE_MODEL
+
+	PRECACHE_SOUND("gmgeneral/gm_expell.wav");
+	PRECACHE_SOUND("gmgeneral/gm_fov.wav");
 
 	PRECACHE_SOUND("items/9mmclip1.wav");              
 
@@ -103,6 +105,11 @@ BOOL CGMGeneral::Deploy( )
 	return DefaultDeploy( "models/gmgeneral_display.aomdc", "models/p_9mmAR.mdl", GMGENERAL_DRAW, "L85 Spec Wep" );
 }
 
+void CGMGeneral::Holster( int skiplocal /* = 0 */ )
+{
+	if( m_fInZoom )	
+		SecondaryAttack();
+}
 
 void CGMGeneral::PrimaryAttack()
 {
@@ -114,18 +121,8 @@ void CGMGeneral::PrimaryAttack()
 		return;
 	}
 
-	if (m_iClip <= 0)
-	{
-		PlayEmptySound();
-		m_flNextPrimaryAttack = 0.15;
-		return;
-	}
-
 	m_pPlayer->m_iWeaponVolume = NORMAL_GUN_VOLUME;
 	m_pPlayer->m_iWeaponFlash = NORMAL_GUN_FLASH;
-
-	m_iClip--;
-
 
 	m_pPlayer->pev->effects = (int)(m_pPlayer->pev->effects) | EF_MUZZLEFLASH;
 
@@ -151,7 +148,7 @@ void CGMGeneral::PrimaryAttack()
 		vecDir = m_pPlayer->FireBulletsPlayer( 1, vecSrc, vecAiming, VECTOR_CONE_3DEGREES, 8192, BULLET_PLAYER_MP5, 2, 0, m_pPlayer->pev, m_pPlayer->random_seed );
 	}
 
-  int flags;
+	int flags;
 #if defined( CLIENT_WEAPONS )
 	flags = FEV_NOTHOST;
 #else
@@ -168,14 +165,27 @@ void CGMGeneral::PrimaryAttack()
 	m_flTimeWeaponIdle = UTIL_WeaponTimeBase() + UTIL_SharedRandomFloat( m_pPlayer->random_seed, 10, 15 );
 }
 
-void CGMGeneral::Reload( void )
+void CGMGeneral::SecondaryAttack()
 {
-	//if ( m_pPlayer->ammo_9mm <= 0 )
-		//return;
+	if ( m_pPlayer->pev->fov != 0 )
+        {
+                m_fInZoom = FALSE;
+                m_pPlayer->pev->fov = m_pPlayer->m_iFOV = 0;  // 0 means reset to default fov
+        }
+        else if ( m_pPlayer->pev->fov != 20 )
+        {
+                m_fInZoom = TRUE;
+                m_pPlayer->pev->fov = m_pPlayer->m_iFOV = 20;
+        }
 
-	DefaultReload( GMGENERAL_MAX_CLIP, GMGENERAL_RELOAD, 2.63 );
+	EMIT_SOUND(ENT(pev), CHAN_ITEM, "gmgeneral/gm_fov.wav", 1, ATTN_NORM);
+	m_flNextPrimaryAttack = m_flNextSecondaryAttack = 0.4;
 }
 
+void CGMGeneral::Reload( void )
+{
+	DefaultReload( GMGENERAL_MAX_CLIP, GMGENERAL_RELOAD, 2.63 );
+}
 
 void CGMGeneral::WeaponIdle( void )
 {
@@ -185,25 +195,23 @@ void CGMGeneral::WeaponIdle( void )
 
 	if ( m_flTimeWeaponIdle > UTIL_WeaponTimeBase() )
 		return;
- 
+
 	SendWeaponAnim( GMGENERAL_IDLE );
 
-	m_flTimeWeaponIdle = UTIL_WeaponTimeBase() + UTIL_SharedRandomFloat( m_pPlayer->random_seed, 10, 15 ); // how long till we do this again.
+	m_flTimeWeaponIdle = UTIL_WeaponTimeBase() + UTIL_SharedRandomFloat( m_pPlayer->random_seed, 10, 15 );
 }
-
-
 
 class CGMGeneralAmmoClip : public CBasePlayerAmmo
 {
 	void Spawn( void )
 	{ 
 		Precache( );
-		SET_MODEL(ENT(pev), "models/w_9mmarclip.mdl");
+		SET_MODEL(ENT(pev), "models/gmgeneral_around.aomdc");
 		CBasePlayerAmmo::Spawn( );
 	}
 	void Precache( void )
 	{
-		PRECACHE_MODEL ("models/w_9mmarclip.mdl");
+		PRECACHE_MODEL ("models/gmgeneral_around.aomdc");
 		PRECACHE_SOUND("items/9mmclip1.wav");
 	}
 	BOOL AddAmmo( CBaseEntity *pOther ) 

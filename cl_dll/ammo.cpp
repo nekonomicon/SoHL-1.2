@@ -317,10 +317,14 @@ int CHudAmmo::VidInit(void)
 	// Load sprites for buckets (top row of weapon menu)
 	m_HUD_bucket0 = gHUD.GetSpriteIndex( "bucket1" );
 	m_HUD_selection = gHUD.GetSpriteIndex( "selection" );
+	m_HUD_infinite_ammo = gHUD.GetSpriteIndex( "gm_inf" );
 
 	ghsprBuckets = gHUD.GetSprite(m_HUD_bucket0);
+	ghsprGMinf = gHUD.GetSprite(m_HUD_infinite_ammo);
+
 	giBucketWidth = gHUD.GetSpriteRect(m_HUD_bucket0).right - gHUD.GetSpriteRect(m_HUD_bucket0).left;
 	giBucketHeight = gHUD.GetSpriteRect(m_HUD_bucket0).bottom - gHUD.GetSpriteRect(m_HUD_bucket0).top;
+	gGMinfrc = &gHUD.GetSpriteRect(m_HUD_infinite_ammo);
 
 	gHR.iHistoryGap = max( gHR.iHistoryGap, gHUD.GetSpriteRect(m_HUD_bucket0).bottom - gHUD.GetSpriteRect(m_HUD_bucket0).top);
 
@@ -873,7 +877,7 @@ int CHudAmmo::Draw(float flTime)
 	WEAPON *pw = m_pWeapon; // shorthand
 
 	// SPR_Draw Ammo
-	if ((pw->iAmmoType < 0) && (pw->iAmmo2Type < 0))
+	if ((pw->iAmmoType < 0) && (pw->iAmmo2Type < 0) && strcmp(pw->szName,"weapon_gmgeneral"))
 		return 0;
 
 
@@ -893,6 +897,17 @@ int CHudAmmo::Draw(float flTime)
 	// Does this weapon have a clip?
 	y = ScreenHeight - gHUD.m_iFontHeight - gHUD.m_iFontHeight/2;
 
+	if(!strcmp(pw->szName,"weapon_gmgeneral"))
+	{
+		int gm_infHeight = gGMinfrc->bottom - gGMinfrc->top;
+		y = ScreenHeight - (gm_infHeight + gm_infHeight/3);
+		x = ScreenWidth - 3 * gm_infHeight;
+
+		// Draw the ammo Icon
+		SPR_Set(ghsprGMinf, r, g, b);
+		SPR_DrawAdditive(0, x, y, gGMinfrc);
+	}
+	else
 	// Does weapon have any ammo at all?
 	if (m_pWeapon->iAmmoType > 0)
 	{
