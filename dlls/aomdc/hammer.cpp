@@ -53,9 +53,9 @@ void CHammer::Precache( void )
 	PRECACHE_MODEL("models/v_hammer.mdl");
 	PRECACHE_MODEL("models/w_hammer.mdl");
 	PRECACHE_MODEL("models/p_crowbar.mdl");
-	PRECACHE_SOUND("weapons/Hammer_hit.wav");
-	PRECACHE_SOUND("weapons/Hammer_hitbody.wav");
-	PRECACHE_SOUND("weapons/Hammer_swing.wav");
+	PRECACHE_SOUND("weapons/hammer_hit.wav");
+	PRECACHE_SOUND("weapons/hammer_hitbody.wav");
+	PRECACHE_SOUND("weapons/hammer_swing.wav");
 
 	m_usHammer = PRECACHE_EVENT ( 1, "events/hammer.sc" );
 }
@@ -141,30 +141,16 @@ void FindHullIntersection( const Vector &vecSrc, TraceResult &tr, float *mins, f
 
 void CHammer::PrimaryAttack()
 {
-	if (! Swing( 1 ))
-	{
-		SetThink(&CHammer:: SwingAgain );
-		SetNextThink( 0.1 );
-	}
+	m_flNextPrimaryAttack = UTIL_WeaponTimeBase() + 1.7f;
+	SendWeaponAnim( HAMMER_WHACK );
+#ifndef CLIENT_DLL
+	SetThink( &CHammer::BigWhackThink );
+	pev->nextthink = gpGlobals->time + 0.45;
+#endif
 }
 
-
-void CHammer::Smack( )
+void CHammer::BigWhackThink()
 {
-	DecalGunshot( &m_trHit, BULLET_PLAYER_CROWBAR );
-}
-
-
-void CHammer::SwingAgain( void )
-{
-	Swing( 0 );
-}
-
-
-int CHammer::Swing( int fFirst )
-{
-	int fDidHit = FALSE;
-
 	TraceResult tr;
 
 	UTIL_MakeVectors (m_pPlayer->pev->v_angle);
@@ -188,63 +174,36 @@ int CHammer::Swing( int fFirst )
 		}
 	}
 #endif
-
 	PLAYBACK_EVENT_FULL( FEV_NOTHOST, m_pPlayer->edict(), m_usHammer, 
 	0.0, (float *)&g_vecZero, (float *)&g_vecZero, 0, 0, 0,
 	0.0, 0, 0.0 );
 
-
-	if ( tr.flFraction >= 1.0 )
+	if ( tr.flFraction < 1.0 )
 	{
-		if (fFirst)
-		{
-			// miss
-			m_flNextPrimaryAttack = UTIL_WeaponTimeBase() + 0.5;
-			
-			// player "shoot" animation
-			m_pPlayer->SetAnimation( PLAYER_ATTACK1 );
-		}
-	}
-	else
-	{
-		SendWeaponAnim( HAMMER_WHACK );
-
 		// player "shoot" animation
 		m_pPlayer->SetAnimation( PLAYER_ATTACK1 );
 		
 #ifndef CLIENT_DLL
-
 		// hit
-		fDidHit = TRUE;
 		CBaseEntity *pEntity = CBaseEntity::Instance(tr.pHit);
-
-		ClearMultiDamage( );
-
-		if ( (m_flNextPrimaryAttack + 1 < UTIL_WeaponTimeBase() ) || g_pGameRules->IsMultiplayer() )
-		{
-			// first swing does full damage
-			pEntity->TraceAttack(m_pPlayer->pev, gSkillData.plrDmgHammer, gpGlobals->v_forward, &tr, DMG_CLUB ); 
-		}
-		else
-		{
-			// subsequent swings do half
-			pEntity->TraceAttack(m_pPlayer->pev, gSkillData.plrDmgHammer / 2, gpGlobals->v_forward, &tr, DMG_CLUB ); 
-		}	
-		ApplyMultiDamage( m_pPlayer->pev, m_pPlayer->pev );
 
 		// play thwack, smack, or dong sound
 		float flVol = 1.0;
 		int fHitWorld = TRUE;
 
+		UTIL_ScreenShake( m_pPlayer->pev->origin, 5.0, 1.0, 0.7, 0.25 );
+
 		if (pEntity)
 		{
+			ClearMultiDamage();
+			pEntity->TraceAttack(m_pPlayer->pev, gSkillData.plrDmgHammer, gpGlobals->v_forward, &tr, DMG_CRUSH );
+			ApplyMultiDamage( m_pPlayer->pev, m_pPlayer->pev );
+
 			if ( pEntity->Classify() != CLASS_NONE && pEntity->Classify() != CLASS_MACHINE )
 			{
 				// play thwack or smack sound
-				EMIT_SOUND(ENT(m_pPlayer->pev), CHAN_ITEM, "weapons/Hammer_hitbody.wav", 1, ATTN_NORM);
-
+				EMIT_SOUND(ENT(m_pPlayer->pev), CHAN_ITEM, "weapons/hammer_hitbody.wav", 1, ATTN_NORM);
 				m_pPlayer->m_iWeaponVolume = CROWBAR_BODYHIT_VOLUME;
-
 				flVol = 0.1;
 
 				fHitWorld = FALSE;
@@ -267,7 +226,7 @@ int CHammer::Swing( int fFirst )
 			}
 
 			// also play hammer strike
-			EMIT_SOUND_DYN(ENT(m_pPlayer->pev), CHAN_ITEM, "weapons/Hammer_hit.wav", fvolbar, ATTN_NORM, 0, 98 + RANDOM_LONG(0,3)); 
+			EMIT_SOUND_DYN(ENT(m_pPlayer->pev), CHAN_ITEM, "weapons/hammer_hit.wav", fvolbar, ATTN_NORM, 0, 98 + RANDOM_LONG(0,3)); 
 
 			// delay the decal a bit
 			m_trHit = tr;
@@ -275,15 +234,6 @@ int CHammer::Swing( int fFirst )
 
 		m_pPlayer->m_iWeaponVolume = flVol * CROWBAR_WALLHIT_VOLUME;
 #endif
-		m_flNextPrimaryAttack = UTIL_WeaponTimeBase() + 1.7;
-		
-		SetThink(&CHammer:: Smack );
-		SetNextThink( 0.2 );
-
-		
+		DecalGunshot( &m_trHit, BULLET_PLAYER_CROWBAR );	
 	}
-	return fDidHit;
 }
-
-
-

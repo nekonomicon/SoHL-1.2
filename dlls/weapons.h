@@ -530,13 +530,11 @@ public:
         void Spawn( void );
         void Precache( void );
         int iItemSlot( void ) { return 1; }
-        void EXPORT SwingAgain( void );
-        void EXPORT Smack( void );
+        void EXPORT BigWhackThink( void );
         int GetItemInfo(ItemInfo *p);
 	int AddToPlayer( CBasePlayer *pPlayer );
         
         void PrimaryAttack( void );
-        int Swing( int fFirst );
         BOOL Deploy( void );
         int m_iSwing;
         TraceResult m_trHit;
