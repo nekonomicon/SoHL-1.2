@@ -28,7 +28,7 @@ public:
 	void SetYawSpeed( void );
 	int  Classify ( void );
 	virtual void HandleAnimEvent( MonsterEvent_t *pEvent );
-	int IgnoreConditions ( void );
+	virtual int IgnoreConditions ( void );
 
 	float m_flNextFlinch;
 
@@ -47,5 +47,5 @@ public:
 	// No range attacks
 	BOOL CheckRangeAttack1 ( float flDot, float flDist ) { return FALSE; }
 	BOOL CheckRangeAttack2 ( float flDot, float flDist ) { return FALSE; }
-	int TakeDamage( entvars_t *pevInflictor, entvars_t *pevAttacker, float flDamage, int bitsDamageType );
+	virtual int TakeDamage( entvars_t *pevInflictor, entvars_t *pevAttacker, float flDamage, int bitsDamageType );
 };
