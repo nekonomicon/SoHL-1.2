@@ -153,7 +153,7 @@ void CSpear::PrimaryAttack()
 		m_flNextPrimaryAttack = UTIL_WeaponTimeBase() + 2.34;
 #ifndef CLIENT_DLL
 		UTIL_ScreenFade( m_pPlayer, Vector( 255, 255, 255 ), 0.5, 0.0, 100, FFADE_IN );
-		m_pPlayer->TakeDamage(m_pPlayer->pev, m_pPlayer->pev, 2, DMG_SHOCK );
+		m_pPlayer->TakeDamage(m_pPlayer->pev, m_pPlayer->pev, DAMAGE_AIM, DMG_GENERIC );
 		EMIT_SOUND(ENT(m_pPlayer->pev), CHAN_ITEM, "weapons/spear_electrocute.wav", 1, ATTN_NORM);
 #endif
 	}
@@ -180,7 +180,7 @@ void CSpear::BigSpearStab()
 
 	UTIL_MakeVectors (m_pPlayer->pev->v_angle);
 	Vector vecSrc	= m_pPlayer->GetGunPosition( );
-	Vector vecEnd	= vecSrc + gpGlobals->v_forward * 32;
+	Vector vecEnd	= vecSrc + gpGlobals->v_forward * 72;
 	UTIL_TraceLine( vecSrc, vecEnd, dont_ignore_monsters, ENT( m_pPlayer->pev ), &tr );
 
 #ifndef CLIENT_DLL
@@ -229,7 +229,7 @@ void CSpear::BigSpearStab()
 		if (pEntity)
 		{
 			ClearMultiDamage( );     
-			pEntity->TraceAttack(m_pPlayer->pev, gSkillData.plrDmgKnife, gpGlobals->v_forward, &tr, DMG_SHOCK );
+			pEntity->TraceAttack(m_pPlayer->pev, gSkillData.plrDmgKnife * 2.2, gpGlobals->v_forward, &tr, DMG_SHOCK );
 			ApplyMultiDamage( m_pPlayer->pev, m_pPlayer->pev );
 
 			if ( pEntity->Classify() != CLASS_NONE && pEntity->Classify() != CLASS_MACHINE )
