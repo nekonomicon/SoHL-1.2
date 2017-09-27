@@ -4677,3 +4677,49 @@ void CEnvHideHUD::Use( CBaseEntity *pActivator, CBaseEntity *pCaller, USE_TYPE u
 			pPlayer->m_iHideHUD &= ~( HIDEHUD_WEAPONS | HIDEHUD_HEALTH | HIDEHUD_FLASHLIGHT);
 	}
 }
+
+class CEnvGameBeaten : public CPointEntity
+{
+public:
+	void	Spawn( void );
+	void	Use( CBaseEntity *pActivator, CBaseEntity *pCaller, USE_TYPE useType, float value );
+};
+
+LINK_ENTITY_TO_CLASS( env_gamebeaten1, CEnvGameBeaten );
+LINK_ENTITY_TO_CLASS( env_gamebeaten2, CEnvGameBeaten );
+LINK_ENTITY_TO_CLASS( env_gamebeaten3, CEnvGameBeaten );
+LINK_ENTITY_TO_CLASS( env_gamebeaten4, CEnvGameBeaten );
+
+void CEnvGameBeaten::Spawn( void )
+{
+	pev->effects		= EF_NODRAW;
+	pev->solid		= SOLID_NOT;
+	pev->movetype		= MOVETYPE_NONE;
+}
+
+void CEnvGameBeaten::Use( CBaseEntity *pActivator, CBaseEntity *pCaller, USE_TYPE useType, float value )
+{
+	CBasePlayer *pPlayer = NULL;
+
+	if( pActivator && pActivator->IsPlayer() )
+		pPlayer = (CBasePlayer *)pActivator;
+	else
+		pPlayer = (CBasePlayer *)CBaseEntity::Instance( g_engfuncs.pfnPEntityOfEntIndex( 1 ) );
+
+	if( pPlayer )
+	{
+		FILE *fp;
+		char filename[32];
+		const char *pGameBeatenNum = STRING( pev->classname );
+
+		pGameBeatenNum += ( strlen( pGameBeatenNum ) - 1 );
+		sprintf( filename, "gmgeneral%c.aomdc", *pGameBeatenNum );
+
+		fp = fopen( filename, "wt" );
+
+		if( !fp ) return;
+
+		fprintf( fp, "Beaten Ending%c = 1", *pGameBeatenNum );
+		fclose( fp );
+        }
+}
