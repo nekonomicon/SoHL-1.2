@@ -32,6 +32,16 @@
 #include "gamerules.h"
 #include "movewith.h"
 #include "locus.h"
+#include <sys/stat.h>
+
+BOOL UTIL_FileExists( const char* filename )
+{
+	struct stat checkfile;
+	if( 0 > stat( filename, &checkfile ) )
+		return FALSE;
+
+	return TRUE;
+}
 
 float UTIL_WeaponTimeBase( void )
 {

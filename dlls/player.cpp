@@ -4118,6 +4118,16 @@ void CBasePlayer :: UpdateClientData( void )
 		InitStatusBar();
 	}
 
+	edict_t *pEnt = FIND_ENTITY_BY_CLASSNAME( 0, "weapon_gmgeneral" );
+	if( !FNullEnt( ENT( pEnt ) ) )
+	{
+		if( !UTIL_FileExists( "gmgeneral1.aomdc" ) || !UTIL_FileExists( "gmgeneral2.aomdc" )
+			|| !UTIL_FileExists( "gmgeneral3.aomdc" ) || !UTIL_FileExists( "gmgeneral4.aomdc" ) )
+		{
+			REMOVE_ENTITY( ENT( pEnt ) );
+		}
+	}
+
 	// Give item_suit in AoMDC hazard course.
 	if( !( pev->weapons & ( 1 << WEAPON_SUIT ) ) && FStrEq( STRING( gpGlobals->mapname ), "training" ) )
 	{
