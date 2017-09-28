@@ -305,6 +305,7 @@ void CHud :: Init( void )
 	m_StatusIcons.Init();
 	m_MOTD.Init();
 	m_Scoreboard.Init();
+	m_BlackBar.VidInit();
 	m_Particle.Init(); // (LRC) -- 30/08/02 November235: Particles to Order
 
 	m_Menu.Init();
@@ -462,6 +463,7 @@ void CHud :: VidInit( void )
 	m_StatusIcons.VidInit();
 	m_Scoreboard.VidInit();
 	m_MOTD.VidInit();
+	m_BlackBar.VidInit();
 	m_Particle.VidInit(); // (LRC) -- 30/08/02 November235: Particles to Order
 }
 

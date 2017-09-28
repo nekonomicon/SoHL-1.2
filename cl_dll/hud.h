@@ -173,6 +173,23 @@ private:
 //
 //-----------------------------------------------------
 //
+class CHudBlackBar: public CHudBase
+{
+public:
+	int Init( void );
+	int VidInit( void );
+	int Draw(float flTime);
+
+private:
+	HSPRITE m_hSprite;
+	wrect_t *m_prc;
+	int m_iHeight;
+	int m_iWidth;
+};
+
+//
+//-----------------------------------------------------
+//
 class CHudGeiger: public CHudBase
 {
 public:
@@ -674,6 +691,7 @@ public:
 	CHudStatusIcons m_StatusIcons;
 	CHudScoreboard  m_Scoreboard;
 	CHudMOTD        m_MOTD;
+	CHudBlackBar	m_BlackBar;
 	CHudParticle	m_Particle; // (LRC) -- 30/08/02 November235: Particles to Order
 
 	void Init( void );
