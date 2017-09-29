@@ -275,6 +275,7 @@ void CTriggerRelay::KeyValue( KeyValueData *pkvd )
 
 void CTriggerRelay::Spawn( void )
 {
+	pev->nextthink = gpGlobals->time + 0.1f;
 }
 
 void CTriggerRelay::Use( CBaseEntity *pActivator, CBaseEntity *pCaller, USE_TYPE useType, float value )
