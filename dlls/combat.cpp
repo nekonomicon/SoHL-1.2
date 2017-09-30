@@ -1456,6 +1456,8 @@ void CBaseEntity::FireBullets(ULONG cShots, Vector vecSrc, Vector vecDirShooting
 	if ( pevAttacker == NULL )
 		pevAttacker = pev;  // the default attacker is ourselves
 
+	UTIL_MuzzleLight( vecSrc, 200.0f, 220, 220, 220, 0.1f, 100.0f );
+
 	ClearMultiDamage();
 	gMultiDamage.type = DMG_BULLET | DMG_NEVERGIB;
 
@@ -1598,6 +1600,8 @@ Vector CBaseEntity::FireBulletsPlayer ( ULONG cShots, Vector vecSrc, Vector vecD
 
 	if ( pevAttacker == NULL )
 		pevAttacker = pev;  // the default attacker is ourselves
+
+	UTIL_MuzzleLight( vecSrc, 200.0f, 220, 220, 220, 0.1f, 100.0f );
 
 	ClearMultiDamage();
 	gMultiDamage.type = DMG_BULLET | DMG_NEVERGIB;

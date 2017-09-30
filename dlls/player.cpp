@@ -2648,10 +2648,21 @@ void CBasePlayer::PostThink()
 	if (!IsAlive())
 		goto pt_end;
 
-	#ifdef XENWARRIOR
+
 	if (FlashlightIsOn())
+#ifdef XENWARRIOR
 		UTIL_ScreenFade(this, Vector(150, 20, 150), 0, 0, 100, FFADE_STAYOUT );
-	#endif
+#else
+	{
+		TraceResult tr;
+		Vector start = pev->origin + pev->view_ofs;
+		Vector end = start + gpGlobals->v_forward * 8192;
+
+		UTIL_MakeVectors( pev->angles );
+		UTIL_TraceLine( start, end, dont_ignore_monsters, edict(), &tr );
+		UTIL_MuzzleLight( tr.vecEndPos, 110.0f, 48, 48, 48, 0.1f, 100.0f );
+	}
+#endif
 
 	// Handle Tank controlling
 	if ( m_pTank != NULL )
