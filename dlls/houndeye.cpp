@@ -514,8 +514,8 @@ void CHoundeye :: PainSound ( void )
 //=========================================================
 void CHoundeye :: WriteBeamColor ( void )
 {
-	BYTE	bRed, bGreen, bBlue;
-
+	BYTE	bRed = 255, bGreen = 0, bBlue = 0;
+/*
 	if ( InSquad() )
 	{
 		switch ( SquadCount() )
@@ -551,7 +551,7 @@ void CHoundeye :: WriteBeamColor ( void )
 		bGreen	= 220;
 		bBlue	= 255;
 	}
-	
+*/	
 	WRITE_BYTE( bRed   );
 	WRITE_BYTE( bGreen );
 	WRITE_BYTE( bBlue  );
