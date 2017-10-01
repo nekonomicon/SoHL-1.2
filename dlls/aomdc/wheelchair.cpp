@@ -21,7 +21,7 @@
 #define WHEELCHAIR_AE_BLOODSQUIRT		1
 #define WHEELCHAIR_AE_WALK			1011
 
-extern short g_sModelIndexBloodSpray;
+#define WHEELCHAIR_FLINCH_DELAY			5.0
 
 class CWheelchair : public CZombie
 {
@@ -29,19 +29,41 @@ public:
 	void Spawn( void );
 	void Precache( void );
 	void HandleAnimEvent( MonsterEvent_t *pEvent );
+	int IgnoreConditions();
 
-	float m_flNextFlinch;
-
-	void PainSound( void );
 	void AlertSound( void );
 	void IdleSound( void );
-	void AttackSound( void );
 
+	static const char *pAttackSounds[];
 	static const char *pIdleSounds[];
-	int vomit;
+	static const char *pAlertSounds[];
+	static const char *pPainSounds[];
+	static const char *pAttackHitSounds[];
+	static const char *pAttackMissSounds[];
+
+	int m_vomitSprite;
 };
 
 LINK_ENTITY_TO_CLASS( monster_wheelchair, CWheelchair );
+
+const char *CWheelchair::pAttackHitSounds[] =
+{
+	"zombie/claw_strike1.wav",
+	"zombie/claw_strike2.wav",
+	"zombie/claw_strike3.wav",
+};
+
+const char *CWheelchair::pAttackMissSounds[] =
+{
+	"zombie/claw_miss1.wav",
+	"zombie/claw_miss2.wav",
+};
+
+const char *CWheelchair::pAttackSounds[] =
+{
+	"zombie/zo_attack1.wav",
+	"zombie/zo_attack2.wav",
+};
 
 const char *CWheelchair::pIdleSounds[] = 
 {
@@ -51,26 +73,31 @@ const char *CWheelchair::pIdleSounds[] =
 	"wheelchair/wheel04.wav"
 };
 
-void CWheelchair :: PainSound( void )
+const char *CWheelchair::pAlertSounds[] =
 {
-}
+	"zombie/zo_alert10.wav",
+	"zombie/zo_alert20.wav",
+	"zombie/zo_alert30.wav",
+};
 
-void CWheelchair :: AlertSound( void )
+const char *CWheelchair::pPainSounds[] =
 {
+	"zombie/zo_pain1.wav",
+	"zombie/zo_pain2.wav",
+};
+
+void CWheelchair:: AlertSound( void )
+{
+	/*int pitch = 95 + RANDOM_LONG(0,9);
+
+	EMIT_SOUND_DYN ( ENT(pev), CHAN_VOICE, pAlertSounds[ RANDOM_LONG(0,ARRAYSIZE(pAlertSounds)-1) ], 1.0, ATTN_NORM, 0, pitch );*/
 }
 
 void CWheelchair :: IdleSound( void )
 {
-	int pitch = 95 + RANDOM_LONG(0,9);
-
 	// Play a random idle sound
-	EMIT_SOUND_DYN ( ENT(pev), CHAN_VOICE, pIdleSounds[ RANDOM_LONG(0,ARRAYSIZE(pIdleSounds)-1) ], 1.0, ATTN_NORM, 0, 100 + RANDOM_LONG(-5,5) );
+	EMIT_SOUND( ENT(pev), CHAN_BODY, pIdleSounds[ RANDOM_LONG(0,ARRAYSIZE(pIdleSounds)-1) ], 1.0, ATTN_NORM);
 }
-
-void CWheelchair :: AttackSound( void )
-{
-}
-
 
 //=========================================================
 // HandleAnimEvent - catches the monster-specific messages
@@ -85,29 +112,36 @@ void CWheelchair :: HandleAnimEvent( MonsterEvent_t *pEvent )
 			break;
 		case WHEELCHAIR_AE_BLOODSQUIRT:
 		{
+			EMIT_SOUND_DYN ( ENT(pev), CHAN_BODY, "wheelchair/wcm_squirt.wav", 1.0, ATTN_NORM, 0, 100 + RANDOM_LONG(-5,5) );
+			MESSAGE_BEGIN( MSG_PVS, SVC_TEMPENTITY, pev->origin );
+				WRITE_BYTE( TE_BLOODSPRITE );
+				WRITE_COORD( pev->origin.x );	// pos
+				WRITE_COORD( pev->origin.y );
+				WRITE_COORD( pev->origin.z + 40 );
+				WRITE_SHORT( m_vomitSprite );	// sprite1
+				WRITE_SHORT( m_vomitSprite );		// sprite2
+				WRITE_BYTE ( BLOOD_COLOR_RED ); // color
+				WRITE_BYTE ( 6 ); // count
+			MESSAGE_END();
+
 			// do stuff for this event.
 			CBaseEntity *pHurt = CheckTraceHullAttack( 70, gSkillData.wheelchairDmgAttack, DMG_SLASH );
 			if ( pHurt )
 			{
 				if ( pHurt->pev->flags & (FL_MONSTER|FL_CLIENT) )
 				{
-					EMIT_SOUND_DYN ( ENT(pev), CHAN_WEAPON, "wheelchair/wcm_squirt.wav", 1.0, ATTN_NORM, 0, 100 + RANDOM_LONG(-5,5) );
-
-					MESSAGE_BEGIN( MSG_PVS, SVC_TEMPENTITY, pev->origin );
-						WRITE_BYTE( TE_BLOODSPRITE );
-						WRITE_COORD( pev->origin.x );	// pos
-						WRITE_COORD( pev->origin.y );
-						WRITE_COORD( pev->origin.z );
-						WRITE_SHORT( g_sModelIndexBloodSpray );	// sprite1
-						WRITE_SHORT( vomit );			// sprite2
-						WRITE_BYTE ( 70 ); // color
-						WRITE_BYTE ( 10 ); // count
-					MESSAGE_END();
 					pHurt->pev->punchangle.z = -18;
 					pHurt->pev->punchangle.x = 5;
+					pHurt->pev->velocity = pHurt->pev->velocity - gpGlobals->v_right * 100;
 				}
+				// Play a random attack hit sound
+			//	EMIT_SOUND_DYN ( ENT(pev), CHAN_WEAPON, pAttackHitSounds[ RANDOM_LONG(0,ARRAYSIZE(pAttackHitSounds)-1) ], 1.0, ATTN_NORM, 0, 100 + RANDOM_LONG(-5,5) );
 			}
+			//else // Play a random attack miss sound
+				//EMIT_SOUND_DYN ( ENT(pev), CHAN_WEAPON, pAttackMissSounds[ RANDOM_LONG(0,ARRAYSIZE(pAttackMissSounds)-1) ], 1.0, ATTN_NORM, 0, 100 + RANDOM_LONG(-5,5) );
 
+			/*if (RANDOM_LONG(0,1))
+				AttackSound();*/
 		}
 			break;
 		default:
@@ -148,7 +182,7 @@ void CWheelchair :: Spawn()
 void CWheelchair :: Precache()
 {
 	int i;
-	vomit = PRECACHE_MODEL("sprites/wheelchair_vomit.spr");
+	m_vomitSprite = PRECACHE_MODEL("sprites/wheelchair_vomit.spr");
 	if (pev->model)
 		PRECACHE_MODEL((char*)STRING(pev->model)); //LRC
 	else
@@ -156,10 +190,48 @@ void CWheelchair :: Precache()
 
 	PRECACHE_SOUND( "wheelchair/wcm_squirt.wav" );
 
+	for ( i = 0; i < ARRAYSIZE( pAttackHitSounds ); i++ )
+		PRECACHE_SOUND((char *)pAttackHitSounds[i]);
+
+	for ( i = 0; i < ARRAYSIZE( pAttackMissSounds ); i++ )
+		PRECACHE_SOUND((char *)pAttackMissSounds[i]);
+
+	for ( i = 0; i < ARRAYSIZE( pAttackSounds ); i++ )
+		PRECACHE_SOUND((char *)pAttackSounds[i]);
+
 	for ( i = 0; i < ARRAYSIZE( pIdleSounds ); i++ )
 		PRECACHE_SOUND((char *)pIdleSounds[i]);
+
+	for ( i = 0; i < ARRAYSIZE( pAlertSounds ); i++ )
+		PRECACHE_SOUND((char *)pAlertSounds[i]);
+
+	for ( i = 0; i < ARRAYSIZE( pPainSounds ); i++ )
+		PRECACHE_SOUND((char *)pPainSounds[i]);
 }	
 
 //=========================================================
 // AI Schedules Specific to this monster
 //=========================================================
+int CWheelchair::IgnoreConditions()
+{
+	int iIgnore = CBaseMonster::IgnoreConditions();
+
+	if ((m_Activity == ACT_MELEE_ATTACK1) || (m_Activity == ACT_MELEE_ATTACK1))
+	{
+#if 0
+		if (pev->health < 20)
+			iIgnore |= (bits_COND_LIGHT_DAMAGE|bits_COND_HEAVY_DAMAGE);
+		else
+#endif
+		if (m_flNextFlinch >= gpGlobals->time)
+			iIgnore |= (bits_COND_LIGHT_DAMAGE|bits_COND_HEAVY_DAMAGE);
+	}
+
+	if ((m_Activity == ACT_SMALL_FLINCH) || (m_Activity == ACT_BIG_FLINCH))
+	{
+		if (m_flNextFlinch < gpGlobals->time)
+			m_flNextFlinch = gpGlobals->time + WHEELCHAIR_FLINCH_DELAY;
+	}
+
+	return iIgnore;
+}
