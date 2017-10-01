@@ -188,8 +188,14 @@ void CDavidMonster :: AttackSound( void )
 
 void CDavidMonster :: ThunderAttackSound( void )
 {
-	// Play a random thunder attack sound
-	EMIT_SOUND_DYN ( ENT(pev), CHAN_AUTO, pThunderAttackSounds[ RANDOM_LONG(0,ARRAYSIZE(pThunderAttackSounds)-1) ], 1.0, ATTN_NORM, 0, PITCH_NORM + RANDOM_LONG(-5,5) );
+	for( int i = 1; i <= gpGlobals->maxClients; i++ )
+	{
+		CBaseEntity *pPlayer = UTIL_PlayerByIndex( i );
+                if( pPlayer )
+			// Play a random thunder attack sound
+			EMIT_SOUND_DYN ( ENT(pPlayer->pev), CHAN_AUTO, pThunderAttackSounds[ RANDOM_LONG(0,ARRAYSIZE(pThunderAttackSounds)-1) ], 1.0, ATTN_NORM, 0, PITCH_NORM + RANDOM_LONG(-5,5) );
+	}
+	CBaseEntity::Create( "lightning_effect_boss", g_vecZero, g_vecZero, NULL );
 }
 
 void CDavidMonster :: DavidHurtSound( void )
@@ -335,7 +341,14 @@ void CDavidMonster::MonsterThink()
 {
 	if( !( pev->spawnflags & SF_NOELECTROCUTE ) && m_hEnemy
 		&& m_flNextAttack < gpGlobals->time && pev->health )
-	{// thunder attack
+	{
+		// thunder attack
+		float flDist = ( pev->origin - m_hEnemy->pev->origin ).Length2D();
+		if( flDist > 128.0f )
+		{
+			ThunderAttackSound();
+			m_flNextAttack = gpGlobals->time + 9.0f;
+		}
 	}
 	if( pev->health <= 300 && !StartFlame)
 	{
@@ -400,4 +413,33 @@ int CDavidMonster::IgnoreConditions ( void )
 	}
 
 	return iIgnore;
+}
+
+class CLightningEffect : public CBaseEntity
+{
+public:
+	void Spawn();
+	void EXPORT ElectricityAttack2();
+};
+
+LINK_ENTITY_TO_CLASS( lightning_effect_boss, CLightningEffect )
+
+void CLightningEffect::Spawn()
+{
+	SetThink( &CLightningEffect::ElectricityAttack2 );
+	pev->nextthink = gpGlobals->time + 1.0;
+}
+
+void CLightningEffect::ElectricityAttack2()
+{
+	CBasePlayer *pPlayer = (CBasePlayer *)UTIL_FindEntityByClassname( 0, "player" );
+	if( pPlayer )
+	{
+		pPlayer->ThunderAttack();
+		if( pPlayer->pev->flags & FL_ONGROUND )
+		{
+			pPlayer->TakeDamage( pev, pev, 10, DMG_SHOCK );
+		}
+	}
+	REMOVE_ENTITY(ENT(pev));
 }

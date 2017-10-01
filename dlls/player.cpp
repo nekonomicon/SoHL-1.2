@@ -4361,6 +4361,55 @@ void CBasePlayer :: UpdateClientData( void )
 }
 
 
+void CBasePlayer::ThunderAttack()
+{
+	EMIT_SOUND( ENT(pev), CHAN_NETWORKVOICE_BASE, "davidbad/thunder_hit.wav", 1.0, ATTN_NORM );
+	Vector VecSrc = pev->origin + Vector( RANDOM_FLOAT( -1.0, 1.0 ), RANDOM_FLOAT( -1.0, 1.0 ), RANDOM_FLOAT( -1.0, 1.0 ) ) * 128;
+
+	pev->punchangle.x = -5;
+
+	MESSAGE_BEGIN( MSG_BROADCAST, SVC_TEMPENTITY );
+		WRITE_BYTE( TE_BEAMENTPOINT );
+		WRITE_SHORT( entindex() );
+		WRITE_COORD( VecSrc.x );
+		WRITE_COORD( VecSrc.y );
+		WRITE_COORD( VecSrc.z );
+		WRITE_SHORT( g_sModelIndexLightning );
+		WRITE_BYTE( 0 ); // framestart
+		WRITE_BYTE( 10 ); // framerate
+		WRITE_BYTE( 3 ); // life
+		WRITE_BYTE( 150 );	// width
+		WRITE_BYTE( 80 );	// noise
+		WRITE_BYTE( 64 );	// r, g, b
+		WRITE_BYTE( 128 );	// r, g, b
+		WRITE_BYTE( 255 );	// r, g, b
+		WRITE_BYTE( 150 );	// brightness
+		WRITE_BYTE( 5 );	// speed
+	MESSAGE_END();
+
+	// blast circle
+	MESSAGE_BEGIN( MSG_PVS, SVC_TEMPENTITY, pev->origin );
+		WRITE_BYTE( TE_BEAMCYLINDER );
+		WRITE_COORD( pev->origin.x );// coord coord coord (center position)
+		WRITE_COORD( pev->origin.y );
+		WRITE_COORD( pev->origin.z - 32.0f );
+		WRITE_COORD( pev->origin.x );// coord coord coord (axis and radius)
+		WRITE_COORD( pev->origin.y );
+		WRITE_COORD( pev->origin.z + 166.0f );
+		WRITE_SHORT( g_sModelIndexSmoke ); // short (sprite index)
+		WRITE_BYTE( 0 ); // byte (starting frame)
+		WRITE_BYTE( 0 ); // byte (frame rate in 0.1's)
+		WRITE_BYTE( 2 ); // byte (life in 0.1's)
+		WRITE_BYTE( 16 );	// byte (line width in 0.1's)
+		WRITE_BYTE( 0 );	// byte (noise amplitude in 0.01's)
+		WRITE_BYTE( 64 );	// byte,byte,byte (color)
+		WRITE_BYTE( 128 );
+		WRITE_BYTE( 255 );
+		WRITE_BYTE( 100 );	// byte (brightness)
+		WRITE_BYTE( 0 );	// byte (scroll speed in 0.1's)
+	MESSAGE_END();
+}
+
 //=========================================================
 // FBecomeProne - Overridden for the player to set the proper
 // physics flags when a barnacle grabs player.

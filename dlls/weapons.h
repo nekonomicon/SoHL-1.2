@@ -388,6 +388,7 @@ public:
 extern DLL_GLOBAL	short	g_sModelIndexLaser;// holds the index for the laser beam
 extern DLL_GLOBAL	const char *g_pModelNameLaser;
 
+extern DLL_GLOBAL	short	g_sModelIndexLightning;
 extern DLL_GLOBAL	short	g_sModelIndexLaserDot;// holds the index for the laser beam dot
 extern DLL_GLOBAL	short	g_sModelIndexFireball;// holds the index for the fireball
 extern DLL_GLOBAL	short	g_sModelIndexSmoke;// holds the index for the smoke cloud

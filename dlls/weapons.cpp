@@ -37,6 +37,7 @@ extern int gEvilImpulse101;
 
 #define NOT_USED 255
 
+DLL_GLOBAL	short	g_sModelIndexLightning;
 DLL_GLOBAL	short	g_sModelIndexLaser;// holds the index for the laser beam
 DLL_GLOBAL  const char *g_pModelNameLaser = "sprites/laserbeam.spr";
 DLL_GLOBAL	short	g_sModelIndexLaserDot;// holds the index for the laser beam dot
@@ -375,6 +376,7 @@ void W_Precache(void)
 	}
 #endif
 
+	g_sModelIndexLightning = PRECACHE_MODEL( "sprites/lgtning.spr" );// lightning
 	g_sModelIndexFireball = PRECACHE_MODEL ("sprites/zerogxplode.spr");// fireball
 	g_sModelIndexWExplosion = PRECACHE_MODEL ("sprites/WXplo1.spr");// underwater fireball
 	g_sModelIndexSmoke = PRECACHE_MODEL ("sprites/steam1.spr");// smoke
