@@ -3497,7 +3497,7 @@ CBaseEntity* CBaseMonster :: DropItem ( char *pszItemName, const Vector &vecPos,
 BOOL CBaseMonster :: ShouldFadeOnDeath( void )
 {
 	// if flagged to fade out or I have an owner (I came from a monster spawner)
-	if ( (pev->spawnflags & SF_MONSTER_FADECORPSE) || !FNullEnt( pev->owner ) )
+	//if ( (pev->spawnflags & SF_MONSTER_FADECORPSE) || !FNullEnt( pev->owner ) )
 		return TRUE;
 
 	return FALSE;
