@@ -374,7 +374,7 @@ void CDavidMonster::MonsterThink()
 			for( int i = 1; i <= gpGlobals->maxClients; i++ )
 			{
 				CBaseEntity *pPlayer = UTIL_PlayerByIndex( i );
-				if( pPlayer )
+				if( pPlayer && !FBitSet( pPlayer->pev->flags, FL_INWATER ) )
 				{
 					pPlayer->TakeDamage(pev, pev, DAMAGE_YES, DMG_BURN );
 				}
