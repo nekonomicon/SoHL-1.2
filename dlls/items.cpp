@@ -354,7 +354,7 @@ class CItemFlashlight : public CItem
 		EMIT_SOUND(pPlayer->edict(), CHAN_ITEM, "items/gunpickup2.wav", 1, ATTN_NORM);
 
 		pPlayer->pev->weapons |= (1 << WEAPON_FLASHLIGHT);
-		pPlayer->m_flFlashLightTime = 0.15;
+		pPlayer->m_flFlashLightTime = gpGlobals->time + 0.3; // + FLASH_CHARGE_TIME;
 		return TRUE;
 	}
 };

@@ -67,8 +67,8 @@ extern CGraph	WorldGraph;
 #define TRAIN_FAST		0x04 
 #define TRAIN_BACK		0x05
 
-#define	FLASH_DRAIN_TIME	 0.15 // 100 units/15 seconds
-#define	FLASH_CHARGE_TIME	 0.2 // 100 units/20 seconds  (seconds per unit)
+#define	FLASH_DRAIN_TIME	 0.12 // 100 units/12 seconds
+#define	FLASH_CHARGE_TIME	 0.3 // 100 units/30 seconds  (seconds per unit)
 
 #ifdef XENWARRIOR
   float g_fEnvFadeTime = 0;    // flashlight can't be used until this time expires.
@@ -4236,7 +4236,7 @@ void CBasePlayer :: UpdateClientData( void )
 		if (pev->armorvalue == 100)
 			m_iFlashBattery = 0;
 
-		if (FlashlightIsOn())
+		if( FlashlightIsOn() && !infiniteflashlight.value )
 		{
 			if (m_iFlashBattery)
 			{
