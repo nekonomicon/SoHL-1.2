@@ -89,19 +89,19 @@ public:
 
 
 // weapon weight factors (for auto-switching)   (-1 = noswitch)
-#define KNIFE_WEIGHT		0
-#define AXE_WEIGHT		0
-#define HAMMER_WEIGHT		0
-#define P228_WEIGHT		10
-#define BERETTA_WEIGHT		10
-#define GLOCK_WEIGHT		10
-#define REVOLVER_WEIGHT		15
-#define MP5K_WEIGHT		15
+#define KNIFE_WEIGHT		4
+#define AXE_WEIGHT		4
+#define HAMMER_WEIGHT		4
+#define P228_WEIGHT		14
+#define BERETTA_WEIGHT		12
+#define GLOCK_WEIGHT		13
+#define REVOLVER_WEIGHT		12
+#define MP5K_WEIGHT		11
 #define SHOTGUN_WEIGHT		15
-#define DEAGLE_WEIGHT		15
-#define UZI_WEIGHT		15
-#define GMGENERAL_WEIGHT	20
-#define SPEAR_WEIGHT		20
+#define DEAGLE_WEIGHT		12
+#define UZI_WEIGHT		11
+#define GMGENERAL_WEIGHT	11
+#define SPEAR_WEIGHT		4
 
 // weapon clip/carry ammo capacities
 #define P228_MAX_CARRY		250
