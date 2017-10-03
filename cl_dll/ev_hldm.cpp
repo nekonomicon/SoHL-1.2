@@ -971,7 +971,7 @@ void EV_FireRevolver( event_args_t *args )
 		EV_MuzzleFlash();
 		gEngfuncs.pEventAPI->EV_WeaponAnimation( REVOLVER_SHOOT1, 0 );
 
-		V_PunchAxis( 0, -10.0 );
+		V_PunchAxis( 0, -2.0 );
 	}
 
 	gEngfuncs.pEventAPI->EV_PlaySound( idx, origin, CHAN_WEAPON, "weapons/revolver_fire.wav", gEngfuncs.pfnRandomFloat(0.8, 0.9), ATTN_NORM, 0, PITCH_NORM );
@@ -1024,8 +1024,6 @@ void EV_FireShotGunSingle( event_args_t *args )
 		// Add muzzle flash to current weapon model
 		EV_MuzzleFlash();
 		gEngfuncs.pEventAPI->EV_WeaponAnimation( SHOTGUN_FIRE, 2 );
-
-		V_PunchAxis( 0, -5.0 );
 	}
 
 	gEngfuncs.pEventAPI->EV_PlaySound( idx, origin, CHAN_WEAPON, "weapons/shotgun_fire.wav", gEngfuncs.pfnRandomFloat(0.95, 1.0), ATTN_NORM, 0, 93 + gEngfuncs.pfnRandomLong( 0, 0x1f ) );
@@ -1080,8 +1078,6 @@ void EV_FireMP5K( event_args_t *args )
 		// Add muzzle flash to current weapon model
 		EV_MuzzleFlash();
 		gEngfuncs.pEventAPI->EV_WeaponAnimation( MP5K_FIRE1 + gEngfuncs.pfnRandomLong(0,1), 2 );
-
-		V_PunchAxis( 0, gEngfuncs.pfnRandomFloat( -2, 2 ) );
 	}
 
 	EV_GetDefaultShellInfo( args, origin, velocity, ShellVelocity, ShellOrigin, forward, right, up, 30, -12, 30 );
@@ -1140,8 +1136,6 @@ void EV_FireUzi( event_args_t *args )
 		// Add muzzle flash to current weapon model
 		EV_MuzzleFlash();
 		gEngfuncs.pEventAPI->EV_WeaponAnimation( UZI_FIRE1 + gEngfuncs.pfnRandomLong(0,2), 2 );
-
-		V_PunchAxis( 0, gEngfuncs.pfnRandomFloat( -2, 2 ) );
 	}
 
 	EV_GetDefaultShellInfo( args, origin, velocity, ShellVelocity, ShellOrigin, forward, right, up, 30, -12, 30 );
@@ -1199,8 +1193,6 @@ void EV_FireGMGeneral( event_args_t *args )
 		// Add muzzle flash to current weapon model
 		EV_MuzzleFlash();
 		gEngfuncs.pEventAPI->EV_WeaponAnimation( GMGENERAL_FIRE1 + gEngfuncs.pfnRandomLong(0,1), 2 );
-
-		V_PunchAxis( 0, gEngfuncs.pfnRandomFloat( -2, 2 ) );
 	}
 
 	EV_GetDefaultShellInfo( args, origin, velocity, ShellVelocity, ShellOrigin, forward, right, up, 30, -12, 30 );
