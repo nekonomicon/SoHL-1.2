@@ -4671,10 +4671,10 @@ void CEnvHideHUD::Use( CBaseEntity *pActivator, CBaseEntity *pCaller, USE_TYPE u
 
 	if( pPlayer )
 	{
-		if( !( pPlayer->m_iHideHUD & ( HIDEHUD_WEAPONS | HIDEHUD_HEALTH | HIDEHUD_FLASHLIGHT ) ) )
-			pPlayer->m_iHideHUD |= ( HIDEHUD_WEAPONS | HIDEHUD_HEALTH | HIDEHUD_FLASHLIGHT );
+		if( pPlayer->m_iHideHUD == HIDEHUD_ALL_EXCLUDEMESSAGE )
+			ClearBits( pPlayer->m_iHideHUD, HIDEHUD_ALL_EXCLUDEMESSAGE );
 		else
-			pPlayer->m_iHideHUD &= ~( HIDEHUD_WEAPONS | HIDEHUD_HEALTH | HIDEHUD_FLASHLIGHT);
+			SetBits( pPlayer->m_iHideHUD, HIDEHUD_ALL_EXCLUDEMESSAGE );
 	}
 }
 

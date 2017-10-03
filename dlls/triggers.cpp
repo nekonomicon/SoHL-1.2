@@ -5186,12 +5186,12 @@ void CTriggerCamera::Use( CBaseEntity *pActivator, CBaseEntity *pCaller, USE_TYP
 
 	if (FBitSet (pev->spawnflags, SF_CAMERA_PLAYER_HIDEHUD ) )
 	{
-		pPlayer->m_iHideHUD |= ( HIDEHUD_WEAPONS | HIDEHUD_HEALTH | HIDEHUD_FLASHLIGHT );
+		SetBits( pPlayer->m_iHideHUD, HIDEHUD_ALL_EXCLUDEMESSAGE );
 	}
 
 	if (FBitSet (pev->spawnflags, SF_CAMERA_PLAYER_BLACKBARS ) )
 	{
-		pPlayer->m_iHideHUD |= HIDEHUD_BLACKBARS;
+		SetBits( pPlayer->m_iHideHUD, HIDEHUD_BLACKBARS );
 	}
 
 	if ( m_sPath )
@@ -5263,8 +5263,12 @@ void CTriggerCamera::FollowTarget( )
 			CBasePlayer *pPlayer = (CBasePlayer *)((CBaseEntity *)m_hPlayer);
 			SET_VIEW( m_hPlayer->edict(), m_hPlayer->edict() );
 			pPlayer->EnableControl(TRUE);
-			pPlayer->m_iHideHUD &= ~( HIDEHUD_WEAPONS | HIDEHUD_HEALTH | HIDEHUD_FLASHLIGHT );
-			pPlayer->m_iHideHUD &= ~HIDEHUD_BLACKBARS;
+
+			if( FBitSet( pev->spawnflags, SF_CAMERA_PLAYER_HIDEHUD ) )
+				ClearBits( pPlayer->m_iHideHUD, HIDEHUD_ALL_EXCLUDEMESSAGE );
+
+			if( FBitSet( pev->spawnflags, SF_CAMERA_PLAYER_BLACKBARS ) )
+				ClearBits( pPlayer->m_iHideHUD, HIDEHUD_BLACKBARS );
 		}
 
 		SUB_UseTargets( this, USE_TOGGLE, 0 );

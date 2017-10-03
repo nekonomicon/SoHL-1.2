@@ -97,10 +97,10 @@ int CHudFlashlight:: MsgFunc_Flashlight(const char *pszName,  int iSize, void *p
 
 int CHudFlashlight::Draw(float flTime)
 {
-	static bool show = ( gHUD.m_iHideHUDDisplay & ( HIDEHUD_FLASHLIGHT | HIDEHUD_ALL ) );
-	if( show != !( gHUD.m_iHideHUDDisplay & ( HIDEHUD_FLASHLIGHT | HIDEHUD_ALL ) ) )
+	static bool show = ( gHUD.m_iHideHUDDisplay & ( HIDEHUD_FLASHLIGHT | HIDEHUD_ALL | HIDEHUD_ALL_EXCLUDEMESSAGE ) );
+	if( show != !( gHUD.m_iHideHUDDisplay & ( HIDEHUD_FLASHLIGHT | HIDEHUD_ALL | HIDEHUD_ALL_EXCLUDEMESSAGE ) ) )
 	{
-		show = !( gHUD.m_iHideHUDDisplay & ( HIDEHUD_FLASHLIGHT | HIDEHUD_ALL ) );
+		show = !( gHUD.m_iHideHUDDisplay & ( HIDEHUD_FLASHLIGHT | HIDEHUD_ALL | HIDEHUD_ALL_EXCLUDEMESSAGE ) );
 		if( gMobileEngfuncs )
 		{
 			gMobileEngfuncs->pfnTouchHideButtons( "flashlight", !show );

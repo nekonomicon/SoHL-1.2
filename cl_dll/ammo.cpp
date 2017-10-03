@@ -430,7 +430,7 @@ void WeaponsResource :: SelectSlot( int iSlot, int fAdvance, int iDirection )
 	if ( iSlot > MAX_WEAPON_SLOTS )
 		return;
 
-	if ( gHUD.m_fPlayerDead || gHUD.m_iHideHUDDisplay & ( HIDEHUD_WEAPONS | HIDEHUD_ALL ) )
+	if ( gHUD.m_fPlayerDead || gHUD.m_iHideHUDDisplay & ( HIDEHUD_WEAPONS | HIDEHUD_ALL | HIDEHUD_ALL_EXCLUDEMESSAGE ) )
 		return;
 
 	if (!(gHUD.m_iWeaponBits & (1<<(WEAPON_SUIT)) ))
@@ -550,7 +550,7 @@ int CHudAmmo::MsgFunc_HideWeapon( const char *pszName, int iSize, void *pbuf )
 			SetCrosshair( pWeapon->hCrosshair, pWeapon->rcCrosshair, 255, 255, 255 );
 //		CONPRINT("Selecting custom crosshair");
 	}
-	else if ( (m_pWeapon == NULL) || (gHUD.m_iHideHUDDisplay & ( HIDEHUD_WEAPONS | HIDEHUD_ALL )) )
+	else if ( (m_pWeapon == NULL) || (gHUD.m_iHideHUDDisplay & ( HIDEHUD_WEAPONS | HIDEHUD_ALL | HIDEHUD_ALL_EXCLUDEMESSAGE )) )
 	{
 		static wrect_t nullrc;
 		gpActiveSel = NULL;
@@ -630,7 +630,7 @@ int CHudAmmo::MsgFunc_CurWeapon(const char *pszName, int iSize, void *pbuf )
 		WEAPON *ccWeapon = gWR.GetWeapon(7);
 		SetCrosshair(ccWeapon->hCrosshair, ccWeapon->rcCrosshair, 255, 255, 255);
 	}
-	else if ( !(gHUD.m_iHideHUDDisplay & ( HIDEHUD_WEAPONS | HIDEHUD_ALL )) )
+	else if ( !(gHUD.m_iHideHUDDisplay & ( HIDEHUD_WEAPONS | HIDEHUD_ALL | HIDEHUD_ALL_EXCLUDEMESSAGE ) ) )
 	{
 		if ( gHUD.m_iFOV >= 90 )
 		{ // normal crosshairs
@@ -762,7 +762,7 @@ void CHudAmmo::UserCmd_Close(void)
 // Selects the next item in the weapon menu
 void CHudAmmo::UserCmd_NextWeapon(void)
 {
-	if ( gHUD.m_fPlayerDead || (gHUD.m_iHideHUDDisplay & (HIDEHUD_WEAPONS | HIDEHUD_ALL)) )
+	if ( gHUD.m_fPlayerDead || (gHUD.m_iHideHUDDisplay & ( HIDEHUD_WEAPONS | HIDEHUD_ALL | HIDEHUD_ALL_EXCLUDEMESSAGE ) ) )
 		return;
 
 	if ( !gpActiveSel || gpActiveSel == (WEAPON*)1 )
@@ -803,7 +803,7 @@ void CHudAmmo::UserCmd_NextWeapon(void)
 // Selects the previous item in the menu
 void CHudAmmo::UserCmd_PrevWeapon(void)
 {
-	if ( gHUD.m_fPlayerDead || (gHUD.m_iHideHUDDisplay & (HIDEHUD_WEAPONS | HIDEHUD_ALL)) )
+	if ( gHUD.m_fPlayerDead || (gHUD.m_iHideHUDDisplay & ( HIDEHUD_WEAPONS | HIDEHUD_ALL | HIDEHUD_ALL_EXCLUDEMESSAGE) ) )
 		return;
 
 	if ( !gpActiveSel || gpActiveSel == (WEAPON*)1 )
@@ -855,7 +855,7 @@ int CHudAmmo::Draw(float flTime)
 	if (!(gHUD.m_iWeaponBits & (1<<(WEAPON_SUIT)) ))
 		return 1;
 
-	if ( (gHUD.m_iHideHUDDisplay & ( HIDEHUD_WEAPONS | HIDEHUD_ALL )) )
+	if ( (gHUD.m_iHideHUDDisplay & ( HIDEHUD_WEAPONS | HIDEHUD_ALL | HIDEHUD_ALL_EXCLUDEMESSAGE ) ) )
 		return 1;
 
 	// Draw Weapon Menu
