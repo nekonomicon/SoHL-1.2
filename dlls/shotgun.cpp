@@ -100,7 +100,7 @@ int CShotgun::GetItemInfo(ItemInfo *p)
 	p->pszAmmo2 = NULL;
 	p->iMaxAmmo2 = -1;
 	p->iMaxClip = SHOTGUN_MAX_CLIP;
-	p->iSlot = 3;
+	p->iSlot = 2;
 	p->iPosition = 2;
 	p->iFlags = 0;
 	p->iId = m_iId = WEAPON_SHOTGUN;
@@ -137,6 +137,10 @@ void CShotgun::PrimaryAttack()
 	m_pPlayer->m_iWeaponVolume = LOUD_GUN_VOLUME;
 	m_pPlayer->m_iWeaponFlash = NORMAL_GUN_FLASH;
 
+#ifndef CLIENT_DLL
+	SetThink( &CShotgun::LolShell );
+	pev->nextthink = gpGlobals->time + 0.6;
+#endif
 	m_iClip--;
 
 	int flags;
@@ -166,6 +170,18 @@ void CShotgun::PrimaryAttack()
 	else
 		m_flTimeWeaponIdle = UTIL_WeaponTimeBase() + 1.3;
 	m_fInSpecialReload = 0;
+}
+
+void CShotgun::LolShell( void )
+{
+#ifndef CLIENT_DLL
+	Vector	vecShellVelocity = m_pPlayer->pev->velocity
+							+ gpGlobals->v_right * 60
+							+ gpGlobals->v_up * 200
+							+ gpGlobals->v_forward * 40;
+
+	EjectBrass( m_pPlayer->pev->origin + m_pPlayer->pev->view_ofs + gpGlobals->v_up * -12 + gpGlobals->v_forward * 45 + gpGlobals->v_right * 30, vecShellVelocity, pev->angles.y, m_iShell, TE_BOUNCE_SHOTSHELL );
+#endif
 }
 
 void CShotgun::Reload( void )

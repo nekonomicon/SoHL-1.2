@@ -768,11 +768,12 @@ public:
 
 	void Spawn( void );
 	void Precache( void );
-	int iItemSlot( ) { return 4; }
+	int iItemSlot( ) { return 3; }
 	int GetItemInfo(ItemInfo *p);
 	int AddToPlayer( CBasePlayer *pPlayer );
 
 	void PrimaryAttack( void );
+	void EXPORT LolShell();
 	BOOL Deploy( );
 	void Reload( void );
 	void WeaponIdle( void );

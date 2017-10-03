@@ -80,7 +80,7 @@ int CGMGeneral::GetItemInfo(ItemInfo *p)
 	p->iMaxAmmo2 = -1;
 	p->iMaxClip = GMGENERAL_MAX_CLIP;
 	p->iSlot = 2;
-	p->iPosition = 2;
+	p->iPosition = 3;
 	p->iFlags = 0;
 	p->iId = m_iId = WEAPON_GMGENERAL;
 	p->iWeight = GMGENERAL_WEIGHT;
