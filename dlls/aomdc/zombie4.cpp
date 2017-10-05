@@ -26,8 +26,6 @@ public:
 	void Precache( void );
 	void HandleAnimEvent( MonsterEvent_t *pEvent );
 
-	float m_flNextFlinch;
-
 	void PainSound( void );
 	void AlertSound( void );
 	void IdleSound( void );
