@@ -227,7 +227,7 @@ void CSpear::BigSpearStab()
 		if (pEntity)
 		{
 			ClearMultiDamage( );     
-			pEntity->TraceAttack(m_pPlayer->pev, gSkillData.plrDmgKnife * 2.2, gpGlobals->v_forward, &tr, DMG_SHOCK );
+			pEntity->TraceAttack(m_pPlayer->pev, gSkillData.plrDmgKnife * 2.2, gpGlobals->v_forward, &tr, DMG_SPEAR );
 			ApplyMultiDamage( m_pPlayer->pev, m_pPlayer->pev );
 
 			if ( pEntity->Classify() != CLASS_NONE && pEntity->Classify() != CLASS_MACHINE )

@@ -136,7 +136,7 @@ const char *CDavidMonster::pHurtSounds[] =
 
 int CDavidMonster :: TakeDamage( entvars_t *pevInflictor, entvars_t *pevAttacker, float flDamage, int bitsDamageType )
 {
-	if( bitsDamageType == DMG_SHOCK )
+	if( bitsDamageType == DMG_SPEAR )
 	{
 		if( m_flNextFlinchForget < gpGlobals->time)
 		{			
