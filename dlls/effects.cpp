@@ -4651,7 +4651,9 @@ public:
 	void	Use( CBaseEntity *pActivator, CBaseEntity *pCaller, USE_TYPE useType, float value );
 };
 
-LINK_ENTITY_TO_CLASS( env_hidehud, CEnvHideHUD );
+LINK_ENTITY_TO_CLASS( env_drawbars, CEnvHideHUD )
+LINK_ENTITY_TO_CLASS( env_hidehud, CEnvHideHUD )
+LINK_ENTITY_TO_CLASS( env_drawstatic, CEnvHideHUD )
 
 void CEnvHideHUD::Spawn( void )
 {
@@ -4671,10 +4673,27 @@ void CEnvHideHUD::Use( CBaseEntity *pActivator, CBaseEntity *pCaller, USE_TYPE u
 
 	if( pPlayer )
 	{
-		if( pPlayer->m_iHideHUD == HIDEHUD_ALL_EXCLUDEMESSAGE )
-			ClearBits( pPlayer->m_iHideHUD, HIDEHUD_ALL_EXCLUDEMESSAGE );
-		else
-			SetBits( pPlayer->m_iHideHUD, HIDEHUD_ALL_EXCLUDEMESSAGE );
+		if( FClassnameIs( pev, "env_drawbars" ) )
+		{
+			if( pPlayer->m_iHideHUD == HIDEHUD_BLACKBARS )
+				ClearBits( pPlayer->m_iHideHUD, HIDEHUD_BLACKBARS );
+			else
+				SetBits( pPlayer->m_iHideHUD, HIDEHUD_BLACKBARS );
+		}
+		else if( FClassnameIs( pev, "env_hidehud" ) )
+		{
+			if( pPlayer->m_iHideHUD == HIDEHUD_ALL_EXCLUDEMESSAGE )
+				ClearBits( pPlayer->m_iHideHUD, HIDEHUD_ALL_EXCLUDEMESSAGE );
+			else
+				SetBits( pPlayer->m_iHideHUD, HIDEHUD_ALL_EXCLUDEMESSAGE );
+		}
+		else if( FClassnameIs( pev, "env_drawstatic" ) )
+		{
+			if( pPlayer->m_iHideHUD == HIDEHUD_NOISEEFFECT )
+				ClearBits( pPlayer->m_iHideHUD, HIDEHUD_NOISEEFFECT );
+			else
+				SetBits( pPlayer->m_iHideHUD, HIDEHUD_NOISEEFFECT );
+		}
 	}
 }
 

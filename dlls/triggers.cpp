@@ -5038,6 +5038,7 @@ void CTriggerChangeCVar::Think( void )
 #define SF_CAMERA_PLAYER_TAKECONTROL 4
 #define SF_CAMERA_PLAYER_HIDEHUD	8
 #define SF_CAMERA_PLAYER_BLACKBARS	16
+#define SF_CAMERA_PLAYER_NOISEEFFECT	32
 
 class CTriggerCamera : public CBaseDelay
 {
@@ -5194,6 +5195,11 @@ void CTriggerCamera::Use( CBaseEntity *pActivator, CBaseEntity *pCaller, USE_TYP
 		SetBits( pPlayer->m_iHideHUD, HIDEHUD_BLACKBARS );
 	}
 
+	if (FBitSet (pev->spawnflags, SF_CAMERA_PLAYER_NOISEEFFECT ) )
+	{
+		SetBits( pPlayer->m_iHideHUD, HIDEHUD_NOISEEFFECT );
+	}
+
 	if ( m_sPath )
 	{
 		m_pentPath = UTIL_FindEntityByTargetname( NULL, STRING(m_sPath) );
@@ -5269,6 +5275,9 @@ void CTriggerCamera::FollowTarget( )
 
 			if( FBitSet( pev->spawnflags, SF_CAMERA_PLAYER_BLACKBARS ) )
 				ClearBits( pPlayer->m_iHideHUD, HIDEHUD_BLACKBARS );
+
+			if( FBitSet( pev->spawnflags, SF_CAMERA_PLAYER_NOISEEFFECT ) )
+				ClearBits( pPlayer->m_iHideHUD, HIDEHUD_NOISEEFFECT );
 		}
 
 		SUB_UseTargets( this, USE_TOGGLE, 0 );

@@ -33,6 +33,7 @@
 #define 	HIDEHUD_HEALTH		( 1<<3 )
 #define HIDEHUD_BLACKBARS	( 1<<4 )
 #define HIDEHUD_ALL_EXCLUDEMESSAGE ( 1<<5 )
+#define HIDEHUD_NOISEEFFECT	( 1<<6 )
 #define HIDEHUD_CUSTOMCROSSHAIR ( 1<<7 ) //LRC - probably not the right way to do this, but it's just an experiment.
 
 #define	MAX_AMMO_TYPES	32		// ???
