@@ -135,6 +135,7 @@ private:
 	int	m_HUD_bucket0;
 	int m_HUD_selection;
 	int m_HUD_infinite_ammo;
+	HSPRITE ghsprGMinf;
 	wrect_t *gGMinfrc;
 };
 

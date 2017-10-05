@@ -147,7 +147,7 @@ void FindHullIntersection( const Vector &vecSrc, TraceResult &tr, float *mins, f
 
 void CSpear::PrimaryAttack()
 {
-	if( m_pPlayer->pev->waterlevel )
+	if( FBitSet( m_pPlayer->pev->flags, FL_INWATER ) )
 	{
 		SendWeaponAnim( SPEAR_ELECTROCUTE );
 		m_flNextPrimaryAttack = UTIL_WeaponTimeBase() + 2.34;
@@ -203,14 +203,12 @@ void CSpear::BigSpearStab()
 	0.0, (float *)&g_vecZero, (float *)&g_vecZero, 0, 0, 0,
 	0.0, 0, 0.0 );
 
-	if ( tr.flFraction >= 1.0 )
-	{
-		SendWeaponAnim( SPEAR_STAB_MISS );
-	}
-	else
+	if ( tr.flFraction < 1.0 )
 	{
 		SendWeaponAnim( SPEAR_STAB );
 
+		// player "shoot" animation
+		m_pPlayer->SetAnimation( PLAYER_ATTACK1 );
 #ifndef CLIENT_DLL
 
 		// hit
@@ -222,7 +220,7 @@ void CSpear::BigSpearStab()
 
 		UTIL_ScreenShake( m_pPlayer->pev->origin, 5.0, 1.0, 0.7, 0.25 );
 
-		m_pPlayer->EnableControl(FALSE);		
+		m_pPlayer->EnableControl(FALSE);
 		SetThink( &CSpear::UnStab );
 		pev->nextthink = gpGlobals->time + 0.4;
 
@@ -259,7 +257,7 @@ void CSpear::BigSpearStab()
 			}
 
 			// also play spear strike
-			EMIT_SOUND_DYN(ENT(m_pPlayer->pev), CHAN_ITEM, "weapons/spear_hitwall.wav", fvolbar, ATTN_NORM, 0, 98 + RANDOM_LONG(0,3)); 
+			EMIT_SOUND(ENT(m_pPlayer->pev), CHAN_ITEM, "weapons/spear_hitwall.wav", fvolbar, ATTN_NORM); 
 
 			// delay the decal a bit
 			m_trHit = tr;

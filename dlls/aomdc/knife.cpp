@@ -154,8 +154,10 @@ void CKnife::PrimaryAttack()
 {
 	if (! Swing( 1 ))
 	{
+#ifndef CLIENT_DLL
 		SetThink(&CKnife:: SwingAgain );
 		SetNextThink( 0.1 );
+#endif
 	}
 }
 
@@ -235,26 +237,18 @@ int CKnife::Swing( int fFirst )
 		fDidHit = TRUE;
 		CBaseEntity *pEntity = CBaseEntity::Instance(tr.pHit);
 
-		ClearMultiDamage( );
-
-		if ( (m_flNextPrimaryAttack + 1 < UTIL_WeaponTimeBase() ) || g_pGameRules->IsMultiplayer() )
-		{
-			// first swing does full damage
-			pEntity->TraceAttack(m_pPlayer->pev, gSkillData.plrDmgKnife, gpGlobals->v_forward, &tr, DMG_CLUB ); 
-		}
-		else
-		{
-			// subsequent swings do half
-			pEntity->TraceAttack(m_pPlayer->pev, gSkillData.plrDmgKnife / 2, gpGlobals->v_forward, &tr, DMG_CLUB ); 
-		}	
-		ApplyMultiDamage( m_pPlayer->pev, m_pPlayer->pev );
-
 		// play thwack, smack, or dong sound
 		float flVol = 1.0;
 		int fHitWorld = TRUE;
 
 		if (pEntity)
 		{
+			ClearMultiDamage( );
+
+			pEntity->TraceAttack(m_pPlayer->pev, gSkillData.plrDmgKnife, gpGlobals->v_forward, &tr, DMG_CLUB );
+
+			ApplyMultiDamage( m_pPlayer->pev, m_pPlayer->pev );
+
 			if ( pEntity->Classify() != CLASS_NONE && pEntity->Classify() != CLASS_MACHINE )
 			{
 				// play thwack or smack sound
@@ -297,10 +291,10 @@ int CKnife::Swing( int fFirst )
 			switch( RANDOM_LONG(0,1) )
 			{
 			case 0:
-				EMIT_SOUND_DYN(ENT(m_pPlayer->pev), CHAN_ITEM, "weapons/knife_hit1.wav", fvolbar, ATTN_NORM, 0, 98 + RANDOM_LONG(0,3)); 
+				EMIT_SOUND(ENT(m_pPlayer->pev), CHAN_ITEM, "weapons/knife_hit1.wav", fvolbar, ATTN_NORM); 
 				break;
 			case 1:
-				EMIT_SOUND_DYN(ENT(m_pPlayer->pev), CHAN_ITEM, "weapons/knife_hit2.wav", fvolbar, ATTN_NORM, 0, 98 + RANDOM_LONG(0,3)); 
+				EMIT_SOUND(ENT(m_pPlayer->pev), CHAN_ITEM, "weapons/knife_hit2.wav", fvolbar, ATTN_NORM); 
 				break;
 			}
 
@@ -309,12 +303,12 @@ int CKnife::Swing( int fFirst )
 		}
 
 		m_pPlayer->m_iWeaponVolume = flVol * CROWBAR_WALLHIT_VOLUME;
-#endif
+
 		m_flNextPrimaryAttack = UTIL_WeaponTimeBase() + 0.5;
 		
 		SetThink(&CKnife:: Smack );
 		SetNextThink( 0.2 );
-
+#endif
 		
 	}
 	return fDidHit;

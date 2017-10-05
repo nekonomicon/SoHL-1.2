@@ -260,7 +260,7 @@ void CGameRules::RefreshSkillData ( void )
 	gSkillData.plrDmgBeretta = GetSkillCvar( "sk_plr_beretta");
 
 	// P228 round
-	gSkillData.plrDmgP228 = GetSkillCvar( "sk_plr_p288");
+	gSkillData.plrDmgP228 = GetSkillCvar( "sk_plr_p228");
 
 	// Revolver round
 	gSkillData.plrDmgRevolver = GetSkillCvar( "sk_plr_revolver");
@@ -291,7 +291,7 @@ void CGameRules::RefreshSkillData ( void )
 // to separate player damage and monster hivehand damage. Since it's so late in the project, we've
 // added plrDmgHornet to the SKILLDATA struct, but not to the engine CVar list, so it's inaccesible
 // via SKILLS.CFG. Any player hivehand tuning must take place in the code. (sjb)
-	gSkillData.plrDmgHornet = 7;
+	//gSkillData.plrDmgHornet = 7;
 
 
 	// HEALTH/CHARGE

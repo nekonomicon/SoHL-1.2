@@ -19,6 +19,7 @@
 #include	"zombie.h"
 #include	"shake.h"
 #include	"effects.h"
+#include	"player.h"
 
 #define BADDAVID_AE_ATTACK			1
 #define BADDAVID_AE_FLINCH			1013

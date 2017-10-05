@@ -143,8 +143,10 @@ void CAxe::PrimaryAttack()
 {
 	if (! Swing( 1 ))
 	{
+#ifndef CLIENT_DLL
 		SetThink(&CAxe:: SwingAgain );
 		SetNextThink( 0.1 );
+#endif
 	}
 }
 
@@ -218,30 +220,22 @@ int CAxe::Swing( int fFirst )
 		fDidHit = TRUE;
 		CBaseEntity *pEntity = CBaseEntity::Instance(tr.pHit);
 
-		ClearMultiDamage( );
-
-		if ( (m_flNextPrimaryAttack + 1 < UTIL_WeaponTimeBase() ) || g_pGameRules->IsMultiplayer() )
-		{
-			// first swing does full damage
-			pEntity->TraceAttack(m_pPlayer->pev, gSkillData.plrDmgAxe, gpGlobals->v_forward, &tr, DMG_CLUB ); 
-		}
-		else
-		{
-			// subsequent swings do half
-			pEntity->TraceAttack(m_pPlayer->pev, gSkillData.plrDmgAxe / 2, gpGlobals->v_forward, &tr, DMG_CLUB ); 
-		}	
-		ApplyMultiDamage( m_pPlayer->pev, m_pPlayer->pev );
-
 		// play thwack, smack, or dong sound
 		float flVol = 1.0;
 		int fHitWorld = TRUE;
 
 		if (pEntity)
 		{
+			ClearMultiDamage( );
+
+			pEntity->TraceAttack(m_pPlayer->pev, gSkillData.plrDmgAxe, gpGlobals->v_forward, &tr, DMG_CLUB );
+
+			ApplyMultiDamage( m_pPlayer->pev, m_pPlayer->pev );
+
 			if ( pEntity->Classify() != CLASS_NONE && pEntity->Classify() != CLASS_MACHINE )
 			{
 				// play thwack or smack sound
-				EMIT_SOUND(ENT(m_pPlayer->pev), CHAN_ITEM, "weapons/Axe_hitbody.wav", 1, ATTN_NORM);
+				EMIT_SOUND(ENT(m_pPlayer->pev), CHAN_ITEM, "weapons/axe_hitbody.wav", 1, ATTN_NORM);
 
 				m_pPlayer->m_iWeaponVolume = CROWBAR_BODYHIT_VOLUME;
 
@@ -267,18 +261,19 @@ int CAxe::Swing( int fFirst )
 			}
 
 			// also play axe strike
-			EMIT_SOUND_DYN(ENT(m_pPlayer->pev), CHAN_ITEM, "weapons/Axe_hit.wav", fvolbar, ATTN_NORM, 0, 98 + RANDOM_LONG(0,3)); 
+			EMIT_SOUND(ENT(m_pPlayer->pev), CHAN_ITEM, "weapons/axe_hit.wav", fvolbar, ATTN_NORM); 
 
 			// delay the decal a bit
 			m_trHit = tr;
 		}
 
 		m_pPlayer->m_iWeaponVolume = flVol * CROWBAR_WALLHIT_VOLUME;
-#endif
+
 		m_flNextPrimaryAttack = UTIL_WeaponTimeBase() + 0.9;
 		
 		SetThink(&CAxe:: Smack );
 		SetNextThink( 0.2 );		
+#endif
 	}
 	return fDidHit;
 }

@@ -620,7 +620,7 @@ public:
 
 	void PrimaryAttack( void );
 	void SecondaryAttack( void );
-	void GlockFire( float flSpread, float flCycleTime, BOOL fUseAutoAim );
+	void GlockFire( float flSpread, float flCycleTime, BOOL fUseBurst );
 	BOOL Deploy( void );
 	void Reload( void );
 	void WeaponIdle( void );

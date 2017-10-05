@@ -894,7 +894,7 @@ void CBasePlayer::RemoveItems( int iWeaponMask, int i9mm, int i357, int iBuck, i
 	CBasePlayerItem *pCurrentItem;
 
 	// hornetgun is outside the spawnflags Worldcraft can set - handle it seperately.
-	if (iHornet)
+	/*if (iHornet)
 		iWeaponMask |= 1<<WEAPON_HORNETGUN;
 
 	RemoveAmmo("9mm", i9mm);
@@ -908,7 +908,7 @@ void CBasePlayer::RemoveItems( int iWeaponMask, int i9mm, int i357, int iBuck, i
 	RemoveAmmo("Snarks", iSnark);
 	RemoveAmmo("Trip Mine", iTrip);
 	RemoveAmmo("Hand Grenade", iGren);
-	RemoveAmmo("Hornets", iHornet);
+	RemoveAmmo("Hornets", iHornet);*/
 
 	for (i = 0; i < MAX_ITEM_TYPES; i++)
 	{
@@ -1265,7 +1265,7 @@ void CBasePlayer::TabulateAmmo()
 	ammo_9mm = AmmoInventory( GetAmmoIndex( "9mm" ) );
 	ammo_357 = AmmoInventory( GetAmmoIndex( "357" ) );
 	ammo_9mmar = AmmoInventory( GetAmmoIndex( "9mmar" ) );
-	ammo_bolts = AmmoInventory( GetAmmoIndex( "50AE" ) );
+	ammo_50ae = AmmoInventory( GetAmmoIndex( "50AE" ) );
 	ammo_buckshot = AmmoInventory( GetAmmoIndex( "buckshot" ) );
 }
 
@@ -3691,31 +3691,15 @@ void CBasePlayer::CheatImpulseCommands( int iImpulse )
 
 	case 101:
 		gEvilImpulse101 = TRUE;
-		GiveNamedItem( "item_suit" );
+		if( !( pev->weapons & ( 1 << WEAPON_SUIT ) ) )
+			GiveNamedItem( "item_suit" );
 		GiveNamedItem( "item_battery" );
-		GiveNamedItem( "item_flashlight" );
-		GiveNamedItem( "weapon_knife" );
-		GiveNamedItem( "weapon_axe" );
-		GiveNamedItem( "weapon_hammer" );
-		GiveNamedItem( "weapon_Spear" );
 		GiveNamedItem( "weapon_glock" );
 		GiveNamedItem( "ammo_glock" );
 		GiveNamedItem( "weapon_beretta" );
 		GiveNamedItem( "ammo_beretta" );
-		GiveNamedItem( "weapon_shotgun" );
-		GiveNamedItem( "ammo_buckshot" );
 		GiveNamedItem( "weapon_P228" );
 		GiveNamedItem( "ammo_P228" );
-		GiveNamedItem( "weapon_deagle" );
-		GiveNamedItem( "ammo_deagle" );
-		GiveNamedItem( "weapon_mp5k" );
-		GiveNamedItem( "ammo_mp5k" );
-		GiveNamedItem( "weapon_revolver" );
-		GiveNamedItem( "ammo_revolver" );
-		GiveNamedItem( "weapon_uzi" );
-		GiveNamedItem( "ammo_uzi" );
-		GiveNamedItem( "weapon_gmgeneral" );
-		GiveNamedItem( "ammo_gmgeneral" );
 		gEvilImpulse101 = FALSE;
 		break;
 

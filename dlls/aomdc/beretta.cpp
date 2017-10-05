@@ -112,7 +112,7 @@ void CBeretta::PrimaryAttack( void )
 	if( m_iShotCounter > 1 )
 		return;
 
-	if ( ( m_iClip <= 0 && m_fFireOnEmpty ) || (m_pPlayer->pev->waterlevel == 3 && m_pPlayer->pev->watertype > CONTENT_FLYFIELD) )
+	if ( m_iClip <= 0 || (m_pPlayer->pev->waterlevel == 3 && m_pPlayer->pev->watertype > CONTENT_FLYFIELD) )
 	{
 		PlayEmptySound();
 		m_flNextPrimaryAttack = UTIL_WeaponTimeBase() + 0.15;
@@ -141,7 +141,7 @@ void CBeretta::PrimaryAttack( void )
 	Vector vecSrc	 = m_pPlayer->GetGunPosition( );
 	Vector vecAiming = m_pPlayer->GetAutoaimVector( AUTOAIM_10DEGREES );
 
-	Vector vecDir = m_pPlayer->FireBulletsPlayer( 1, vecSrc, vecAiming, Vector( flSpread, flSpread, flSpread ), 8192, BULLET_PLAYER_9MM, 0, 0, m_pPlayer->pev, m_pPlayer->random_seed );
+	Vector vecDir = m_pPlayer->FireBulletsPlayer( 1, vecSrc, vecAiming, Vector( flSpread, flSpread, flSpread ), 8192, BULLET_PLAYER_9MM, 0, gSkillData.plrDmgBeretta, m_pPlayer->pev, m_pPlayer->random_seed );
 
 	PLAYBACK_EVENT_FULL( flags, m_pPlayer->edict(), m_usFireBeretta, 0.0, (float *)&g_vecZero, (float *)&g_vecZero, vecDir.x, vecDir.y, 0, 0, ( m_iClip == 0 ) ? 1 : 0, 0 );
 

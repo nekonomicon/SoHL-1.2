@@ -733,17 +733,17 @@ void GameDLLInit( void )
 
 
 	// Zombie2
-	CVAR_REGISTER ( sk_zombie2_health1 );// {"sk_zombie2_health1","0"};
-	CVAR_REGISTER ( sk_zombie2_health2 );// {"sk_zombie2_health2","0"};
-	CVAR_REGISTER ( sk_zombie2_health3 );// {"sk_zombie2_health3","0"};
+	CVAR_REGISTER ( &sk_zombie2_health1 );// {"sk_zombie2_health1","0"};
+	CVAR_REGISTER ( &sk_zombie2_health2 );// {"sk_zombie2_health2","0"};
+	CVAR_REGISTER ( &sk_zombie2_health3 );// {"sk_zombie2_health3","0"};
 
-	CVAR_REGISTER ( sk_zombie2_dmg_one_slash1 );// {"sk_zombie2_dmg_one_slash1","0"};
-	CVAR_REGISTER ( sk_zombie2_dmg_one_slash2 );// {"sk_zombie2_dmg_one_slash2","0"};
-	CVAR_REGISTER ( sk_zombie2_dmg_one_slash3 );// {"sk_zombie2_dmg_one_slash3","0"};
+	CVAR_REGISTER ( &sk_zombie2_dmg_one_slash1 );// {"sk_zombie2_dmg_one_slash1","0"};
+	CVAR_REGISTER ( &sk_zombie2_dmg_one_slash2 );// {"sk_zombie2_dmg_one_slash2","0"};
+	CVAR_REGISTER ( &sk_zombie2_dmg_one_slash3 );// {"sk_zombie2_dmg_one_slash3","0"};
 
-	CVAR_REGISTER ( sk_zombie2_dmg_both_slash1 );// {"sk_zombie2_dmg_both_slash1","0"};
-	CVAR_REGISTER ( sk_zombie2_dmg_both_slash2 );// {"sk_zombie2_dmg_both_slash2","0"};
-	CVAR_REGISTER ( sk_zombie2_dmg_both_slash3 );// {"sk_zombie2_dmg_both_slash3","0"};
+	CVAR_REGISTER ( &sk_zombie2_dmg_both_slash1 );// {"sk_zombie2_dmg_both_slash1","0"};
+	CVAR_REGISTER ( &sk_zombie2_dmg_both_slash2 );// {"sk_zombie2_dmg_both_slash2","0"};
+	CVAR_REGISTER ( &sk_zombie2_dmg_both_slash3 );// {"sk_zombie2_dmg_both_slash3","0"};
 
 
 	// Zombie3

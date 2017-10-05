@@ -339,7 +339,6 @@ void W_Precache(void)
 	// glock
 	UTIL_PrecacheOtherWeapon( "weapon_glock" );
 	UTIL_PrecacheOther( "ammo_glock" );
-	UTIL_PrecacheOther( "ammo_9mmbox" ); //LRC
 
 	// mp5k
 	UTIL_PrecacheOtherWeapon( "weapon_mp5k" );
@@ -591,7 +590,7 @@ void CBasePlayerItem::DefaultTouch( CBaseEntity *pOther )
 	CBasePlayer *pPlayer = (CBasePlayer *)pOther;
 
 	if( !( pPlayer->m_afButtonPressed & IN_USE ))
-		return FALSE;
+		return;
 
 	for( int i = 0; i < MAX_ITEM_TYPES; i++ )
         {
@@ -1089,7 +1088,7 @@ void CBasePlayerAmmo :: DefaultTouch( CBaseEntity *pOther )
 	CBasePlayer *pPlayer = (CBasePlayer *)pOther;
 
 	if( !( pPlayer->m_afButtonPressed & IN_USE ))
-		return FALSE;
+		return;
 
 	if (AddAmmo( pOther ))
 	{

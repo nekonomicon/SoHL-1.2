@@ -105,7 +105,7 @@ BOOL CRevolver::Deploy( )
 
 void CRevolver::PrimaryAttack()
 {
-	if( ( m_iClip <= 0 && m_fFireOnEmpty ) ||
+	if( m_iClip <= 0 ||
 		( m_pPlayer->pev->waterlevel == 3 && m_pPlayer->pev->watertype > CONTENT_FLYFIELD ) ) // don't fire underwater
 	{
 		PlayEmptySound( );
@@ -128,8 +128,7 @@ void CRevolver::PrimaryAttack()
 	Vector vecSrc	 = m_pPlayer->GetGunPosition( );
 	Vector vecAiming = m_pPlayer->GetAutoaimVector( AUTOAIM_10DEGREES );
 
-	Vector vecDir;
-	vecDir = m_pPlayer->FireBulletsPlayer( 1, vecSrc, vecAiming, VECTOR_CONE_1DEGREES, 8192, BULLET_PLAYER_357, 0, 0, m_pPlayer->pev, m_pPlayer->random_seed );
+	Vector vecDir = m_pPlayer->FireBulletsPlayer( 1, vecSrc, vecAiming, VECTOR_CONE_1DEGREES, 8192, BULLET_PLAYER_357, 0, gSkillData.plrDmgRevolver, m_pPlayer->pev, m_pPlayer->random_seed );
 
     int flags;
 #if defined( CLIENT_WEAPONS )

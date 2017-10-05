@@ -226,7 +226,7 @@ void CHammer::BigWhackThink()
 			}
 
 			// also play hammer strike
-			EMIT_SOUND_DYN(ENT(m_pPlayer->pev), CHAN_ITEM, "weapons/hammer_hit.wav", fvolbar, ATTN_NORM, 0, 98 + RANDOM_LONG(0,3)); 
+			EMIT_SOUND(ENT(m_pPlayer->pev), CHAN_ITEM, "weapons/hammer_hit.wav", fvolbar, ATTN_NORM);
 
 			// delay the decal a bit
 			m_trHit = tr;
