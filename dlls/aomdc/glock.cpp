@@ -108,12 +108,12 @@ BOOL CGlock::Deploy( )
 
 void CGlock::SecondaryAttack( void )
 {
-	GlockFire( 0.01, 0.15, FALSE );
+	GlockFire( 0.01, 0.06, TRUE );
 }
 
 void CGlock::PrimaryAttack( void )
 {
-	GlockFire( 0.01, 0.2, TRUE );
+	GlockFire( 0.01, 0.2, FALSE );
 }
 
 void CGlock::GlockFire( float flSpread, float flCycleTime, BOOL fUseBurst )
