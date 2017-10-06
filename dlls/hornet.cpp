@@ -100,11 +100,11 @@ void CHornet :: Spawn( void )
 	if ( !pSoundEnt )
 		pSoundEnt = edict();
 
-	if ( !FNullEnt(pev->owner) && (pev->owner->v.flags & FL_CLIENT) )
+	/*if ( !FNullEnt(pev->owner) && (pev->owner->v.flags & FL_CLIENT) )
 	{
 		pev->dmg = gSkillData.plrDmgHornet;
 	}
-	else
+	else*/
 	{
 		// no real owner, or owner isn't a client. 
 		pev->dmg = gSkillData.monDmgHornet;

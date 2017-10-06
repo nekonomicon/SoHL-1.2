@@ -30,7 +30,7 @@ LOCAL_SRC_FILES := aflock.cpp agrunt.cpp AI_BaseNPC_Schedule.cpp airtank.cpp \
 		func_tank.cpp game.cpp gamerules.cpp gargantua.cpp genericmonster.cpp \
 		ggrenade.cpp globals.cpp gman.cpp h_ai.cpp hassassin.cpp \
 		h_battery.cpp h_cine.cpp h_cycler.cpp headcrab.cpp healthkit.cpp h_export.cpp \
-		hgrunt.cpp hornet.cpp houndeye.cpp ichthyosaur.cpp \
+		hgrunt.cpp hornet.cpp houndeye.cpp ichthyosaur.cpp islave_deamon.cpp \
 		items.cpp leech.cpp lights.cpp locus.cpp maprules.cpp monstermaker.cpp monsters.cpp \
 		monsterstate.cpp mortar.cpp movewith.cpp multiplay_gamerules.cpp nihilanth.cpp \
 		nodes.cpp osprey.cpp pathcorner.cpp plane.cpp plats.cpp player.cpp playermonster.cpp \

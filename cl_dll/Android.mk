@@ -31,7 +31,6 @@ SRCS+=./hl/hl_baseentity.cpp
 SRCS+=./hl/hl_events.cpp
 SRCS+=./hl/hl_objects.cpp
 SRCS+=./hl/hl_weapons.cpp
-SRCS+=../dlls/wpn_shared/hl_wpn_glock.cpp
 SRCS+=../common/interface.cpp
 SRCS+=../dlls/aomdc/knife.cpp
 SRCS+=../dlls/aomdc/axe.cpp
