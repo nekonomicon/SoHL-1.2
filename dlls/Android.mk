@@ -46,6 +46,6 @@ ifeq ($(TARGET_ARCH_ABI),armeabi-v7a-hard)
 LOCAL_MODULE_FILENAME = libserver_hardfp
 endif
 
-LOCAL_CPPFLAGS := $(LOCAL_CFLAGS) -frtti
+LOCAL_CPPFLAGS := $(LOCAL_CFLAGS)
 
 include $(BUILD_SHARED_LIBRARY)
