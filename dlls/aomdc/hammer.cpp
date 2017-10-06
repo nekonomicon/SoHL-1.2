@@ -81,7 +81,7 @@ int CHammer::GetItemInfo(ItemInfo *p)
 	p->iMaxAmmo2 = -1;
 	p->iMaxClip = WEAPON_NOCLIP;
 	p->iSlot = 0;
-	p->iPosition = 2;
+	p->iPosition = 3;
 	p->iId = WEAPON_HAMMER;
 	p->iWeight = HAMMER_WEIGHT;
 	return 1;
