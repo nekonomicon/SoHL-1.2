@@ -4093,6 +4093,7 @@ void CBasePlayer::CheatImpulseCommands( int iImpulse )
 		gEvilImpulse111 = TRUE;
 		GiveNamedItem( "item_suit" );
 		GiveNamedItem( "item_battery" );
+		GiveNamedItem( "item_nvg" );
 		GiveNamedItem( "weapon_crowbar" );
 		GiveNamedItem( "weapon_swort" );
 		//GiveNamedItem( "weapon_hands" );
@@ -4112,7 +4113,6 @@ void CBasePlayer::CheatImpulseCommands( int iImpulse )
 		GiveNamedItem( "ammo_ARgrenades" );
 		GiveNamedItem( "weapon_handgrenade" );
 		GiveNamedItem( "weapon_tripmine" );
-		GiveNamedItem( "weapon_autoshotgun" );
 #ifndef OEM_BUILD
 		GiveNamedItem( "weapon_357" );
 		GiveNamedItem( "ammo_357" );

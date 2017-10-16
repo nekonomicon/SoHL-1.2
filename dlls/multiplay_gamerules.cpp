@@ -651,6 +651,12 @@ void CHalfLifeMultiplay :: PlayerSpawn( CBasePlayer *pPlayer )
 		pPlayer->GiveNamedItem( "weapon_9mmhandgun" );
         pPlayer->GiveAmmo( 100, "9mm", _9MM_MAX_CARRY );
 		pPlayer->GiveNamedItem( "weapon_9mm41a" );
+		pPlayer->GiveNamedItem( "weapon_autoshotgun" );
+		pPlayer->GiveNamedItem( "weapon_minigun" );
+		pPlayer->GiveNamedItem( "weapon_eagel" );
+		pPlayer->GiveNamedItem( "weapon_uzi" );
+		pPlayer->GiveNamedItem( "weapon_shockrifle" );
+		pPlayer->GiveNamedItem( "weapon_ak47" );
 		pPlayer->pev->armorvalue=50;
 
     if (pPlayer->m_iPlayerClass == 1)
