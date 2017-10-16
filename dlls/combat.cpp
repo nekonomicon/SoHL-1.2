@@ -31,7 +31,7 @@
 #include "func_break.h"
 #include "../engine/studio.h" //LRC
 #include "player.h"
-
+#include "gamerules.h"
 
 extern DLL_GLOBAL Vector		g_vecAttackDir;
 extern DLL_GLOBAL int			g_iSkillLevel;
@@ -686,20 +686,23 @@ void CBaseMonster :: Killed( entvars_t *pevAttacker, int iGib )
 	
 	m_IdealMonsterState = MONSTERSTATE_DEAD;
 
-/*	if( pevAttacker )
+	if( g_pGameRules->IsMultiplayer() )
 	{
-	if(GetClassPtr((CBasePlayer *)pevAttacker)->IsPlayer())
-	{
-	GetClassPtr((CBasePlayer *)pevAttacker)->AddPoints( 1, false );
+		if( pevAttacker )
+		{
+			if(GetClassPtr((CBasePlayer *)pevAttacker)->IsPlayer())
+			{
+				GetClassPtr((CBasePlayer *)pevAttacker)->AddPoints( 1, false );
+			}
+			else if(pevAttacker->owner) 
+			{
+				if(GetClassPtr((CGrenade *)pevAttacker->owner)->IsPlayer())
+				{
+					GetClassPtr((CBasePlayer *)pevAttacker->owner)->AddPoints( 1, false );
+				}
+			}
+		}
 	}
-	else if(pevAttacker->owner) 
-	{
-	if(GetClassPtr((CGrenade *)pevAttacker->owner)->IsPlayer())
-	{
-	GetClassPtr((CBasePlayer *)pevAttacker->owner)->AddPoints( 1, false );
-	}
-	}
-}*/
 }
 
 //
