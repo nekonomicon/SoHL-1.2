@@ -4324,7 +4324,7 @@ int CBasePlayer::RemovePlayerItem( CBasePlayerItem *pItem )
 		pev->viewmodel = 0;
 		pev->weaponmodel = 0;
 	}
-	else if ( m_pLastItem == pItem )
+	if ( m_pLastItem == pItem )
 		m_pLastItem = NULL;
 
 	CBasePlayerItem *pPrev = m_rgpPlayerItems[pItem->iItemSlot()];
@@ -4540,6 +4540,13 @@ void CBasePlayer :: UpdateClientData( void )
 		}
 
 		FireTargets( "game_playerspawn", this, this, USE_TOGGLE, 0 );
+
+		// Send flashlight status
+		MESSAGE_BEGIN( MSG_ONE, gmsgFlashlight, NULL, pev );
+			WRITE_BYTE(FlashlightIsOn() ? 1 : 0);
+			WRITE_BYTE(m_iFlashBattery);
+		MESSAGE_END();
+
 
 		InitStatusBar();
 	}
