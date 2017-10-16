@@ -309,7 +309,9 @@ void CHudAmmo::Reset(void)
 	gHR.Reset();
 
 	//	VidInit();
-
+	wrect_t nullrc = {};
+	SetCrosshair( 0, nullrc, 0, 0, 0 ); // reset crosshair
+	m_pWeapon = NULL; // reset last weapon
 }
 
 int CHudAmmo::VidInit(void)

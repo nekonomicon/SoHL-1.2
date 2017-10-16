@@ -26,7 +26,7 @@ extern "C"
 	void DLLEXPORT HUD_DrawTransparentTriangles( void );
 };
 
-extern float g_fFogColor[4];
+extern float g_fFogColor[3];
 extern float g_fStartDist;
 extern float g_fEndDist;
 extern int g_iWaterLevel;
