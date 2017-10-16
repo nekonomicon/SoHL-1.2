@@ -1114,7 +1114,7 @@ void CGargantua::StartTask( Task_t *pTask )
 		break;
 	
 	// allow a scripted_action to make gargantua shoot flames.
-	case TASK_PLAY_SCRIPT:
+	/*case TASK_PLAY_SCRIPT:
 		if ( m_pCine->IsAction() && m_pCine->m_fAction == 3)
 		{
 			FlameCreate();
@@ -1125,7 +1125,7 @@ void CGargantua::StartTask( Task_t *pTask )
 		}
 		else
 			CBaseMonster::StartTask( pTask );
-		break;
+		break;*/
 
 	case TASK_DIE:
 		m_flWaitFinished = gpGlobals->time + 1.6;
@@ -1215,7 +1215,7 @@ void CGargantua::RunTask( Task_t *pTask )
 			CBaseMonster::RunTask(pTask);
 		break;
 
-	case TASK_PLAY_SCRIPT:
+/*	case TASK_PLAY_SCRIPT:
 		if (m_pCine->IsAction() && m_pCine->m_fAction == 3)
 		{
 			if (m_fSequenceFinished)
@@ -1239,7 +1239,7 @@ void CGargantua::RunTask( Task_t *pTask )
 			CBaseMonster::RunTask( pTask );
 			break;
 		}
-/*	case TASK_FLAME_SWEEP:
+	case TASK_FLAME_SWEEP:
 		if ( gpGlobals->time > m_flWaitFinished )
 		{
 			FlameDestroy();

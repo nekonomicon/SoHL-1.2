@@ -268,7 +268,7 @@ void MapFixPatchSpawnPosition::ApplyFixToPlayer( CBasePlayer* player )
 	player->pev->velocity = player->pev->avelocity = g_vecZero;
 	player->pev->angles = player->pev->v_angle = Vector(0, 90, 0);
 
-	UTIL_SetOrigin(player->pev, Vector(2910, -2332, -410));
+	UTIL_SetOrigin(player, Vector(2910, -2332, -410));
 }
 
 void MapFixPatchAddWeaponsAndAmmo::ApplyFix()
@@ -454,7 +454,7 @@ void CChangeLevelToGrave::TeleportThink(void)
 			// Constantly teleport the player to the changelevel
 			// volume in case the event was missed.
 			player->pev->velocity = player->pev->avelocity = g_vecZero;
-			UTIL_SetOrigin(player->pev, teleportDestination->pev->origin);
+			UTIL_SetOrigin(player, teleportDestination->pev->origin);
 		}
 	}
 
@@ -595,7 +595,7 @@ CBaseEntity* MapFixVamp::CreateLiftTrigger(const Vector& origin, const Vector& a
 	trigger->pev->angles = angles;
 	DispatchSpawn(trigger->edict());
 
-	UTIL_SetOrigin(trigger->pev, origin);
+	UTIL_SetOrigin(trigger, origin);
 	UTIL_SetSize(trigger->pev, Vector(-64, -64, 0), Vector( 64, 64, liftHeight ) );
 
 	return trigger;
