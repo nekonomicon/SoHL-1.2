@@ -445,7 +445,7 @@ void CChangeLevelToGrave::TeleportPlayerToChangeLevel(CBaseEntity* pActivator, C
 
 void CChangeLevelToGrave::TeleportThink(void)
 {
-	CBasePlayer* player = dynamic_cast<CBasePlayer*>(UTIL_FindEntityByClassname(NULL, "player"));
+	CBasePlayer* player = static_cast<CBasePlayer*>(UTIL_FindEntityByClassname(NULL, "player"));
 	if (player != NULL)
 	{
 		CBaseEntity* teleportDestination = UTIL_FindEntityByTargetname(NULL, "mx2");
@@ -534,7 +534,7 @@ void MapFixVamp::ApplyFix()
 
 void MapFixVamp::CreateAndSetupTriggerToCallLift1()
 {
-	CBaseToggle* trigger = dynamic_cast<CBaseToggle*>(CreateLiftTrigger(Vector(-384, 0, -312), g_vecZero, LIFT_HEIGHT));
+	CBaseToggle* trigger = static_cast<CBaseToggle*>(CreateLiftTrigger(Vector(-384, 0, -312), g_vecZero, LIFT_HEIGHT));
 
 	if (trigger)
 	{
@@ -545,7 +545,7 @@ void MapFixVamp::CreateAndSetupTriggerToCallLift1()
 
 void MapFixVamp::CreateAndSetupTriggerToCallLift2()
 {
-	CBaseToggle* trigger = dynamic_cast<CBaseToggle*>(CreateLiftTrigger(Vector(1408, 1024, 255), g_vecZero, LIFT_HEIGHT));
+	CBaseToggle* trigger = static_cast<CBaseToggle*>(CreateLiftTrigger(Vector(1408, 1024, 255), g_vecZero, LIFT_HEIGHT));
 
 	if (trigger)
 	{
@@ -556,7 +556,7 @@ void MapFixVamp::CreateAndSetupTriggerToCallLift2()
 
 void MapFixVamp::CreateAndSetupTriggerToCallLift3()
 {
-	CBaseToggle* trigger = dynamic_cast<CBaseToggle*>(CreateLiftTrigger(Vector(-1408, 1792, 200), g_vecZero, LIFT_HEIGHT));
+	CBaseToggle* trigger = static_cast<CBaseToggle*>(CreateLiftTrigger(Vector(-1408, 1792, 200), g_vecZero, LIFT_HEIGHT));
 
 	if (trigger)
 	{
@@ -584,7 +584,7 @@ CBaseEntity* MapFixVamp::CreateLiftTrigger(const Vector& origin, const Vector& a
 		return NULL;
 	}
 
-	CBaseToggle* trigger = dynamic_cast<CBaseToggle*>(CBaseEntity::Instance(pevCreate));
+	CBaseToggle* trigger = static_cast<CBaseToggle*>(CBaseEntity::Instance(pevCreate));
 
 	if (trigger == NULL)
 	{
