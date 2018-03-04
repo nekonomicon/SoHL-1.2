@@ -253,7 +253,7 @@ class CItemBattery : public CItem
 				pPlayer->pev->armorvalue += pev->armorvalue;
 			else
 				pPlayer->pev->armorvalue += gSkillData.batteryCapacity;
-			pPlayer->pev->armorvalue = min(pPlayer->pev->armorvalue, MAX_NORMAL_BATTERY);
+			pPlayer->pev->armorvalue = fmin(pPlayer->pev->armorvalue, MAX_NORMAL_BATTERY);
 
 			if (pev->noise)
 				EMIT_SOUND( pPlayer->edict(), CHAN_ITEM, STRING(pev->noise), 1, ATTN_NORM ); //LRC
